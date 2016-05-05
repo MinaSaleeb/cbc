@@ -10,13 +10,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="time_lines")
-@NamedQuery(name="TimeLine.findAll", query="SELECT t FROM TimeLine t")
 public class TimeLine implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	private int duration;
 
@@ -44,11 +43,11 @@ public class TimeLine implements Serializable {
 	public TimeLine() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

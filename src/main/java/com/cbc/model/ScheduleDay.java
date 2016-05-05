@@ -12,7 +12,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="schedule_days")
-@NamedQuery(name="ScheduleDay.findAll", query="SELECT s FROM ScheduleDay s")
 public class ScheduleDay implements Serializable {
 	private static final long serialVersionUID = 1L;
 
