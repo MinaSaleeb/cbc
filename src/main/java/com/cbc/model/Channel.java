@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="channels")
-@NamedQuery(name="Channel.findAll", query="SELECT c FROM Channel c")
 public class Channel implements Serializable {
 	private static final long serialVersionUID = 1L;
 

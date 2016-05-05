@@ -10,13 +10,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="carousel_images")
-@NamedQuery(name="CarouselImage.findAll", query="SELECT c FROM CarouselImage c")
 public class CarouselImage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	@Column(name="image_path")
 	private String imagePath;
@@ -29,11 +28,11 @@ public class CarouselImage implements Serializable {
 	public CarouselImage() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

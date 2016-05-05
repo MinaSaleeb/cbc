@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="carousels")
-@NamedQuery(name="Carousel.findAll", query="SELECT c FROM Carousel c")
 public class Carousel implements Serializable {
 	private static final long serialVersionUID = 1L;
 

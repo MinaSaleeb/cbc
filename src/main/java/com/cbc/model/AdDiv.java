@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="ad_divs")
-@NamedQuery(name="AdDiv.findAll", query="SELECT a FROM AdDiv a")
 public class AdDiv implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -10,7 +10,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="citizen_services")
-@NamedQuery(name="CitizenService.findAll", query="SELECT c FROM CitizenService c")
 public class CitizenService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
