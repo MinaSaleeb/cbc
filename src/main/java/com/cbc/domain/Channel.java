@@ -11,7 +11,7 @@ import com.cbc.util.ModelToDomainMapper;
  * @author Mina Saleeb
  *
  */
-public class Channel implements Serializable
+public class Channel
 {
 	private String channelBgImage;
 

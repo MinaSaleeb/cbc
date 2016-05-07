@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="recipe_categories")
-@NamedQuery(name="RecipeCategory.findAll", query="SELECT r FROM RecipeCategory r")
 public class RecipeCategory implements Serializable {
 	private static final long serialVersionUID = 1L;
 

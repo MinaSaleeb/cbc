@@ -3,10 +3,7 @@
  */
 package com.cbc.services;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cbc.domain.HubTimeLine;
+import com.cbc.domain.Schedule;
 import com.cbc.model.Channel;
 import com.cbc.model.ScheduleDay;
 import com.cbc.model.TimeLine;
@@ -24,6 +22,7 @@ import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.ScheduleDayRepository;
 import com.cbc.repository.TimeLineRepository;
 import com.cbc.util.Constants;
+import com.cbc.util.TimeUtils;
 
 /**
  * @author Mina Saleeb
@@ -55,54 +54,7 @@ public class ScheduleService
 		return scheduleDay;
  	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public Date getTodayDate()
-	{
-		Date today = Calendar.getInstance().getTime();
-		
-		return today;
-	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getCurrentHourAs_24()
-	{
-		Calendar rightNow = Calendar.getInstance();
-		int hour = rightNow.get(Calendar.HOUR_OF_DAY);
-		return hour;
-	}
-	
-	/**
-	 * 
-	 * @param hhaaTime
-	 * @return
-	 */
-	public int convert_hhaa_to_24(String hhaaTime)
-	{
-		int time_24 = 0;
-		if(hhaaTime != null & !hhaaTime.isEmpty())
-		{
-			SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
-			try
-			{
-				Date date = parseFormat.parse(hhaaTime);
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				time_24 = calendar.get(Calendar.HOUR_OF_DAY);
-			} catch (ParseException e) {
-				LOGGER.error("Error while formatting {"+hhaaTime+"} to date");
-				e.printStackTrace();
-			}
-		}
-		
-		
-		return time_24;
-	}
 	
 	
 	/**
@@ -120,7 +72,7 @@ public class ScheduleService
 		List<Channel> allChannels = (List<Channel>) channelRepo.findAll();
 		if(allChannels != null && !allChannels.isEmpty())
 		{
-			ScheduleDay today = getMappedScheduleDay(getTodayDate());
+			ScheduleDay today = getMappedScheduleDay(TimeUtils.getTodayDate());
 			//2- loop on each channel to get its schedule by today date
 			for(Channel chnl : allChannels)
 			{
@@ -128,13 +80,13 @@ public class ScheduleService
 				//2.1 - Specify what is displaying (now , next , after next) for the current channel.
 				if(chnlTimeLines != null && !chnlTimeLines.isEmpty())
 				{
-					int currentHour = getCurrentHourAs_24();
+					int currentHour = TimeUtils.getCurrentHourAs_24();
 					int nextTimeLineStartHour = 0;
 					int afterNextTimeLineStartHour = 0;
 					//2.1.a- NOW
 					for(TimeLine timeLine : chnlTimeLines)
 					{
-						int timeLineStartHour = convert_hhaa_to_24(timeLine.getStartTime());
+						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						int timeLineEndHour = timeLineStartHour + timeLine.getDuration();
 						if(currentHour >= timeLineStartHour && currentHour < timeLineEndHour) 
 						{
@@ -149,7 +101,7 @@ public class ScheduleService
 					//2.1.b- NEXT
 					for(TimeLine timeLine : chnlTimeLines)
 					{
-						int timeLineStartHour = convert_hhaa_to_24(timeLine.getStartTime());
+						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						int timeLineEndHour = timeLineStartHour + timeLine.getDuration();
 						if(nextTimeLineStartHour == timeLineStartHour) 
 						{
@@ -164,7 +116,7 @@ public class ScheduleService
 					//2.1.c- AFTER NEXT
 					for(TimeLine timeLine : chnlTimeLines)
 					{
-						int timeLineStartHour = convert_hhaa_to_24(timeLine.getStartTime());
+						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						if(afterNextTimeLineStartHour == timeLineStartHour) 
 						{
 							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
@@ -201,7 +153,7 @@ public class ScheduleService
 		
 		if(chnl != null)
 		{
-			ScheduleDay today = getMappedScheduleDay(getTodayDate());
+			ScheduleDay today = getMappedScheduleDay(TimeUtils.getTodayDate());
 			chnlTimeLines = timeLineRepo.findByChannelBeanAndScheduleDay(chnl, today);
 		}
 		else
@@ -211,6 +163,42 @@ public class ScheduleService
 		
 		
 		return chnlTimeLines;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Schedule getSchedule()
+	{
+		
+		// Each map entry will contain the the time lines list by the key channelName+dayId
+		Map<String , List<TimeLine>> chnlDayTimeLinesMap = new HashMap<String , List<TimeLine>>();
+		
+		//1- get all channels
+		List<Channel> allChannels = (List<Channel>) channelRepo.findAll();
+		
+		//2- get all days
+		List<ScheduleDay> allDays = (List<ScheduleDay>) scheduleDayRepo.findAll();
+		
+		//3-get TimeLines list based on specific channel and specific day.
+		if(allChannels != null  && !allChannels.isEmpty())
+		{
+			for(Channel chnl : allChannels)
+			{
+				if(allDays != null && !allDays.isEmpty())
+				{
+					for(ScheduleDay day : allDays)
+					{
+						List<TimeLine> chnlDayTimeLines = timeLineRepo.findByChannelBeanAndScheduleDay(chnl, day);
+						String key = chnl.getChannelName()+day.getId();
+						chnlDayTimeLinesMap.put(key, chnlDayTimeLines);
+					}
+				}
+			}
+		}
+		
+		return new Schedule(allChannels , allDays , chnlDayTimeLinesMap);
 	}
 	
 	

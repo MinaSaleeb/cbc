@@ -10,7 +10,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="program_compitations")
-@NamedQuery(name="ProgramCompitation.findAll", query="SELECT p FROM ProgramCompitation p")
 public class ProgramCompitation implements Serializable {
 	private static final long serialVersionUID = 1L;
 

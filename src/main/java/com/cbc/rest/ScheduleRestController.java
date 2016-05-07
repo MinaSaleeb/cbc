@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.domain.HubTimeLine;
+import com.cbc.domain.Schedule;
 import com.cbc.model.TimeLine;
 import com.cbc.services.ScheduleService;
 import java.util.*;
@@ -50,5 +51,15 @@ public class ScheduleRestController
 	public ResponseEntity<List<TimeLine>> getTodayTimeLineByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
 	{
 		return new ResponseEntity<List<TimeLine>>(scheduleService.getTodayTimeLineByChannelId(channelId),HttpStatus.OK);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Schedule> getSchedule()
+	{
+		return new ResponseEntity<Schedule>(scheduleService.getSchedule(),HttpStatus.OK);
 	}
 }

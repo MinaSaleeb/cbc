@@ -3,6 +3,8 @@ package com.cbc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.cbc.util.TimeUtils;
+
 
 /**
  * The persistent class for the time_lines database table.
@@ -39,7 +41,11 @@ public class TimeLine implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="day")
 	private ScheduleDay scheduleDay;
+	
+	@Transient
+	private boolean playingNow = false;
 
+	
 	public TimeLine() {
 	}
 
@@ -97,6 +103,23 @@ public class TimeLine implements Serializable {
 
 	public void setScheduleDay(ScheduleDay scheduleDay) {
 		this.scheduleDay = scheduleDay;
+	}
+	
+	/**
+	 * @return the playingNow
+	 */
+	@Transient
+	public boolean isPlayingNow() 
+	{
+		int currentHour = TimeUtils.getCurrentHourAs_24();
+		int timeLineStartHour = TimeUtils.convert_hhaa_to_24(this.getStartTime());
+		int timeLineEndHour = timeLineStartHour + this.getDuration();
+		if(currentHour >= timeLineStartHour && currentHour < timeLineEndHour) 
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
 }

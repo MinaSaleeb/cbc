@@ -12,13 +12,12 @@ import java.util.List;
  */
 @Entity
 @Table(name="cbc_news")
-@NamedQuery(name="CbcNew.findAll", query="SELECT c FROM CbcNew c")
 public class CbcNew implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	private String description;
 
@@ -47,11 +46,11 @@ public class CbcNew implements Serializable {
 	public CbcNew() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

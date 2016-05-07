@@ -10,7 +10,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="recipe_ingredients")
-@NamedQuery(name="RecipeIngredient.findAll", query="SELECT r FROM RecipeIngredient r")
 public class RecipeIngredient implements Serializable {
 	private static final long serialVersionUID = 1L;
 

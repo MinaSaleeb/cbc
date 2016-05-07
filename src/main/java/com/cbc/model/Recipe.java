@@ -12,13 +12,12 @@ import java.util.List;
  */
 @Entity
 @Table(name="recipes")
-@NamedQuery(name="Recipe.findAll", query="SELECT r FROM Recipe r")
 public class Recipe implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	@Column(name="avg_rating")
 	private float avgRating;
@@ -85,11 +84,11 @@ public class Recipe implements Serializable {
 	public Recipe() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
