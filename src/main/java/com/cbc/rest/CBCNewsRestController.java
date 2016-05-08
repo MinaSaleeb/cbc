@@ -3,11 +3,20 @@
  */
 package com.cbc.rest;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.model.CbcNew;
+import com.cbc.model.NewsCategory;
 import com.cbc.services.CBCNewsService;
 
 /**
@@ -22,6 +31,68 @@ public class CBCNewsRestController
 	
 	@Autowired
 	private CBCNewsService cBCNewsService;
+	
+	/*
+	@RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<Carousel> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 {
+		
+	 }
+	 */
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/categories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<NewsCategory>> getCbcNewsCategories()
+	{
+		List<NewsCategory> categoriesList = cBCNewsService.getCbcNewsCategories();
+		if(categoriesList != null && !categoriesList.isEmpty())
+		{
+			return new ResponseEntity<List<NewsCategory>>(categoriesList , HttpStatus.OK);
+		}
+		
+		return  new ResponseEntity<List<NewsCategory>>(HttpStatus.NO_CONTENT);
+	}
+	
+	/**
+	 * 
+	 * @param channelId
+	 * @return
+	 */
+	@RequestMapping(value = "/categories/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<NewsCategory>> getCbcNewsCategoriesByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 {
+		List<NewsCategory> categoriesList = cBCNewsService.getCbcNewsCategoriesByChannelId(channelId);
+		
+		if(categoriesList != null && !categoriesList.isEmpty())
+		{
+			return new ResponseEntity<List<NewsCategory>>(categoriesList , HttpStatus.OK);
+		}
+		
+		return  new ResponseEntity<List<NewsCategory>>(HttpStatus.NO_CONTENT);
+	 }
+	
+	
+	/**
+	 * 
+	 * @param categoryId
+	 * @return
+	 */
+	@RequestMapping(value = "/getByCategoryId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<CbcNew>> getByCategoryId(@RequestParam(required = true , value = "categoryId") int categoryId)
+	 {
+		List<CbcNew> newsList = cBCNewsService.getCbcNewsByCategoryId(categoryId);
+		
+		if(newsList != null && !newsList.isEmpty())
+		{
+			return new ResponseEntity<List<CbcNew>>(newsList , HttpStatus.OK);
+		}
+		
+		return  new ResponseEntity<List<CbcNew>>(HttpStatus.NO_CONTENT);
+		
+	 }
 	
 	
 }
