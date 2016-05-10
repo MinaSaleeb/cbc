@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,6 +93,25 @@ public class CBCNewsRestController
 		
 		return  new ResponseEntity<List<CbcNew>>(HttpStatus.NO_CONTENT);
 		
+	 }
+	
+	/**
+	 * 
+	 * @param newId
+	 * @return
+	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<CbcNew> getNewById(@PathVariable("id") int newId)
+	 {
+		CbcNew cbcNew = cBCNewsService.getCbcNewsById(newId);
+		
+		if(cbcNew == null)
+		{
+			LOGGER.error("newId {"+newId+"} is not found in DB");
+			return new ResponseEntity<CbcNew>(HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<CbcNew>(cbcNew , HttpStatus.OK);
 	 }
 	
 	

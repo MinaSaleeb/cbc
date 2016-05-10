@@ -91,5 +91,16 @@ public class CBCNewsService
 	}
 	
 	
+	/**
+	 * 
+	 * @param newId
+	 * @return
+	 */
+	public CbcNew getCbcNewsById(long newId)
+	{
+		return cBCNewsRepo.findOne(newId);
+	}
+	
+	
 	
 }

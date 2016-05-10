@@ -72,4 +72,32 @@ public class ProgramsService
 		
 		return prgm;
 	}
+	
+	/**
+	 * 
+	 * @param channelId
+	 * @return
+	 */
+	public List<String> getProgramsNamesByChannelId(int channelId)
+	{
+		List<String> programsNamesList = new ArrayList<String>();
+		
+		try 
+		{
+			List<Program> prgms = retrieveProgramsByChannel(channelId);
+			if(prgms != null && !prgms.isEmpty())
+			{
+				for(Program prgm : prgms)
+				{
+					programsNamesList.add(prgm.getTitle());
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return programsNamesList;
+	}
 }

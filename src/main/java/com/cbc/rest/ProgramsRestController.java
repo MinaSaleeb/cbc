@@ -204,4 +204,15 @@ public class ProgramsRestController
 		 
 		 return new ResponseEntity<Map<String , String>>(pageAdsmap , HttpStatus.OK);
 	 }
+	 
+	 /**
+	  * 
+	  * @param channelId
+	  * @return
+	  */
+	 @RequestMapping(value = "/names/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<String>> getProgramsNamesByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 {
+		 return new ResponseEntity<List<String>>(programsService.getProgramsNamesByChannelId(channelId) , HttpStatus.OK);
+	 }
 }
