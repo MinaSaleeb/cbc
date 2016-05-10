@@ -3,7 +3,11 @@
  */
 package com.cbc.repository;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.cbc.model.Presenter;
 
@@ -13,5 +17,6 @@ import com.cbc.model.Presenter;
  */
 public interface PresenterRepository extends CrudRepository<Presenter, Integer> 
 {
-
+	@Query("SELECT p FROM Presenter p INNER JOIN p.programs prgm WHERE prgm.channelBean.id = :channelId")
+	List<Presenter> findByChannelId(@Param("channelId") int channelId);
 }

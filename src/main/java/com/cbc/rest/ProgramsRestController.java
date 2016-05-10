@@ -45,6 +45,20 @@ public class ProgramsRestController
 	
 	
 	
+	 @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<Program>> listChannels()
+	 {
+		 List<Program> allPrgms = programsService.listAllPrograms();
+		 
+		 if(allPrgms == null || allPrgms.isEmpty())
+		 {
+			 LOGGER.error("No Programs in DB");
+			 return new ResponseEntity<List<Program>>(HttpStatus.NO_CONTENT);
+		 }
+		 
+		 return new ResponseEntity<List<Program>>(allPrgms , HttpStatus.OK);
+	 }
+	
 	/**
 	 * 
 	 * @param channelId

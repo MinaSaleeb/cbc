@@ -100,4 +100,13 @@ public class ProgramsService
 		
 		return programsNamesList;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<Program> listAllPrograms()
+	{
+		return (List<Program>) programRepository.findAll();
+	}
 }

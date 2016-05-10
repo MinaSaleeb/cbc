@@ -56,4 +56,11 @@ public class PresentersRestController
 	 {
 		 return new ResponseEntity<List<String>>(presentersService.getPresentersNamesByChannelId(channelId) , HttpStatus.OK);
 	 }
+	 
+	 
+	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<Presenter>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 {
+		 return new ResponseEntity<List<Presenter>>(presentersService.getPresentersByChannel(channelId) , HttpStatus.OK);
+	 }
 }

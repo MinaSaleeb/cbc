@@ -47,19 +47,7 @@ public class PresentersService
 	 */
 	public List<Presenter> getPresentersByChannel(int channelId)
 	{
-		List<Presenter> presentersList = new ArrayList<Presenter>();
-		
-		Channel channel = channelRepo.findOne(channelId);
-		if(channel != null)
-		{
-			//presentersList = programRepository.findByChannelBean(channel);
-		}
-		else
-		{
-			LOGGER.error("channelId {"+channelId+"} is not found in DB");
-		}
-		
-		return presentersList;
+		return presenterRepo.findByChannelId(channelId);
 	}
 	
 	/**
