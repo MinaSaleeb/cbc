@@ -63,4 +63,19 @@ public class PresentersRestController
 	 {
 		 return new ResponseEntity<List<Presenter>>(presentersService.getPresentersByChannel(channelId) , HttpStatus.OK);
 	 }
+	 
+	 
+	 @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<Presenter>> listPresenters()
+	 {
+		 List<Presenter> presenters = presentersService.listAllPresenters();
+		 
+		 if(presenters == null || presenters.isEmpty())
+		 {
+			 LOGGER.error("No Presenters in DB");
+			 return new ResponseEntity<List<Presenter>>(HttpStatus.NO_CONTENT);
+		 }
+		 
+		 return new ResponseEntity<List<Presenter>>(presenters , HttpStatus.OK);
+	 }
 }

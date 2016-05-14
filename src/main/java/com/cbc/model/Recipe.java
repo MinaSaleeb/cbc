@@ -38,6 +38,9 @@ public class Recipe implements Serializable {
 	private String tags;
 
 	private String title;
+	
+	@Transient
+	private float displayedRating;
 
 	//bi-directional many-to-one association to Episode
 	@ManyToOne
@@ -246,6 +249,15 @@ public class Recipe implements Serializable {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	/**
+	 * @return the displayedRating
+	 */
+	@Transient
+	public float getDisplayedRating() 
+	{
+		return avgRating/numberOfRates;
 	}
 
 }

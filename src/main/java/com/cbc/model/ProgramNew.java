@@ -15,7 +15,7 @@ public class ProgramNew implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	//bi-directional many-to-one association to Program
 	@ManyToOne
@@ -30,11 +30,11 @@ public class ProgramNew implements Serializable {
 	public ProgramNew() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

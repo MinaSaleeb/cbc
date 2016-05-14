@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.model.CbcNew;
 import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPage;
@@ -228,5 +229,11 @@ public class ProgramsRestController
 	 public ResponseEntity<List<String>> getProgramsNamesByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
 	 {
 		 return new ResponseEntity<List<String>>(programsService.getProgramsNamesByChannelId(channelId) , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/{id}/news", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<CbcNew>> getProgramNews(@PathVariable("id") int programId)
+	 {
+		 return new ResponseEntity<List<CbcNew>>(programsService.getProgramNewsByProgramId(programId) , HttpStatus.OK);
 	 }
 }

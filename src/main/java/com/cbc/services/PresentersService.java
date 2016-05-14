@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cbc.model.Channel;
 import com.cbc.model.Presenter;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.PresenterRepository;
@@ -69,6 +68,15 @@ public class PresentersService
 		}
 		
 		return presentersNamesList;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<Presenter> listAllPresenters()
+	{
+		return (List<Presenter>) presenterRepo.findAll();
 	}
 	
 }

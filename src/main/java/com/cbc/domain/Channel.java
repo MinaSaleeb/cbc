@@ -3,8 +3,6 @@
  */
 package com.cbc.domain;
 
-import java.io.Serializable;
-
 import com.cbc.util.ModelToDomainMapper;
 
 /**

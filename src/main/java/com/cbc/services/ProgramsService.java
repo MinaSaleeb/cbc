@@ -10,9 +10,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
 import com.cbc.model.Program;
 import com.cbc.repository.ChannelRepository;
+import com.cbc.repository.ProgramNewsRepository;
 import com.cbc.repository.ProgramRepository;
 
 /**
@@ -30,6 +32,9 @@ public class ProgramsService
 	
 	@Autowired
 	private ChannelRepository channelRepository;
+	
+	@Autowired
+	private ProgramNewsRepository programNewsRepo;
 	
 	
 	/**
@@ -108,5 +113,15 @@ public class ProgramsService
 	public List<Program> listAllPrograms()
 	{
 		return (List<Program>) programRepository.findAll();
+	}
+	
+	/**
+	 * 
+	 * @param programId
+	 * @return
+	 */
+	public List<CbcNew> getProgramNewsByProgramId(int programId)
+	{
+		return programNewsRepo.findByProgramId(programId);
 	}
 }

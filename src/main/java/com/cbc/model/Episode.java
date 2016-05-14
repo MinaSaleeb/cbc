@@ -3,6 +3,7 @@ package com.cbc.model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ public class Episode implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	@Column(name="number_of_views")
 	private BigInteger numberOfViews;
@@ -25,6 +26,10 @@ public class Episode implements Serializable {
 	private String title;
 
 	private String url;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="displaying_date")
+	private Date displayingDate;
 
 	//bi-directional many-to-one association to Program
 	@ManyToOne
@@ -38,11 +43,11 @@ public class Episode implements Serializable {
 	public Episode() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -68,6 +73,20 @@ public class Episode implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	/**
+	 * @return the displayingDate
+	 */
+	public Date getDisplayingDate() {
+		return displayingDate;
+	}
+
+	/**
+	 * @param displayingDate the displayingDate to set
+	 */
+	public void setDisplayingDate(Date displayingDate) {
+		this.displayingDate = displayingDate;
 	}
 
 	public Program getProgramBean() {

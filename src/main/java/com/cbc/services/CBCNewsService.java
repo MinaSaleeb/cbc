@@ -101,6 +101,14 @@ public class CBCNewsService
 		return cBCNewsRepo.findOne(newId);
 	}
 	
-	
+	/**
+	 * 
+	 * @param channelId
+	 * @return
+	 */
+	public List<CbcNew> getCbcNewsByChannelId(int channelId)
+	{
+		return cBCNewsRepo.findByChannelId(channelId);
+	}
 	
 }

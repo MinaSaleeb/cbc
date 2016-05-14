@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.model.CbcNew;
 import com.cbc.model.NewsCategory;
+import com.cbc.model.Presenter;
 import com.cbc.services.CBCNewsService;
 
 /**
@@ -115,4 +116,9 @@ public class CBCNewsRestController
 	 }
 	
 	
+	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<CbcNew>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 {
+		 return new ResponseEntity<List<CbcNew>>(cBCNewsService.getCbcNewsByChannelId(channelId) , HttpStatus.OK);
+	 }
 }
