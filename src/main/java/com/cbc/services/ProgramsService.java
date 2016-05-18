@@ -8,14 +8,22 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.cbc.domain.MostViewed;
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
+import com.cbc.model.Episode;
 import com.cbc.model.Program;
+import com.cbc.model.ProgramScene;
 import com.cbc.repository.ChannelRepository;
+import com.cbc.repository.EpisodeRepository;
 import com.cbc.repository.ProgramNewsRepository;
 import com.cbc.repository.ProgramRepository;
+import com.cbc.repository.ProgramSceneRepository;
+import com.cbc.util.Constants.MostViewedType;
 
 /**
  * @author Mina Saleeb
@@ -35,6 +43,12 @@ public class ProgramsService
 	
 	@Autowired
 	private ProgramNewsRepository programNewsRepo;
+	
+	@Autowired
+	private ProgramSceneRepository ProgramSceneRepo;
+	
+	@Autowired
+	private EpisodeRepository EpisodeRepo;
 	
 	
 	/**
@@ -123,5 +137,57 @@ public class ProgramsService
 	public List<CbcNew> getProgramNewsByProgramId(int programId)
 	{
 		return programNewsRepo.findByProgramId(programId);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<MostViewed> getMostViewedList(int size)
+	{
+		List<MostViewed> resultList = new ArrayList<MostViewed>();
+		Pageable pageSize = new PageRequest(0, size%2);
+		List<Episode> episodes = EpisodeRepo.findRandomEpisodes(pageSize);
+		pageSize = new PageRequest(0, size - size%2);
+		List<ProgramScene> imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
+		
+		if(episodes != null && !episodes.isEmpty())
+		{
+			for(Episode e : episodes)
+			{
+				MostViewed mv = new MostViewed(e.getUrl());
+				mv.setTitle(e.getTitle());
+				mv.setDescription(e.getProgramBean().getDescription());
+				mv.setType(MostViewedType.VEDIO);
+				resultList.add(mv);
+			}
+		}
+		
+		if(imagesOrVedios != null && !imagesOrVedios.isEmpty())
+		{
+			for(ProgramScene p : imagesOrVedios)
+			{
+				String  url = "";
+				MostViewedType type = null;
+				if(p.getPhotoPath() != null && !p.getPhotoPath().isEmpty())
+				{
+					url = p.getPhotoPath();
+					type = MostViewedType.IMAGE;
+				}
+				if(p.getVedioUrl() != null && !p.getVedioUrl().isEmpty())
+				{
+					url = p.getVedioUrl();
+					type = MostViewedType.VEDIO;
+				}
+				MostViewed mv = new MostViewed(url);
+				mv.setTitle(p.getTitle());
+				mv.setDescription(p.getDescription());
+				mv.setType(type);
+				resultList.add(mv);
+			}
+		}
+		
+		
+		return resultList;
 	}
 }

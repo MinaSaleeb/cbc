@@ -23,6 +23,9 @@ public class Channel implements Serializable {
 
 	@Column(name="channel_image")
 	private String channelImage;
+	
+	@Column(name="hub_carouel_image")
+	private String hubCarouelImage;
 
 	@Column(name="channel_name")
 	private String channelName;
@@ -75,6 +78,20 @@ public class Channel implements Serializable {
 
 	public void setChannelImage(String channelImage) {
 		this.channelImage = channelImage;
+	}
+
+	/**
+	 * @return the hubCarouelImage
+	 */
+	public String getHubCarouelImage() {
+		return hubCarouelImage;
+	}
+
+	/**
+	 * @param hubCarouelImage the hubCarouelImage to set
+	 */
+	public void setHubCarouelImage(String hubCarouelImage) {
+		this.hubCarouelImage = hubCarouelImage;
 	}
 
 	public String getChannelName() {

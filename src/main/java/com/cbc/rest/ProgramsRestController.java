@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.domain.MostViewed;
 import com.cbc.model.CbcNew;
 import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Program;
@@ -47,7 +48,7 @@ public class ProgramsRestController
 	
 	
 	 @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<Program>> listChannels()
+	 public ResponseEntity<List<Program>> listPrograms()
 	 {
 		 List<Program> allPrgms = programsService.listAllPrograms();
 		 
@@ -235,5 +236,11 @@ public class ProgramsRestController
 	 public ResponseEntity<List<CbcNew>> getProgramNews(@PathVariable("id") int programId)
 	 {
 		 return new ResponseEntity<List<CbcNew>>(programsService.getProgramNewsByProgramId(programId) , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/mostViewed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<MostViewed>> getMostViewed(@RequestParam(required = true , value = "size") int size)
+	 {
+		 return new ResponseEntity<List<MostViewed>>(programsService.getMostViewedList(size) , HttpStatus.OK);
 	 }
 }

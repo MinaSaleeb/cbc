@@ -9,14 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.cbc.model.Episode;
+import com.cbc.model.ProgramScene;
 
 /**
  * @author Mina Saleeb
  *
  */
-public interface EpisodeRepository extends CrudRepository<Episode, Long> 
+public interface ProgramSceneRepository extends CrudRepository<ProgramScene, Integer> 
 {
-	@Query("select e from Episode e order by RAND()")
-	List<Episode> findRandomEpisodes(Pageable pageable);
+	@Query("select ps from ProgramScene ps order by RAND()")
+	List<ProgramScene> findRandomProgramScene(Pageable pageable);
 }

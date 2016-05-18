@@ -34,5 +34,6 @@
 		<class>com.cbc.model.ScheduleDay</class>
 		<class>com.cbc.model.TimeLine</class>
 		<class>com.cbc.model.User</class>
+		<class>com.cbc.model.HubSlick</class>
 	</persistence-unit>
 </persistence>

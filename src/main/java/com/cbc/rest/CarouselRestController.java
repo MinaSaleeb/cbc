@@ -3,6 +3,7 @@
  */
 package com.cbc.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -58,6 +59,24 @@ public class CarouselRestController
 		 }
 		 
 		 return new ResponseEntity<Carousel>(carousel , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/hub", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<String>> getHubCarouselImages()
+	 {
+		 List<String> imagesList = new ArrayList<String>();
+		 
+		 List<Channel> channels = (List<Channel>) channelRepository.findAll();
+		 
+		 if(channels != null && !channels.isEmpty())
+		 {
+			 for(Channel channel : channels)
+			 {
+				 imagesList.add(channel.getHubCarouelImage());
+			 }
+		 }
+		 
+		 return new ResponseEntity<List<String>>(imagesList , HttpStatus.OK);
 	 }
 	
 	

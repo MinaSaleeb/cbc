@@ -15,4 +15,10 @@ public interface Constants
 		NEXT,
 		AFTER_NEXT
 	}
+	
+	public static enum MostViewedType
+	{
+		VEDIO,
+		IMAGE
+	}
 }
