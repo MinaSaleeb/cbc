@@ -12,14 +12,15 @@ import java.util.List;
 public class HubSlickContent 
 {
 	private List<MediaContentTuple> tuplesList;
-
+	private String title;
 	/**
 	 * @param tuplesList
 	 */
-	public HubSlickContent(List<MediaContentTuple> tuplesList) 
+	public HubSlickContent(String title , List<MediaContentTuple> tuplesList) 
 	{
 		super();
 		this.tuplesList = tuplesList;
+		this.title = title;
 	}
 
 	/**
@@ -34,6 +35,20 @@ public class HubSlickContent
 	 */
 	public void setTuplesList(List<MediaContentTuple> tuplesList) {
 		this.tuplesList = tuplesList;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	

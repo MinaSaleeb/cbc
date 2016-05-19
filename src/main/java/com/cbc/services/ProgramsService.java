@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
@@ -34,6 +35,7 @@ import com.cbc.util.Constants.MostViewedType;
  *
  */
 @Service
+@Transactional
 public class ProgramsService 
 {
 
@@ -269,7 +271,7 @@ public class ProgramsService
 		{
 			for(HubSlick s : slicks)
 			{
-				hubSlicksList.add(new HubSlickContent(mapEpisodesAndImagesToTuple(s.getEpisodes(), s.getProgramScenes())));
+				hubSlicksList.add(new HubSlickContent(s.getTitle() ,mapEpisodesAndImagesToTuple(s.getEpisodes(), s.getProgramScenes())));
 			}
 		}
 		

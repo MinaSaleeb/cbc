@@ -70,7 +70,7 @@
 	<!-- responsible for registering the necessary Spring components that power 
 		annotation-driven transaction management; such as when @Transactional methods 
 		are invoked -->
-	
+	<tx:annotation-driven />
 	
 	<!-- 
     Configure Spring Data JPA and set the base package of the 

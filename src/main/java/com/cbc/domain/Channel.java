@@ -11,6 +11,8 @@ import com.cbc.util.ModelToDomainMapper;
  */
 public class Channel
 {
+	private int id;
+	
 	private String channelBgImage;
 
 	private String channelImage;
@@ -18,6 +20,8 @@ public class Channel
 	private String channelName;
 
 	private String liveStreamingUrl;
+	
+	private String hubCarouelImage;
 
 	public Channel(com.cbc.model.Channel modChnl)
 	{
@@ -25,6 +29,20 @@ public class Channel
 		ModelToDomainMapper.mapChannel(modChnl, this);
 	}
 	
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return the channelBgImage
 	 */
@@ -79,5 +97,19 @@ public class Channel
 	 */
 	public void setLiveStreamingUrl(String liveStreamingUrl) {
 		this.liveStreamingUrl = liveStreamingUrl;
+	}
+
+	/**
+	 * @return the hubCarouelImage
+	 */
+	public String getHubCarouelImage() {
+		return hubCarouelImage;
+	}
+
+	/**
+	 * @param hubCarouelImage the hubCarouelImage to set
+	 */
+	public void setHubCarouelImage(String hubCarouelImage) {
+		this.hubCarouelImage = hubCarouelImage;
 	}
 }

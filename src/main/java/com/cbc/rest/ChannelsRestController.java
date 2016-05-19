@@ -3,6 +3,7 @@
  */
 package com.cbc.rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,17 +40,24 @@ public class ChannelsRestController
 	 * @return
 	 */
 	 @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<Channel>> listChannels()
+	 public ResponseEntity<List<com.cbc.domain.Channel>> listChannels()
 	 {
 		 List<Channel> channels = (List<Channel>) channelRepository.findAll();
 		 
 		 if(channels == null || channels.isEmpty())
 		 {
 			 LOGGER.error("No Channels in DB");
-			 return new ResponseEntity<List<Channel>>(HttpStatus.NO_CONTENT);
+			 return new ResponseEntity<List<com.cbc.domain.Channel>>(HttpStatus.NO_CONTENT);
 		 }
 		 
-		 return new ResponseEntity<List<Channel>>(channels , HttpStatus.OK);
+		 List<com.cbc.domain.Channel> chnls = new ArrayList<com.cbc.domain.Channel>();
+		 
+		 for(Channel c : channels)
+		 {
+			 chnls.add(new com.cbc.domain.Channel(c));
+		 }
+		 
+		 return new ResponseEntity<List<com.cbc.domain.Channel>>(chnls , HttpStatus.OK);
 	 }
 	 
 	 /**
@@ -58,17 +66,17 @@ public class ChannelsRestController
 	  * @return
 	  */
 	 @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<Channel> getChannelById(@PathVariable("id") int channelId)
+	 public ResponseEntity<com.cbc.domain.Channel> getChannelById(@PathVariable("id") int channelId)
 	 {
 		Channel channel = channelRepository.findOne(channelId);
 		 
 		 if(channel == null)
 		 {
 			 LOGGER.error("channelId {"+channelId+"} is not found in DB");
-			 return new ResponseEntity<Channel>(HttpStatus.NOT_FOUND);
+			 return new ResponseEntity<com.cbc.domain.Channel>(HttpStatus.NOT_FOUND);
 		 }
 		 
-		 return new ResponseEntity<Channel>(channel , HttpStatus.OK);
+		 return new ResponseEntity<com.cbc.domain.Channel>(new com.cbc.domain.Channel(channel) , HttpStatus.OK);
 	 }
 	 
 	 /**
