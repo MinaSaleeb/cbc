@@ -12,14 +12,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.cbc.domain.HubSlickContent;
+import com.cbc.domain.MediaContentTuple;
 import com.cbc.domain.MostViewed;
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
 import com.cbc.model.Episode;
+import com.cbc.model.HubSlick;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramScene;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.EpisodeRepository;
+import com.cbc.repository.HubSlickRepository;
 import com.cbc.repository.ProgramNewsRepository;
 import com.cbc.repository.ProgramRepository;
 import com.cbc.repository.ProgramSceneRepository;
@@ -49,6 +53,10 @@ public class ProgramsService
 	
 	@Autowired
 	private EpisodeRepository EpisodeRepo;
+	
+	@Autowired
+	private HubSlickRepository hubSlickRepo;
+	
 	
 	
 	/**
@@ -189,5 +197,97 @@ public class ProgramsService
 		
 		
 		return resultList;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<MediaContentTuple> getHubSelectedTuples()
+	{
+		
+		
+		List<Episode> hubSelectedVedios = EpisodeRepo.findByHubSelected(true);
+		List<ProgramScene> hubSelectedImages = ProgramSceneRepo.findByHubSelected(true);
+		
+	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages);
+	}
+	
+	/**
+	 * 
+	 * @param hubSelectedVedios
+	 * @param hubSelectedImages
+	 */
+	private List<MediaContentTuple> mapEpisodesAndImagesToTuple(List<Episode> hubSelectedVedios, List<ProgramScene> hubSelectedImages)
+	{
+		List<MediaContentTuple> tuplesList = new ArrayList<MediaContentTuple>();
+		
+		if(hubSelectedVedios != null && !hubSelectedVedios.isEmpty())
+		{
+			for(Episode e : hubSelectedVedios)
+			{
+				MediaContentTuple tuple = new MediaContentTuple();
+				tuple.setMediaType(MostViewedType.VEDIO);
+				tuple.setUrl(e.getUrl());
+				Program p = e.getProgramBean();
+				tuple.setProgramName(p.getTitle());
+				tuple.setProgramImage(p.getImageXPath());
+				tuple.setProgramId(p.getId());
+				tuplesList.add(tuple);
+			}
+		}
+		
+		if(hubSelectedImages != null && !hubSelectedImages.isEmpty())
+		{
+			for(ProgramScene ps : hubSelectedImages)
+			{
+				MediaContentTuple tuple = new MediaContentTuple();
+				tuple.setMediaType(MostViewedType.IMAGE);
+				tuple.setUrl(ps.getPhotoPath());
+				Program p = ps.getProgramBean();
+				tuple.setProgramName(p.getTitle());
+				tuple.setProgramImage(p.getImageXPath());
+				tuple.setProgramId(p.getId());
+				tuplesList.add(tuple);
+			}
+		}
+		
+		return tuplesList;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<HubSlickContent> getHubSlicks()
+	{
+		List<HubSlickContent> hubSlicksList = new ArrayList<HubSlickContent>();
+		
+		List<HubSlick> slicks = (List<HubSlick>) hubSlickRepo.findAll();
+		
+		if(slicks != null  && !slicks.isEmpty())
+		{
+			for(HubSlick s : slicks)
+			{
+				hubSlicksList.add(new HubSlickContent(mapEpisodesAndImagesToTuple(s.getEpisodes(), s.getProgramScenes())));
+			}
+		}
+		
+		return hubSlicksList;
+	}
+	
+	/**
+	 * 
+	 * @param programId
+	 * @return
+	 */
+	public List<Episode> getProgramEpisodesById(int programId)
+	{
+		return EpisodeRepo.findByProgramId(programId);
+	}
+	
+	public List<ProgramScene> getProgramGalleryById(int programId)
+	{
+		return ProgramSceneRepo.findByProgramId(programId);
 	}
 }

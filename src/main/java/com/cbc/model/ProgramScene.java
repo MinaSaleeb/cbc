@@ -31,6 +31,13 @@ public class ProgramScene implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="program")
 	private Program programBean;
+	
+	@Column(name="hub_selected")
+	private boolean hubSelected;
+	
+	@ManyToOne
+	@JoinColumn(name="hub_slick")
+	private HubSlick hubSlick;
 
 	public ProgramScene() {
 	}
@@ -81,6 +88,34 @@ public class ProgramScene implements Serializable {
 
 	public void setProgramBean(Program programBean) {
 		this.programBean = programBean;
+	}
+
+	/**
+	 * @return the hubSelected
+	 */
+	public boolean isHubSelected() {
+		return hubSelected;
+	}
+
+	/**
+	 * @param hubSelected the hubSelected to set
+	 */
+	public void setHubSelected(boolean hubSelected) {
+		this.hubSelected = hubSelected;
+	}
+
+	/**
+	 * @return the hubSlick
+	 */
+	public HubSlick getHubSlick() {
+		return hubSlick;
+	}
+
+	/**
+	 * @param hubSlick the hubSlick to set
+	 */
+	public void setHubSlick(HubSlick hubSlick) {
+		this.hubSlick = hubSlick;
 	}
 
 }

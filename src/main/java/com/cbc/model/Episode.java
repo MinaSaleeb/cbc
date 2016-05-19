@@ -35,10 +35,17 @@ public class Episode implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="program")
 	private Program programBean;
+	
+	@Column(name="hub_selected")
+	private boolean hubSelected;
 
 	//bi-directional many-to-one association to Recipe
 	@OneToMany(mappedBy="episodeBean")
 	private List<Recipe> recipes;
+	
+	@ManyToOne
+	@JoinColumn(name="hub_slick")
+	private HubSlick hubSlick;
 
 	public Episode() {
 	}
@@ -97,6 +104,20 @@ public class Episode implements Serializable {
 		this.programBean = programBean;
 	}
 
+	/**
+	 * @return the hubSelected
+	 */
+	public boolean isHubSelected() {
+		return hubSelected;
+	}
+
+	/**
+	 * @param hubSelected the hubSelected to set
+	 */
+	public void setHubSelected(boolean hubSelected) {
+		this.hubSelected = hubSelected;
+	}
+
 	public List<Recipe> getRecipes() {
 		return this.recipes;
 	}
@@ -117,6 +138,20 @@ public class Episode implements Serializable {
 		recipe.setEpisodeBean(null);
 
 		return recipe;
+	}
+
+	/**
+	 * @return the hubSlick
+	 */
+	public HubSlick getHubSlick() {
+		return hubSlick;
+	}
+
+	/**
+	 * @param hubSlick the hubSlick to set
+	 */
+	public void setHubSlick(HubSlick hubSlick) {
+		this.hubSlick = hubSlick;
 	}
 
 }

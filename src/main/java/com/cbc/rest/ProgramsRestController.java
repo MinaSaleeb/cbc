@@ -19,12 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.domain.HubSlickContent;
+import com.cbc.domain.MediaContentTuple;
 import com.cbc.domain.MostViewed;
 import com.cbc.model.CbcNew;
 import com.cbc.model.ChannelsAdDiv;
+import com.cbc.model.Episode;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPage;
 import com.cbc.model.ProgramPagesAdDiv;
+import com.cbc.model.ProgramScene;
 import com.cbc.model.ProgramsAdDiv;
 import com.cbc.repository.ProgramPageRepository;
 import com.cbc.services.ProgramsService;
@@ -169,6 +173,18 @@ public class ProgramsRestController
 		 return new ResponseEntity<Map<String , String>>(programAdsmap , HttpStatus.OK);
 	 }
 	 
+	 @RequestMapping(value = "/{id}/episodes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<Episode>> getProgramEpisodes(@PathVariable("id") int programId)
+	 {
+		 return new ResponseEntity<List<Episode>>(programsService.getProgramEpisodesById(programId) , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/{id}/gallery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<ProgramScene>> getProgramGallery(@PathVariable("id") int programId)
+	 {
+		 return new ResponseEntity<List<ProgramScene>>(programsService.getProgramGalleryById(programId) , HttpStatus.OK);
+	 }
+	 
 	 /**
 	  * 
 	  * @param pageCode
@@ -243,4 +259,18 @@ public class ProgramsRestController
 	 {
 		 return new ResponseEntity<List<MostViewed>>(programsService.getMostViewedList(size) , HttpStatus.OK);
 	 }
+	 
+	 
+	 @RequestMapping(value = "/hub/selected", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<MediaContentTuple>> getHubSelectedTuples()
+	 {
+		 return new ResponseEntity<List<MediaContentTuple>>(programsService.getHubSelectedTuples() , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/hub/slicks", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<HubSlickContent>> getHubSlicks()
+	 {
+		 return new ResponseEntity<List<HubSlickContent>>(programsService.getHubSlicks() , HttpStatus.OK);
+	 }
+	 
 }
