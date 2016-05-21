@@ -3,6 +3,7 @@
  */
 package com.cbc.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -38,17 +39,17 @@ public class PresentersRestController
 	 * @return
 	 */
 	 @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<Presenter> getPresenterById(@PathVariable("id") int presenterId)
+	 public ResponseEntity<com.cbc.domain.Presenter> getPresenterById(@PathVariable("id") int presenterId)
 	 {
 		 Presenter presenter = presentersService.getPresenterById(presenterId);
 		
 		if(presenter == null)
 		{
 			LOGGER.error("presenterId {"+presenterId+"} is not found in DB");
-			return new ResponseEntity<Presenter>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<com.cbc.domain.Presenter>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<Presenter>(presenter , HttpStatus.OK);
+		return new ResponseEntity<com.cbc.domain.Presenter>(new com.cbc.domain.Presenter(presenter) , HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/names/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,23 +60,29 @@ public class PresentersRestController
 	 
 	 
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<Presenter>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 public ResponseEntity<List<com.cbc.domain.Presenter>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
 	 {
-		 return new ResponseEntity<List<Presenter>>(presentersService.getPresentersByChannel(channelId) , HttpStatus.OK);
+		 return new ResponseEntity<List<com.cbc.domain.Presenter>>(presentersService.getPresentersByChannel(channelId) , HttpStatus.OK);
 	 }
 	 
 	 
 	 @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<Presenter>> listPresenters()
+	 public ResponseEntity<List<com.cbc.domain.Presenter>> listPresenters()
 	 {
 		 List<Presenter> presenters = presentersService.listAllPresenters();
 		 
 		 if(presenters == null || presenters.isEmpty())
 		 {
 			 LOGGER.error("No Presenters in DB");
-			 return new ResponseEntity<List<Presenter>>(HttpStatus.NO_CONTENT);
+			 return new ResponseEntity<List<com.cbc.domain.Presenter>>(HttpStatus.NO_CONTENT);
 		 }
 		 
-		 return new ResponseEntity<List<Presenter>>(presenters , HttpStatus.OK);
+		 List<com.cbc.domain.Presenter> domList = new ArrayList<com.cbc.domain.Presenter>();
+		 for(Presenter p : presenters)
+		 {
+			 domList.add(new com.cbc.domain.Presenter(p));
+		 }
+		 
+		 return new ResponseEntity<List<com.cbc.domain.Presenter>>(domList , HttpStatus.OK);
 	 }
 }

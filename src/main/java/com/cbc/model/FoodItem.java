@@ -34,7 +34,7 @@ public class FoodItem implements Serializable {
 
 	//bi-directional many-to-one association to FoodType
 	@ManyToOne
-	@JoinColumn(name="type")
+	@JoinColumn(name="food_type")
 	private FoodType foodType;
 
 	//bi-directional many-to-one association to RecipeIngredient

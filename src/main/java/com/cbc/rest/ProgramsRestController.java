@@ -32,6 +32,7 @@ import com.cbc.model.ProgramScene;
 import com.cbc.model.ProgramsAdDiv;
 import com.cbc.repository.ProgramPageRepository;
 import com.cbc.services.ProgramsService;
+import com.cbc.util.ModelToDomainMapper;
 
 /**
  * @author Mina Saleeb
@@ -52,17 +53,17 @@ public class ProgramsRestController
 	
 	
 	 @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<Program>> listPrograms()
+	 public ResponseEntity<List<com.cbc.domain.Program>> listPrograms()
 	 {
 		 List<Program> allPrgms = programsService.listAllPrograms();
 		 
 		 if(allPrgms == null || allPrgms.isEmpty())
 		 {
 			 LOGGER.error("No Programs in DB");
-			 return new ResponseEntity<List<Program>>(HttpStatus.NO_CONTENT);
+			 return new ResponseEntity<List<com.cbc.domain.Program>>(HttpStatus.NO_CONTENT);
 		 }
-		 
-		 return new ResponseEntity<List<Program>>(allPrgms , HttpStatus.OK);
+		  
+		 return new ResponseEntity<List<com.cbc.domain.Program>>(ModelToDomainMapper.mapProgramsList(allPrgms) , HttpStatus.OK);
 	 }
 	
 	/**
@@ -71,11 +72,11 @@ public class ProgramsRestController
 	 * @return
 	 */
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<Program>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId,
+	 public ResponseEntity<List<com.cbc.domain.Program>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId,
 			 											 @RequestParam(required = false , value = "excludedPrgm") int[] excludedProgramsIds
 			 											)
 	 {
-		 List<Program> prgrms = new ArrayList<>();
+		 List<Program> prgrms = new ArrayList<Program>();
 		 try 
 		 {
 			
@@ -85,7 +86,7 @@ public class ProgramsRestController
 		 {
 			LOGGER.error("Error in retrieving programs list by channelId {"+channelId+"}");
 			e.printStackTrace();
-			return new ResponseEntity<List<Program>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<com.cbc.domain.Program>>(HttpStatus.NOT_FOUND);
 		}
 		 
 		 if(excludedProgramsIds != null && excludedProgramsIds.length > 0)
@@ -104,7 +105,7 @@ public class ProgramsRestController
 			 }
 		 }
 		 
-		 return new ResponseEntity<List<Program>>(prgrms , HttpStatus.OK);
+		 return new ResponseEntity<List<com.cbc.domain.Program>>(ModelToDomainMapper.mapProgramsList(prgrms)  , HttpStatus.OK);
 	 }
 	 
 	 /**
@@ -113,7 +114,7 @@ public class ProgramsRestController
 	  * @return
 	  */
 	 @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<Program> getProgramById(@PathVariable("id") int programId)
+	 public ResponseEntity<com.cbc.domain.Program> getProgramById(@PathVariable("id") int programId)
 	 {
 		 Program prgrm = null;
 		 try 
@@ -125,10 +126,10 @@ public class ProgramsRestController
 		 {
 			LOGGER.error("Error in retrieving program by programId {"+programId+"}");
 			e.printStackTrace();
-			return new ResponseEntity<Program>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<com.cbc.domain.Program>(HttpStatus.NOT_FOUND);
 		}
-		 
-		 return new ResponseEntity<Program>(prgrm , HttpStatus.OK);
+		
+		 return new ResponseEntity<com.cbc.domain.Program>(new com.cbc.domain.Program(prgrm) , HttpStatus.OK);
 	 }
 	 
 	 /**

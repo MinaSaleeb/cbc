@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.model.Carousel;
+import com.cbc.model.CarouselImage;
 import com.cbc.model.Channel;
 import com.cbc.repository.CarouselRepository;
 import com.cbc.repository.ChannelRepository;
@@ -27,6 +29,7 @@ import com.cbc.repository.ChannelRepository;
  */
 @RestController
 @RequestMapping("/carousel")
+@Transactional
 public class CarouselRestController 
 {
 	private static final Logger LOGGER = Logger.getLogger(CarouselRestController.class);
@@ -43,7 +46,7 @@ public class CarouselRestController
 	 * @return
 	 */
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<Carousel> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 public ResponseEntity<List<String>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
 	 {
 		 Carousel carousel = null;
 		 
@@ -55,10 +58,17 @@ public class CarouselRestController
 		 
 		 if(carousel == null)
 		 {
-			 return new ResponseEntity<Carousel>(HttpStatus.NOT_FOUND);
+			 return new ResponseEntity<List<String>>(HttpStatus.NOT_FOUND);
 		 }
 		 
-		 return new ResponseEntity<Carousel>(carousel , HttpStatus.OK);
+		 List<String> carouselImagesList = new ArrayList<String>();
+		 
+		 for(CarouselImage i : carousel.getCarouselImages())
+		 {
+			 carouselImagesList.add(i.getImagePath());
+		 }
+		 
+		 return new ResponseEntity<List<String>>(carouselImagesList , HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/hub", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

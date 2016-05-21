@@ -77,7 +77,7 @@ public class Recipe implements Serializable {
 
 	//bi-directional many-to-one association to RecipeType
 	@ManyToOne
-	@JoinColumn(name="type")
+	@JoinColumn(name="recipe_type")
 	private RecipeType recipeType;
 
 	//bi-directional many-to-many association to User

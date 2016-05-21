@@ -44,9 +44,19 @@ public class PresentersService
 	 * @param channelId
 	 * @return
 	 */
-	public List<Presenter> getPresentersByChannel(int channelId)
+	public List<com.cbc.domain.Presenter> getPresentersByChannel(int channelId)
 	{
-		return presenterRepo.findByChannelId(channelId);
+		List<com.cbc.domain.Presenter> list = new ArrayList<com.cbc.domain.Presenter>();
+		List<Presenter> plist = presenterRepo.findByChannelId(channelId);
+		if(plist != null && !plist.isEmpty())
+		{
+			for(Presenter p : plist)
+			{
+				list.add(new com.cbc.domain.Presenter(p));
+			}
+		}
+		
+		return list;
 	}
 	
 	/**
@@ -58,10 +68,10 @@ public class PresentersService
 	{
 		List<String> presentersNamesList = new ArrayList<String>();
 		
-		List<Presenter> presenters = getPresentersByChannel(channelId);
+		List<com.cbc.domain.Presenter> presenters = getPresentersByChannel(channelId);
 		if(presenters != null && !presenters.isEmpty())
 		{
-			for(Presenter prsntr : presenters)
+			for(com.cbc.domain.Presenter prsntr : presenters)
 			{
 				presentersNamesList.add(prsntr.getName());
 			}
