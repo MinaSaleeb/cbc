@@ -56,4 +56,52 @@ public class ModelToDomainMapper
 		
 		return domList;
 	}
+	
+	
+	public static void mapCBCNew(com.cbc.model.CbcNew modCbcNew , com.cbc.domain.CbcNew domCbcNew)
+	{
+		domCbcNew.setId(modCbcNew.getId());
+		domCbcNew.setTitle(modCbcNew.getTitle());
+		domCbcNew.setDescription(modCbcNew.getDescription());
+		domCbcNew.setPostingDate(modCbcNew.getPostingDate());
+		domCbcNew.setPhotoPath(modCbcNew.getPhotoPath());
+		domCbcNew.setContent(modCbcNew.getNewsContent().getContent());
+	}
+	
+	public static List<com.cbc.domain.CbcNew> mapCbcNewsList(List<com.cbc.model.CbcNew> modCbcNewList)
+	{
+		List<com.cbc.domain.CbcNew> domList = new ArrayList<com.cbc.domain.CbcNew>();
+		if(modCbcNewList != null && !modCbcNewList.isEmpty())
+		{
+			for(com.cbc.model.CbcNew n : modCbcNewList)
+			{
+				domList.add(new com.cbc.domain.CbcNew(n));
+			}
+		}
+		
+		return domList;
+	}
+	
+	
+	public static void mapNewsCategory(com.cbc.model.NewsCategory modNewsCategory , com.cbc.domain.NewsCategory domNewsCategory)
+	{
+		domNewsCategory.setId(modNewsCategory.getId());
+		domNewsCategory.setCategoryName(modNewsCategory.getCategoryName());
+		
+	}
+	
+	public static List<com.cbc.domain.NewsCategory> mapNewsCategoryList(List<com.cbc.model.NewsCategory> modNewsCategoryList)
+	{
+		List<com.cbc.domain.NewsCategory> domList = new ArrayList<com.cbc.domain.NewsCategory>();
+		if(modNewsCategoryList != null && !modNewsCategoryList.isEmpty())
+		{
+			for(com.cbc.model.NewsCategory n : modNewsCategoryList)
+			{
+				domList.add(new com.cbc.domain.NewsCategory(n));
+			}
+		}
+		
+		return domList;
+	}
+	
 }

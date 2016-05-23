@@ -15,7 +15,7 @@ public class NewsContent implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	@Lob
 	private String content;
@@ -28,11 +28,11 @@ public class NewsContent implements Serializable {
 	public NewsContent() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

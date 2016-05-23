@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,7 @@ import com.cbc.util.ModelToDomainMapper;
  */
 @RestController
 @RequestMapping("/program")
+@Transactional
 public class ProgramsRestController 
 {
 	private static final Logger LOGGER = Logger.getLogger(ProgramsRestController.class);
@@ -250,9 +252,9 @@ public class ProgramsRestController
 	 }
 	 
 	 @RequestMapping(value = "/{id}/news", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<CbcNew>> getProgramNews(@PathVariable("id") int programId)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getProgramNews(@PathVariable("id") int programId)
 	 {
-		 return new ResponseEntity<List<CbcNew>>(programsService.getProgramNewsByProgramId(programId) , HttpStatus.OK);
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(programsService.getProgramNewsByProgramId(programId)), HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/mostViewed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
