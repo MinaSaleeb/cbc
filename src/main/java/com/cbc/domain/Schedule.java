@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cbc.model.Channel;
-import com.cbc.model.ScheduleDay;
-import com.cbc.model.TimeLine;
+import com.cbc.domain.Channel;
+import com.cbc.domain.ScheduleDay;
+import com.cbc.domain.TimeLine;
 
 /**
  * @author Mina Saleeb

@@ -22,6 +22,7 @@ import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.ScheduleDayRepository;
 import com.cbc.repository.TimeLineRepository;
 import com.cbc.util.Constants;
+import com.cbc.util.ModelToDomainMapper;
 import com.cbc.util.TimeUtils;
 
 /**
@@ -73,10 +74,32 @@ public class ScheduleService
 		if(allChannels != null && !allChannels.isEmpty())
 		{
 			ScheduleDay today = getMappedScheduleDay(TimeUtils.getTodayDate());
+			
 			//2- loop on each channel to get its schedule by today date
 			for(Channel chnl : allChannels)
 			{
-				List<TimeLine> chnlTimeLines = timeLineRepo.findByChannelBeanAndScheduleDay(chnl, today);
+				List<TimeLine> chnlTimeLines = new ArrayList<TimeLine>();
+				//To handle intersection
+				if(2 > TimeUtils.getCurrentHourAs_24() && TimeUtils.getCurrentHourAs_24() >= 0)
+				{
+					ScheduleDay yesterday = getMappedScheduleDay(TimeUtils.getYesterdayDate());
+					if(yesterday != null)
+					{
+						chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, yesterday));
+					}
+				}
+				
+				chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, today));
+				
+				if(24 > TimeUtils.getCurrentHourAs_24() && TimeUtils.getCurrentHourAs_24() > 22)
+				{
+					ScheduleDay tomorrow = getMappedScheduleDay(TimeUtils.getTomorrowDate());
+					if(tomorrow != null)
+					{
+						chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, tomorrow));
+					}
+				}
+				
 				//2.1 - Specify what is displaying (now , next , after next) for the current channel.
 				if(chnlTimeLines != null && !chnlTimeLines.isEmpty())
 				{
@@ -88,6 +111,11 @@ public class ScheduleService
 					{
 						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						int timeLineEndHour = timeLineStartHour + timeLine.getDuration();
+						if(timeLineEndHour > 24 )
+						{
+							timeLineEndHour = timeLineEndHour-24;
+							timeLineStartHour = timeLineStartHour -24;
+						}
 						if(currentHour >= timeLineStartHour && currentHour < timeLineEndHour) 
 						{
 							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
@@ -103,6 +131,11 @@ public class ScheduleService
 					{
 						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						int timeLineEndHour = timeLineStartHour + timeLine.getDuration();
+						if(timeLineEndHour > 24 )
+						{
+							timeLineEndHour = timeLineEndHour-24;
+							timeLineStartHour = timeLineStartHour -24;
+						}
 						if(nextTimeLineStartHour == timeLineStartHour) 
 						{
 							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
@@ -173,7 +206,7 @@ public class ScheduleService
 	{
 		
 		// Each map entry will contain the the time lines list by the key channelName+dayId
-		Map<String , List<TimeLine>> chnlDayTimeLinesMap = new HashMap<String , List<TimeLine>>();
+		Map<String , List<com.cbc.domain.TimeLine>> chnlDayTimeLinesMap = new HashMap<String , List<com.cbc.domain.TimeLine>>();
 		
 		//1- get all channels
 		List<Channel> allChannels = (List<Channel>) channelRepo.findAll();
@@ -192,13 +225,13 @@ public class ScheduleService
 					{
 						List<TimeLine> chnlDayTimeLines = timeLineRepo.findByChannelBeanAndScheduleDay(chnl, day);
 						String key = chnl.getChannelName()+day.getId();
-						chnlDayTimeLinesMap.put(key, chnlDayTimeLines);
+						chnlDayTimeLinesMap.put(key, ModelToDomainMapper.mapTimeLineList(chnlDayTimeLines));
 					}
 				}
 			}
 		}
 		
-		return new Schedule(allChannels , allDays , chnlDayTimeLinesMap);
+		return new Schedule(ModelToDomainMapper.mapChannelsList(allChannels) , ModelToDomainMapper.mapScheduleDayList(allDays) , chnlDayTimeLinesMap);
 	}
 	
 	

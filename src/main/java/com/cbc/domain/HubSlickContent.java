@@ -6,12 +6,12 @@ package com.cbc.domain;
 import java.util.List;
 
 /**
- * @author MondiaMedia
+ * @author Mina Saleeb
  *
  */
 public class HubSlickContent 
 {
-	private List<MediaContentTuple> tuplesList;
+	private List<MediaContentTuple> slickItemsList;
 	private String title;
 	/**
 	 * @param tuplesList
@@ -19,23 +19,29 @@ public class HubSlickContent
 	public HubSlickContent(String title , List<MediaContentTuple> tuplesList) 
 	{
 		super();
-		this.tuplesList = tuplesList;
+		this.slickItemsList = tuplesList;
 		this.title = title;
 	}
 
-	/**
-	 * @return the tuplesList
-	 */
-	public List<MediaContentTuple> getTuplesList() {
-		return tuplesList;
-	}
+	
 
 	/**
-	 * @param tuplesList the tuplesList to set
+	 * @return the slickItemsList
 	 */
-	public void setTuplesList(List<MediaContentTuple> tuplesList) {
-		this.tuplesList = tuplesList;
+	public List<MediaContentTuple> getSlickItemsList() {
+		return slickItemsList;
 	}
+
+
+
+	/**
+	 * @param slickItemsList the slickItemsList to set
+	 */
+	public void setSlickItemsList(List<MediaContentTuple> slickItemsList) {
+		this.slickItemsList = slickItemsList;
+	}
+
+
 
 	/**
 	 * @return the title

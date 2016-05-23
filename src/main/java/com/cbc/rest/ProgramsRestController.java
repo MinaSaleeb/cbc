@@ -23,13 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
 import com.cbc.domain.MostViewed;
-import com.cbc.model.CbcNew;
 import com.cbc.model.ChannelsAdDiv;
-import com.cbc.model.Episode;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPage;
 import com.cbc.model.ProgramPagesAdDiv;
-import com.cbc.model.ProgramScene;
 import com.cbc.model.ProgramsAdDiv;
 import com.cbc.repository.ProgramPageRepository;
 import com.cbc.services.ProgramsService;
@@ -177,15 +174,15 @@ public class ProgramsRestController
 	 }
 	 
 	 @RequestMapping(value = "/{id}/episodes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<Episode>> getProgramEpisodes(@PathVariable("id") int programId)
+	 public ResponseEntity<List<com.cbc.domain.Episode>> getProgramEpisodes(@PathVariable("id") int programId)
 	 {
-		 return new ResponseEntity<List<Episode>>(programsService.getProgramEpisodesById(programId) , HttpStatus.OK);
+		 return new ResponseEntity<List<com.cbc.domain.Episode>>(ModelToDomainMapper.mapEpisodesList(programsService.getProgramEpisodesById(programId)) , HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/{id}/gallery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<ProgramScene>> getProgramGallery(@PathVariable("id") int programId)
+	 public ResponseEntity<List<com.cbc.domain.ProgramScene>> getProgramGallery(@PathVariable("id") int programId)
 	 {
-		 return new ResponseEntity<List<ProgramScene>>(programsService.getProgramGalleryById(programId) , HttpStatus.OK);
+		 return new ResponseEntity<List<com.cbc.domain.ProgramScene>>(ModelToDomainMapper.mapProgramSceneList(programsService.getProgramGalleryById(programId)) , HttpStatus.OK);
 	 }
 	 
 	 /**

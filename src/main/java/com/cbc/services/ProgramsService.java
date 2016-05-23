@@ -156,9 +156,9 @@ public class ProgramsService
 	public List<MostViewed> getMostViewedList(int size)
 	{
 		List<MostViewed> resultList = new ArrayList<MostViewed>();
-		Pageable pageSize = new PageRequest(0, size%2);
+		Pageable pageSize = new PageRequest(0, size - 2);
 		List<Episode> episodes = EpisodeRepo.findRandomEpisodes(pageSize);
-		pageSize = new PageRequest(0, size - size%2);
+		pageSize = new PageRequest(0, 2);
 		List<ProgramScene> imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
 		
 		if(episodes != null && !episodes.isEmpty())
@@ -244,8 +244,16 @@ public class ProgramsService
 			for(ProgramScene ps : hubSelectedImages)
 			{
 				MediaContentTuple tuple = new MediaContentTuple();
-				tuple.setMediaType(MostViewedType.IMAGE);
-				tuple.setUrl(ps.getPhotoPath());
+				if(ps.getPhotoPath() != null)
+				{
+					tuple.setMediaType(MostViewedType.IMAGE);
+					tuple.setUrl(ps.getPhotoPath());
+				}
+				else if(ps.getVedioUrl() != null)
+				{
+					tuple.setMediaType(MostViewedType.VEDIO);
+					tuple.setUrl(ps.getVedioUrl());
+				}
 				Program p = ps.getProgramBean();
 				tuple.setProgramName(p.getTitle());
 				tuple.setProgramImage(p.getImageXPath());

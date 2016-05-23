@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.model.CbcNew;
 import com.cbc.model.NewsCategory;
-import com.cbc.model.Presenter;
 import com.cbc.services.CBCNewsService;
 import com.cbc.util.ModelToDomainMapper;
 

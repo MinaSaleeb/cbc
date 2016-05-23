@@ -17,6 +17,8 @@ import com.cbc.domain.HubTimeLine;
 import com.cbc.domain.Schedule;
 import com.cbc.model.TimeLine;
 import com.cbc.services.ScheduleService;
+import com.cbc.util.ModelToDomainMapper;
+
 import java.util.*;
 
 /**
@@ -48,9 +50,9 @@ public class ScheduleRestController
 	 * @return
 	 */
 	@RequestMapping(value = "/today/timeline/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<TimeLine>> getTodayTimeLineByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	public ResponseEntity<List<com.cbc.domain.TimeLine>> getTodayTimeLineByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
 	{
-		return new ResponseEntity<List<TimeLine>>(scheduleService.getTodayTimeLineByChannelId(channelId),HttpStatus.OK);
+		return new ResponseEntity<List<com.cbc.domain.TimeLine>>(ModelToDomainMapper.mapTimeLineList(scheduleService.getTodayTimeLineByChannelId(channelId)),HttpStatus.OK);
 	}
 	
 	/**

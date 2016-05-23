@@ -22,6 +22,20 @@ public class ModelToDomainMapper
 		domChnl.setHubCarouelImage(modChnl.getHubCarouelImage());
 	}
 	
+	public static List<com.cbc.domain.Channel> mapChannelsList(List<com.cbc.model.Channel> modChannelList)
+	{
+		List<com.cbc.domain.Channel> domList = new ArrayList<com.cbc.domain.Channel>();
+		if(modChannelList != null && !modChannelList.isEmpty())
+		{
+			for(com.cbc.model.Channel c : modChannelList)
+			{
+				domList.add(new com.cbc.domain.Channel(c));
+			}
+		}
+		
+		return domList;
+	}
+	
 	
 	public static void mapPresenter(com.cbc.model.Presenter modPresenter , com.cbc.domain.Presenter domPresenter)
 	{
@@ -104,4 +118,98 @@ public class ModelToDomainMapper
 		return domList;
 	}
 	
+	
+	public static void mapEpisode(com.cbc.model.Episode modEpisode , com.cbc.domain.Episode domEpisode)
+	{
+		domEpisode.setId(modEpisode.getId());
+		domEpisode.setTitle(modEpisode.getTitle());
+		domEpisode.setHubSelected(modEpisode.isHubSelected());
+		domEpisode.setNumberOfViews(modEpisode.getNumberOfViews());
+		domEpisode.setDisplayingDate(modEpisode.getDisplayingDate());
+		domEpisode.setUrl(modEpisode.getUrl());
+	}
+	
+	public static List<com.cbc.domain.Episode> mapEpisodesList(List<com.cbc.model.Episode> modEpisodesList)
+	{
+		List<com.cbc.domain.Episode> domList = new ArrayList<com.cbc.domain.Episode>();
+		if(modEpisodesList != null && !modEpisodesList.isEmpty())
+		{
+			for(com.cbc.model.Episode e : modEpisodesList)
+			{
+				domList.add(new com.cbc.domain.Episode(e));
+			}
+		}
+		
+		return domList;
+	}
+	
+	
+	public static void mapProgramScene(com.cbc.model.ProgramScene modProgramScene , com.cbc.domain.ProgramScene domProgramScene)
+	{
+		domProgramScene.setId(modProgramScene.getId());
+		domProgramScene.setTitle(modProgramScene.getTitle());
+		domProgramScene.setHubSelected(modProgramScene.isHubSelected());
+		domProgramScene.setDescription(modProgramScene.getDescription());
+		domProgramScene.setPhotoPath(modProgramScene.getPhotoPath());
+		domProgramScene.setVedioUrl(modProgramScene.getVedioUrl());
+	}
+	
+	public static List<com.cbc.domain.ProgramScene> mapProgramSceneList(List<com.cbc.model.ProgramScene> modProgramSceneList)
+	{
+		List<com.cbc.domain.ProgramScene> domList = new ArrayList<com.cbc.domain.ProgramScene>();
+		if(modProgramSceneList != null && !modProgramSceneList.isEmpty())
+		{
+			for(com.cbc.model.ProgramScene ps : modProgramSceneList)
+			{
+				domList.add(new com.cbc.domain.ProgramScene(ps));
+			}
+		}
+		
+		return domList;
+	}
+	
+	public static void mapScheduleDay(com.cbc.model.ScheduleDay modScheduleDay , com.cbc.domain.ScheduleDay domScheduleDay)
+	{
+		domScheduleDay.setId(modScheduleDay.getId());
+		domScheduleDay.setActualDate(modScheduleDay.getActualDate());
+		
+	}
+	
+	public static List<com.cbc.domain.ScheduleDay> mapScheduleDayList(List<com.cbc.model.ScheduleDay> modScheduleDayList)
+	{
+		List<com.cbc.domain.ScheduleDay> domList = new ArrayList<com.cbc.domain.ScheduleDay>();
+		if(modScheduleDayList != null && !modScheduleDayList.isEmpty())
+		{
+			for(com.cbc.model.ScheduleDay sd : modScheduleDayList)
+			{
+				domList.add(new com.cbc.domain.ScheduleDay(sd));
+			}
+		}
+		
+		return domList;
+	}
+	
+	public static void mapTimeLine(com.cbc.model.TimeLine modTimeLine , com.cbc.domain.TimeLine domTimeLine)
+	{
+		domTimeLine.setId(modTimeLine.getId());
+		domTimeLine.setDuration(modTimeLine.getDuration());
+		domTimeLine.setRepeated(modTimeLine.getIsRepeated() == 1?true:false);
+		domTimeLine.setStartTime(modTimeLine.getStartTime());
+		domTimeLine.setPlayingNow(modTimeLine.isPlayingNow());
+		domTimeLine.setProgram(new com.cbc.domain.Program(modTimeLine.getProgramBean()));
+	}
+	
+	public static List<com.cbc.domain.TimeLine> mapTimeLineList(List<com.cbc.model.TimeLine> modTimeLineList)
+	{
+		List<com.cbc.domain.TimeLine> domList = new ArrayList<com.cbc.domain.TimeLine>();
+		if(modTimeLineList != null && !modTimeLineList.isEmpty())
+		{
+			for(com.cbc.model.TimeLine tl : modTimeLineList)
+			{
+				domList.add(new com.cbc.domain.TimeLine(tl));
+			}
+		}
+		
+		return domList;
+	}
 }
