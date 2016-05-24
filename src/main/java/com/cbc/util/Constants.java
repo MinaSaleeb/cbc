@@ -19,6 +19,7 @@ public interface Constants
 	public static enum MostViewedType
 	{
 		VEDIO,
-		IMAGE
+		IMAGE,
+		PROGRAM
 	}
 }

@@ -26,6 +26,9 @@ public class HubSlick implements Serializable {
 	
 	@OneToMany(mappedBy = "hubSlick")
 	private List<ProgramScene> programScenes;
+	
+	@OneToMany(mappedBy = "hubSlick")
+	private List<Program> programs;
 
 	public HubSlick() {
 	}
@@ -72,6 +75,20 @@ public class HubSlick implements Serializable {
 	 */
 	public void setProgramScenes(List<ProgramScene> programScenes) {
 		this.programScenes = programScenes;
+	}
+
+	/**
+	 * @return the programs
+	 */
+	public List<Program> getPrograms() {
+		return programs;
+	}
+
+	/**
+	 * @param programs the programs to set
+	 */
+	public void setPrograms(List<Program> programs) {
+		this.programs = programs;
 	}
 
 }

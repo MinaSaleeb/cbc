@@ -212,7 +212,7 @@ public class ProgramsService
 		List<Episode> hubSelectedVedios = EpisodeRepo.findByHubSelected(true);
 		List<ProgramScene> hubSelectedImages = ProgramSceneRepo.findByHubSelected(true);
 		
-	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages);
+	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages, null);
 	}
 	
 	/**
@@ -220,7 +220,7 @@ public class ProgramsService
 	 * @param hubSelectedVedios
 	 * @param hubSelectedImages
 	 */
-	private List<MediaContentTuple> mapEpisodesAndImagesToTuple(List<Episode> hubSelectedVedios, List<ProgramScene> hubSelectedImages)
+	private List<MediaContentTuple> mapEpisodesAndImagesToTuple(List<Episode> hubSelectedVedios, List<ProgramScene> hubSelectedImages, List<Program> hubSelectedPrograms)
 	{
 		List<MediaContentTuple> tuplesList = new ArrayList<MediaContentTuple>();
 		
@@ -232,6 +232,19 @@ public class ProgramsService
 				tuple.setMediaType(MostViewedType.VEDIO);
 				tuple.setUrl(e.getUrl());
 				Program p = e.getProgramBean();
+				tuple.setProgramName(p.getTitle());
+				tuple.setProgramImage(p.getImageXPath());
+				tuple.setProgramId(p.getId());
+				tuplesList.add(tuple);
+			}
+		}
+		
+		if(hubSelectedPrograms != null && !hubSelectedPrograms.isEmpty())
+		{
+			for(Program p : hubSelectedPrograms)
+			{
+				MediaContentTuple tuple = new MediaContentTuple();
+				tuple.setMediaType(MostViewedType.PROGRAM);
 				tuple.setProgramName(p.getTitle());
 				tuple.setProgramImage(p.getImageXPath());
 				tuple.setProgramId(p.getId());
@@ -279,7 +292,7 @@ public class ProgramsService
 		{
 			for(HubSlick s : slicks)
 			{
-				hubSlicksList.add(new HubSlickContent(s.getTitle() ,mapEpisodesAndImagesToTuple(s.getEpisodes(), s.getProgramScenes())));
+				hubSlicksList.add(new HubSlickContent(s.getTitle() ,mapEpisodesAndImagesToTuple(s.getEpisodes(), s.getProgramScenes() , s.getPrograms())));
 			}
 		}
 		

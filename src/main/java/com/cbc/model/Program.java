@@ -90,6 +90,10 @@ public class Program implements Serializable {
 			}
 		)
 	private List<Presenter> presenters;
+	
+	@ManyToOne
+	@JoinColumn(name="hub_slick")
+	private HubSlick hubSlick;
 
 	public Program() {
 	}
@@ -370,6 +374,20 @@ public class Program implements Serializable {
 
 	public void setPresenters(List<Presenter> presenters) {
 		this.presenters = presenters;
+	}
+
+	/**
+	 * @return the hubSlick
+	 */
+	public HubSlick getHubSlick() {
+		return hubSlick;
+	}
+
+	/**
+	 * @param hubSlick the hubSlick to set
+	 */
+	public void setHubSlick(HubSlick hubSlick) {
+		this.hubSlick = hubSlick;
 	}
 
 }
