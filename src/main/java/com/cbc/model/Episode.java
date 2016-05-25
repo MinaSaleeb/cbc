@@ -46,6 +46,9 @@ public class Episode implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="hub_slick")
 	private HubSlick hubSlick;
+	
+	@OneToMany(mappedBy="episodeBean")
+	private List<EpisodesAdDiv> episodesAdDivs;
 
 	public Episode() {
 	}
@@ -152,6 +155,20 @@ public class Episode implements Serializable {
 	 */
 	public void setHubSlick(HubSlick hubSlick) {
 		this.hubSlick = hubSlick;
+	}
+
+	/**
+	 * @return the episodesAdDivs
+	 */
+	public List<EpisodesAdDiv> getEpisodesAdDivs() {
+		return episodesAdDivs;
+	}
+
+	/**
+	 * @param episodesAdDivs the episodesAdDivs to set
+	 */
+	public void setEpisodesAdDivs(List<EpisodesAdDiv> episodesAdDivs) {
+		this.episodesAdDivs = episodesAdDivs;
 	}
 
 }

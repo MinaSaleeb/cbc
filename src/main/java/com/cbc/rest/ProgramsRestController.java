@@ -237,6 +237,12 @@ public class ProgramsRestController
 		 return new ResponseEntity<Map<String , String>>(pageAdsmap , HttpStatus.OK);
 	 }
 	 
+	 @RequestMapping(value = "/eposide/{id}/ads", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<Map<String , String>> getEposideAdsScripts(@PathVariable("id") long id)
+	 {
+		 return new ResponseEntity<Map<String,String>>(programsService.getEposideAds(id) , HttpStatus.OK);
+	 }
+	 
 	 /**
 	  * 
 	  * @param channelId

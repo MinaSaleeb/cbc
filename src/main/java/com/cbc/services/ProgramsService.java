@@ -4,12 +4,16 @@
 package com.cbc.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,7 @@ import com.cbc.domain.MostViewed;
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
 import com.cbc.model.Episode;
+import com.cbc.model.EpisodesAdDiv;
 import com.cbc.model.HubSlick;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramScene;
@@ -156,10 +161,14 @@ public class ProgramsService
 	public List<MostViewed> getMostViewedList(int size)
 	{
 		List<MostViewed> resultList = new ArrayList<MostViewed>();
-		Pageable pageSize = new PageRequest(0, size - 2);
+		Pageable pageSize = new PageRequest(0, size > 2 ?size-2:size == 2? 2 :1);
 		List<Episode> episodes = EpisodeRepo.findRandomEpisodes(pageSize);
-		pageSize = new PageRequest(0, 2);
-		List<ProgramScene> imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
+		List<ProgramScene> imagesOrVedios = null;
+		if(size > 2)
+		{
+			pageSize = new PageRequest(0, 2);
+			imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
+		}
 		
 		if(episodes != null && !episodes.isEmpty())
 		{
@@ -312,5 +321,34 @@ public class ProgramsService
 	public List<ProgramScene> getProgramGalleryById(int programId)
 	{
 		return ProgramSceneRepo.findByProgramId(programId);
+	}
+	
+	/**
+	 * 
+	 * @param eposideId
+	 * @return
+	 */
+	public Map<String , String> getEposideAds(long eposideId)
+	{
+		Map<String , String> eposideAdsmap = new HashMap<String , String>();
+		
+		Episode e = EpisodeRepo.findOne(eposideId);
+		
+		if(e == null)
+		 {
+			 LOGGER.error("eposideId {"+eposideId+"} is not found in DB");
+		 }
+		 else
+		 {
+			 List<EpisodesAdDiv> eAds = e.getEpisodesAdDivs();
+			 if(eAds != null && !eAds.isEmpty())
+			 {
+				 for(EpisodesAdDiv ad :eAds)
+				 {
+					 eposideAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+				 }
+			 }
+		 }
+		return eposideAdsmap;
 	}
 }

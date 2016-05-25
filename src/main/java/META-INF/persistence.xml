@@ -35,5 +35,7 @@
 		<class>com.cbc.model.TimeLine</class>
 		<class>com.cbc.model.User</class>
 		<class>com.cbc.model.HubSlick</class>
+		<class>com.cbc.model.EpisodesAdDiv</class>
+		<class>com.cbc.model.EpisodesAdDivPK</class>
 	</persistence-unit>
 </persistence>
