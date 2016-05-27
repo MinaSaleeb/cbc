@@ -11,10 +11,12 @@ import com.cbc.util.Constants.MostViewedType;
  */
 public class MostViewed 
 {
+	private long id;
 	private String url;
 	private String title;
 	private String description;
 	private MostViewedType type;
+	private String iconImage;
 	/**
 	 * @param url
 	 */
@@ -70,6 +72,30 @@ public class MostViewed
 	 */
 	public void setType(MostViewedType type) {
 		this.type = type;
+	}
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+	/**
+	 * @return the iconImage
+	 */
+	public String getIconImage() {
+		return iconImage;
+	}
+	/**
+	 * @param iconImage the iconImage to set
+	 */
+	public void setIconImage(String iconImage) {
+		this.iconImage = iconImage;
 	}
 	
 	

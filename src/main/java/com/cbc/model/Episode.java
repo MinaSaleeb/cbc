@@ -38,6 +38,9 @@ public class Episode implements Serializable {
 	
 	@Column(name="hub_selected")
 	private boolean hubSelected;
+	
+	@Column(name="photo_path")
+	private String photoPath;
 
 	//bi-directional many-to-one association to Recipe
 	@OneToMany(mappedBy="episodeBean")
@@ -119,6 +122,20 @@ public class Episode implements Serializable {
 	 */
 	public void setHubSelected(boolean hubSelected) {
 		this.hubSelected = hubSelected;
+	}
+
+	/**
+	 * @return the photoPath
+	 */
+	public String getPhotoPath() {
+		return photoPath;
+	}
+
+	/**
+	 * @param photoPath the photoPath to set
+	 */
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
 	}
 
 	public List<Recipe> getRecipes() {

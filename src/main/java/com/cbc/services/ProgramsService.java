@@ -12,14 +12,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
-import com.cbc.domain.MostViewed;
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
 import com.cbc.model.Episode;
@@ -158,9 +155,9 @@ public class ProgramsService
 	 * 
 	 * @return
 	 */
-	public List<MostViewed> getMostViewedList(int size)
+	public List<MediaContentTuple> getMostViewedList(int size)
 	{
-		List<MostViewed> resultList = new ArrayList<MostViewed>();
+		List<MediaContentTuple> resultList = new ArrayList<MediaContentTuple>();
 		Pageable pageSize = new PageRequest(0, size > 2 ?size-2:size == 2? 2 :1);
 		List<Episode> episodes = EpisodeRepo.findRandomEpisodes(pageSize);
 		List<ProgramScene> imagesOrVedios = null;
@@ -170,14 +167,18 @@ public class ProgramsService
 			imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
 		}
 		
+		return mapEpisodesAndImagesToTuple(episodes, imagesOrVedios, null);
+		/*
 		if(episodes != null && !episodes.isEmpty())
 		{
 			for(Episode e : episodes)
 			{
 				MostViewed mv = new MostViewed(e.getUrl());
+				mv.setId(e.getId());
 				mv.setTitle(e.getTitle());
 				mv.setDescription(e.getProgramBean().getDescription());
 				mv.setType(MostViewedType.VEDIO);
+				mv.setIconImage(e.getPhotoPath());
 				resultList.add(mv);
 			}
 		}
@@ -199,15 +200,18 @@ public class ProgramsService
 					type = MostViewedType.VEDIO;
 				}
 				MostViewed mv = new MostViewed(url);
+				mv.setId(p.getId());
 				mv.setTitle(p.getTitle());
 				mv.setDescription(p.getDescription());
 				mv.setType(type);
+				mv.setIconImage(p.getProgramBean().getImageXPath());
 				resultList.add(mv);
 			}
 		}
 		
 		
 		return resultList;
+		*/
 	}
 	
 	/**
@@ -242,7 +246,7 @@ public class ProgramsService
 				tuple.setUrl(e.getUrl());
 				Program p = e.getProgramBean();
 				tuple.setProgramName(p.getTitle());
-				tuple.setProgramImage(p.getImageXPath());
+				tuple.setProgramImage(e.getPhotoPath());// here will be the eposide image
 				tuple.setProgramId(p.getId());
 				tuplesList.add(tuple);
 			}

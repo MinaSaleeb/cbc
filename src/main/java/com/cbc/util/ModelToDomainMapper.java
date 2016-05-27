@@ -127,6 +127,7 @@ public class ModelToDomainMapper
 		domEpisode.setNumberOfViews(modEpisode.getNumberOfViews());
 		domEpisode.setDisplayingDate(modEpisode.getDisplayingDate());
 		domEpisode.setUrl(modEpisode.getUrl());
+		domEpisode.setPhotoPath(modEpisode.getPhotoPath());
 	}
 	
 	public static List<com.cbc.domain.Episode> mapEpisodesList(List<com.cbc.model.Episode> modEpisodesList)

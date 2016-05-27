@@ -26,6 +26,8 @@ public class Episode
 
 	private boolean hubSelected;
 	
+	private String photoPath;
+	
 	
 	
 	
@@ -121,6 +123,20 @@ public class Episode
 	 */
 	public void setHubSelected(boolean hubSelected) {
 		this.hubSelected = hubSelected;
+	}
+
+	/**
+	 * @return the photoPath
+	 */
+	public String getPhotoPath() {
+		return photoPath;
+	}
+
+	/**
+	 * @param photoPath the photoPath to set
+	 */
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
 	}
 	
 	
