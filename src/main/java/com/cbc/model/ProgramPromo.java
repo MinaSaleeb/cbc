@@ -15,7 +15,7 @@ public class ProgramPromo implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	private String description;
 
@@ -32,11 +32,11 @@ public class ProgramPromo implements Serializable {
 	public ProgramPromo() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

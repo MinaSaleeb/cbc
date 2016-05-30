@@ -235,4 +235,17 @@ public class ScheduleService
 	}
 	
 	
+	/**
+	 * 
+	 * @param channelId
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	public List<TimeLine> getTimeLineByChannelIdAndDateRange(int channelId, Date from, Date to)
+	{
+		return timeLineRepo.findByChannelIdAndDays(channelId, from, to);
+	}
+	
+	
 }

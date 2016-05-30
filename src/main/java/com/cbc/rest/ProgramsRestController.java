@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
-import com.cbc.domain.MostViewed;
 import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPage;
@@ -260,6 +259,12 @@ public class ProgramsRestController
 	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getProgramNews(@PathVariable("id") int programId)
 	 {
 		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(programsService.getProgramNewsByProgramId(programId)), HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/{id}/promos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.ProgramPromo>> getProgramPromos(@PathVariable("id") int programId)
+	 {
+		 return new ResponseEntity<List<com.cbc.domain.ProgramPromo>>(ModelToDomainMapper.mapProgramPromoList(programsService.getProgramPromosById(programId)), HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/mostViewed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

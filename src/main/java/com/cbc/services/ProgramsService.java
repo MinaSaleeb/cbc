@@ -23,11 +23,13 @@ import com.cbc.model.Episode;
 import com.cbc.model.EpisodesAdDiv;
 import com.cbc.model.HubSlick;
 import com.cbc.model.Program;
+import com.cbc.model.ProgramPromo;
 import com.cbc.model.ProgramScene;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.EpisodeRepository;
 import com.cbc.repository.HubSlickRepository;
 import com.cbc.repository.ProgramNewsRepository;
+import com.cbc.repository.ProgramPromosRepository;
 import com.cbc.repository.ProgramRepository;
 import com.cbc.repository.ProgramSceneRepository;
 import com.cbc.util.Constants.MostViewedType;
@@ -60,6 +62,9 @@ public class ProgramsService
 	
 	@Autowired
 	private HubSlickRepository hubSlickRepo;
+	
+	@Autowired
+	private ProgramPromosRepository programPromosRepo;
 	
 	
 	
@@ -325,6 +330,11 @@ public class ProgramsService
 	public List<ProgramScene> getProgramGalleryById(int programId)
 	{
 		return ProgramSceneRepo.findByProgramId(programId);
+	}
+	
+	public List<ProgramPromo> getProgramPromosById(int programId)
+	{
+		return programPromosRepo.findByProgramId(programId);
 	}
 	
 	/**

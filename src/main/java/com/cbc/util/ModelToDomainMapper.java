@@ -213,4 +213,26 @@ public class ModelToDomainMapper
 		
 		return domList;
 	}
+	
+	public static void mapProgramPromo(com.cbc.model.ProgramPromo modProgramPromo , com.cbc.domain.ProgramPromo domProgramPromo)
+	{
+		domProgramPromo.setId(modProgramPromo.getId());
+		domProgramPromo.setDescription(modProgramPromo.getDescription());
+		domProgramPromo.setPromoUrl(modProgramPromo.getPromoUrl());
+		domProgramPromo.setTitle(modProgramPromo.getTitle());
+	}
+	
+	public static List<com.cbc.domain.ProgramPromo> mapProgramPromoList(List<com.cbc.model.ProgramPromo> modProgramPromoList)
+	{
+		List<com.cbc.domain.ProgramPromo> domList = new ArrayList<com.cbc.domain.ProgramPromo>();
+		if(modProgramPromoList != null && !modProgramPromoList.isEmpty())
+		{
+			for(com.cbc.model.ProgramPromo pp : modProgramPromoList)
+			{
+				domList.add(new com.cbc.domain.ProgramPromo(pp));
+			}
+		}
+		
+		return domList;
+	}
 }

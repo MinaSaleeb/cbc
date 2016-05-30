@@ -3,6 +3,8 @@
  */
 package com.cbc.rest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,8 @@ import com.cbc.util.ModelToDomainMapper;
 public class ScheduleRestController 
 {
 	private static final Logger LOGGER = Logger.getLogger(ScheduleRestController.class);
+	
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
 	
 	@Autowired
 	private ScheduleService scheduleService;
@@ -65,5 +69,12 @@ public class ScheduleRestController
 	public ResponseEntity<Schedule> getSchedule()
 	{
 		return new ResponseEntity<Schedule>(scheduleService.getSchedule(),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<com.cbc.domain.TimeLine>> getTimeLineByChannelIdAndDateRange(@RequestParam(required = true , value = "channelId") int channelId,
+			@RequestParam(required = true , value = "fromDate") String fromDate , @RequestParam(required = true , value = "toDate") String toDate) throws ParseException
+	{
+		return new ResponseEntity<List<com.cbc.domain.TimeLine>>(ModelToDomainMapper.mapTimeLineList(scheduleService.getTimeLineByChannelIdAndDateRange(channelId, sdf.parse(fromDate), sdf.parse(toDate))),HttpStatus.OK);
 	}
 }
