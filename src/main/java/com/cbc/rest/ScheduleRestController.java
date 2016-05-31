@@ -35,7 +35,7 @@ public class ScheduleRestController
 {
 	private static final Logger LOGGER = Logger.getLogger(ScheduleRestController.class);
 	
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	@Autowired
 	private ScheduleService scheduleService;

@@ -19,6 +19,8 @@ public class ProgramPromo
 
 	private String title;
 	
+	private String thumbnailPath;
+	
 	
 	
 
@@ -85,6 +87,20 @@ public class ProgramPromo
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * @return the thumbnailPath
+	 */
+	public String getThumbnailPath() {
+		return thumbnailPath;
+	}
+
+	/**
+	 * @param thumbnailPath the thumbnailPath to set
+	 */
+	public void setThumbnailPath(String thumbnailPath) {
+		this.thumbnailPath = thumbnailPath;
 	}
 	
 	

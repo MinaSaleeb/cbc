@@ -220,6 +220,7 @@ public class ModelToDomainMapper
 		domProgramPromo.setDescription(modProgramPromo.getDescription());
 		domProgramPromo.setPromoUrl(modProgramPromo.getPromoUrl());
 		domProgramPromo.setTitle(modProgramPromo.getTitle());
+		domProgramPromo.setThumbnailPath(modProgramPromo.getThumbnailPath());
 	}
 	
 	public static List<com.cbc.domain.ProgramPromo> mapProgramPromoList(List<com.cbc.model.ProgramPromo> modProgramPromoList)

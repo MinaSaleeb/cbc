@@ -23,6 +23,9 @@ public class ProgramPromo implements Serializable {
 	private String promoUrl;
 
 	private String title;
+	
+	@Column(name="thumbnail_path")
+	private String thumbnailPath;
 
 	//bi-directional many-to-one association to Program
 	@ManyToOne
@@ -62,6 +65,20 @@ public class ProgramPromo implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * @return the thumbnailPath
+	 */
+	public String getThumbnailPath() {
+		return thumbnailPath;
+	}
+
+	/**
+	 * @param thumbnailPath the thumbnailPath to set
+	 */
+	public void setThumbnailPath(String thumbnailPath) {
+		this.thumbnailPath = thumbnailPath;
 	}
 
 	public Program getProgramBean() {

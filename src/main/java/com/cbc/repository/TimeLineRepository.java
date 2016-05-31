@@ -22,6 +22,7 @@ public interface TimeLineRepository extends CrudRepository<TimeLine, Long>
 {
 	List<TimeLine> findByChannelBeanAndScheduleDay(Channel channelBean,ScheduleDay scheduleDay);
 	
-	@Query("SELECT tl FROM TimeLine tl WHERE tl.channelBean.id = :channelId AND tl.scheduleDay.actualDate BETWEEN :fromDate AND :toDate")
+	@Query("SELECT tl FROM TimeLine tl WHERE tl.channelBean.id = :channelId AND (tl.scheduleDay.actualDate >= :fromDate AND tl.scheduleDay.actualDate <= :toDate)")
 	List<TimeLine> findByChannelIdAndDays(@Param("channelId") int channelId, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
+	
 }
