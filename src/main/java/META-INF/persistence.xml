@@ -7,7 +7,6 @@
 		<class>com.cbc.model.CbcNew</class>
 		<class>com.cbc.model.Channel</class>
 		<class>com.cbc.model.ChannelsAdDiv</class>
-		<class>com.cbc.model.ChannelsAdDivPK</class>
 		<class>com.cbc.model.CitizenService</class>
 		<class>com.cbc.model.Episode</class>
 		<class>com.cbc.model.FoodItem</class>
@@ -20,12 +19,10 @@
 		<class>com.cbc.model.ProgramNew</class>
 		<class>com.cbc.model.ProgramPage</class>
 		<class>com.cbc.model.ProgramPagesAdDiv</class>
-		<class>com.cbc.model.ProgramPagesAdDivPK</class>
 		<class>com.cbc.model.ProgramPromo</class>
 		<class>com.cbc.model.ProgramScene</class>
 		<class>com.cbc.model.Program</class>
 		<class>com.cbc.model.ProgramsAdDiv</class>
-		<class>com.cbc.model.ProgramsAdDivPK</class>
 		<class>com.cbc.model.RecipeCategory</class>
 		<class>com.cbc.model.RecipeIngredient</class>
 		<class>com.cbc.model.RecipeStep</class>
@@ -36,6 +33,5 @@
 		<class>com.cbc.model.User</class>
 		<class>com.cbc.model.HubSlick</class>
 		<class>com.cbc.model.EpisodesAdDiv</class>
-		<class>com.cbc.model.EpisodesAdDivPK</class>
 	</persistence-unit>
 </persistence>

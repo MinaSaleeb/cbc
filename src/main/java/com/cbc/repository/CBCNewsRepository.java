@@ -21,4 +21,7 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	
 	@Query("SELECT n FROM CbcNew n WHERE n.newsCategory.channelBean.id = :channelId")
 	List<CbcNew> findByChannelId(@Param("channelId") int channelId);
+	
+	@Query("SELECT n FROM CbcNew n WHERE n.newsCategory.id= :categoryId AND n.videoUrl IS NOT NULL")
+	List<CbcNew> findNewsWzVideosByCategoryId(@Param("categoryId") int categoryId);
 }

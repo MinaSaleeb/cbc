@@ -123,4 +123,24 @@ public class CBCNewsRestController
 	 {
 		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.getCbcNewsByChannelId(channelId)) , HttpStatus.OK);
 	 }
+	 
+	 
+	 @RequestMapping(value = "/wzVideos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> findNewsWzVideosByCategoryId(@RequestParam(required = true , value = "categoryId") int categoryId)
+	 {
+		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNewsWzVideosByCategoryId(categoryId)) , HttpStatus.OK);
+	 }
+	 
+	 
+	 @RequestMapping(value = "/categories/{categoryId}/featuredNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<com.cbc.domain.CbcNew> getFeaturedNewsByCategoryId(@PathVariable("categoryId") int categoryId)
+	 {
+		 	CbcNew n = cBCNewsService.getFeaturedNewsByCategoryId(categoryId);
+			if(n != null)
+			{
+				return new ResponseEntity<com.cbc.domain.CbcNew>(new com.cbc.domain.CbcNew(n) , HttpStatus.OK);
+			}
+			
+			return  new ResponseEntity<com.cbc.domain.CbcNew>(HttpStatus.NO_CONTENT);
+	 }
 }

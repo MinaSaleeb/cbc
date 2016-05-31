@@ -55,6 +55,7 @@ public class ModelToDomainMapper
 		domProgram.setImage2xPath(modProgram.getImage2xPath());
 		domProgram.setImageBgPath(modProgram.getImageBgPath());
 		domProgram.setRecipeRatingImagePath(modProgram.getRecipeRatingImagePath());
+		domProgram.setHideProgram(modProgram.isHideProgram());
 	}
 	
 	public static List<com.cbc.domain.Program> mapProgramsList(List<com.cbc.model.Program> modProgramList)
@@ -64,7 +65,10 @@ public class ModelToDomainMapper
 		{
 			for(com.cbc.model.Program p : modProgramList)
 			{
-				domList.add(new com.cbc.domain.Program(p));
+				if(!p.isHideProgram())
+				{
+					domList.add(new com.cbc.domain.Program(p));
+				}
 			}
 		}
 		
@@ -79,7 +83,12 @@ public class ModelToDomainMapper
 		domCbcNew.setDescription(modCbcNew.getDescription());
 		domCbcNew.setPostingDate(modCbcNew.getPostingDate());
 		domCbcNew.setPhotoPath(modCbcNew.getPhotoPath());
-		domCbcNew.setContent(modCbcNew.getNewsContent().getContent());
+		if(modCbcNew.getNewsContent() != null)
+		{
+			domCbcNew.setContent(modCbcNew.getNewsContent().getContent());
+		}
+		domCbcNew.setVideoUrl(modCbcNew.getVideoUrl());
+		domCbcNew.setType(modCbcNew.getType());
 	}
 	
 	public static List<com.cbc.domain.CbcNew> mapCbcNewsList(List<com.cbc.model.CbcNew> modCbcNewList)

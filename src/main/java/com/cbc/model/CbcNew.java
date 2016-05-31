@@ -42,7 +42,12 @@ public class CbcNew implements Serializable {
 	//bi-directional many-to-one association to ProgramNew
 	@OneToMany(mappedBy="cbcNew")
 	private List<ProgramNew> programNews;
-
+	
+	@Column(name="video_url")
+	private String videoUrl;
+	
+	private String type;
+	
 	public CbcNew() {
 	}
 
@@ -122,6 +127,34 @@ public class CbcNew implements Serializable {
 		programNew.setCbcNew(null);
 
 		return programNew;
+	}
+
+	/**
+	 * @return the videoUrl
+	 */
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	/**
+	 * @param videoUrl the videoUrl to set
+	 */
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

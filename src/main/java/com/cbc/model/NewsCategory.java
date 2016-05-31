@@ -29,6 +29,10 @@ public class NewsCategory implements Serializable {
 	//bi-directional many-to-one association to CbcNew
 	@OneToMany(mappedBy="newsCategory")
 	private List<CbcNew> cbcNews;
+	
+	@OneToOne
+	@JoinColumn(name="featured_news")
+	private CbcNew featuredNews;
 
 	public NewsCategory() {
 	}
@@ -77,6 +81,20 @@ public class NewsCategory implements Serializable {
 		cbcNew.setNewsCategory(null);
 
 		return cbcNew;
+	}
+
+	/**
+	 * @return the featuredNews
+	 */
+	public CbcNew getFeaturedNews() {
+		return featuredNews;
+	}
+
+	/**
+	 * @param featuredNews the featuredNews to set
+	 */
+	public void setFeaturedNews(CbcNew featuredNews) {
+		this.featuredNews = featuredNews;
 	}
 
 }

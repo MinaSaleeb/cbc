@@ -125,7 +125,11 @@ public class ProgramsService
 			{
 				for(Program prgm : prgms)
 				{
-					programsNamesList.add(prgm.getTitle());
+					if(!prgm.isHideProgram())
+					{
+						programsNamesList.add(prgm.getTitle());
+					}
+					
 				}
 			}
 		} 

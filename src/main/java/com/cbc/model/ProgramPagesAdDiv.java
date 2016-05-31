@@ -13,8 +13,9 @@ import javax.persistence.*;
 public class ProgramPagesAdDiv implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private ProgramPagesAdDivPK id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
 
 	@Column(name="ad_script")
 	private String adScript;
@@ -32,11 +33,11 @@ public class ProgramPagesAdDiv implements Serializable {
 	public ProgramPagesAdDiv() {
 	}
 
-	public ProgramPagesAdDivPK getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(ProgramPagesAdDivPK id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

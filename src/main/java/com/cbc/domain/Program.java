@@ -26,6 +26,8 @@ public class Program
 	private String recipeRatingImagePath;
 
 	private String title;
+	
+	private boolean hideProgram;
 
 	/**
 	 * 
@@ -146,6 +148,20 @@ public class Program
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * @return the hideProgram
+	 */
+	public boolean isHideProgram() {
+		return hideProgram;
+	}
+
+	/**
+	 * @param hideProgram the hideProgram to set
+	 */
+	public void setHideProgram(boolean hideProgram) {
+		this.hideProgram = hideProgram;
 	}
 	
 	

@@ -25,6 +25,10 @@ public class CbcNew
 	
 	private String content;
 	
+	private String videoUrl;
+	
+	private String type;
+	
 	
 
 	/**
@@ -118,6 +122,34 @@ public class CbcNew
 	 */
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	/**
+	 * @return the videoUrl
+	 */
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	/**
+	 * @param videoUrl the videoUrl to set
+	 */
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

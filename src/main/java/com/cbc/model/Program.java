@@ -94,6 +94,9 @@ public class Program implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="hub_slick")
 	private HubSlick hubSlick;
+	
+	@Column(name="hide_program")
+	private boolean hideProgram;
 
 	public Program() {
 	}
@@ -388,6 +391,20 @@ public class Program implements Serializable {
 	 */
 	public void setHubSlick(HubSlick hubSlick) {
 		this.hubSlick = hubSlick;
+	}
+
+	/**
+	 * @return the hideProgram
+	 */
+	public boolean isHideProgram() {
+		return hideProgram;
+	}
+
+	/**
+	 * @param hideProgram the hideProgram to set
+	 */
+	public void setHideProgram(boolean hideProgram) {
+		this.hideProgram = hideProgram;
 	}
 
 }

@@ -111,4 +111,37 @@ public class CBCNewsService
 		return cBCNewsRepo.findByChannelId(channelId);
 	}
 	
+	/**
+	 * 
+	 * @param categoryId
+	 * @return
+	 */
+	public List<CbcNew> findNewsWzVideosByCategoryId(int categoryId)
+	{
+		return cBCNewsRepo.findNewsWzVideosByCategoryId(categoryId);
+	}
+	
+	/**
+	 * 
+	 * @param categoryId
+	 * @return
+	 */
+	public CbcNew getFeaturedNewsByCategoryId(int categoryId)
+	{
+		NewsCategory category = newsCategoryRepo.findOne(categoryId);
+		
+		CbcNew n = null;
+		
+		if(category != null)
+		{
+			n = category.getFeaturedNews();
+		}
+		else
+		{
+			LOGGER.error("newsCategoryId {"+categoryId+"} is not found in DB");
+		}
+		
+		return n;
+	}
+	
 }
