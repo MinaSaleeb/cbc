@@ -19,7 +19,7 @@ public class TimeLine implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
-	private int duration;
+	private float duration;
 
 	@Column(name="is_repeated")
 	private byte isRepeated;
@@ -57,11 +57,11 @@ public class TimeLine implements Serializable {
 		this.id = id;
 	}
 
-	public int getDuration() {
+	public float getDuration() {
 		return this.duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(float duration) {
 		this.duration = duration;
 	}
 
@@ -111,9 +111,9 @@ public class TimeLine implements Serializable {
 	@Transient
 	public boolean isPlayingNow() 
 	{
-		int currentHour = TimeUtils.getCurrentHourAs_24();
-		int timeLineStartHour = TimeUtils.convert_hhaa_to_24(this.getStartTime());
-		int timeLineEndHour = timeLineStartHour + this.getDuration();
+		float currentHour = TimeUtils.getCurrentHourAs_24();
+		float timeLineStartHour = TimeUtils.convert_hhaa_to_24(this.getStartTime());
+		float timeLineEndHour = timeLineStartHour + this.getDuration();
 		if(currentHour >= timeLineStartHour && currentHour < timeLineEndHour) 
 		{
 			return true;

@@ -143,4 +143,17 @@ public class CBCNewsRestController
 			
 			return  new ResponseEntity<com.cbc.domain.CbcNew>(HttpStatus.NO_CONTENT);
 	 }
+	 
+	 @RequestMapping(value = "/categories/{categoryId}/latestNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> findNMostLatestNewsBycategoryId(@PathVariable("categoryId") int categoryId, @RequestParam(required = true , value = "size") int size)
+	 {
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNMostLatestNewsBycategoryId(categoryId, size)) , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/varietyNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getVarietyNews()
+	 {
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findVarietyNews()) , HttpStatus.OK);
+	 }
+	 
 }

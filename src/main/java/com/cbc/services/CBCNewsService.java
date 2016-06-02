@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.cbc.model.CbcNew;
@@ -143,5 +145,38 @@ public class CBCNewsService
 		
 		return n;
 	}
+	
+	/**
+	 * 
+	 * @param categoryId
+	 * @param size
+	 * @return
+	 */
+	public List<CbcNew> findNMostLatestNewsBycategoryId(int categoryId, int size)
+	{
+		Pageable pageSize = new PageRequest(0, size > 1 ?size:1);
+		return cBCNewsRepo.findNMostLatestNewsBycategoryId(categoryId, pageSize);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<CbcNew> findVarietyNews()
+	{
+		List<NewsCategory> cats = (List<NewsCategory>) newsCategoryRepo.findAll();
+		List<CbcNew> ns = new ArrayList<CbcNew>();
+		Pageable pageSize = new PageRequest(1, 10);
+		if(cats != null && !cats.isEmpty())
+		{
+			for(NewsCategory cat : cats)
+			{
+				ns.addAll(cBCNewsRepo.findNMostLatestNewsBycategoryId(cat.getId(), pageSize));
+			}
+		}
+		return ns;
+	}
+	
+	
 	
 }

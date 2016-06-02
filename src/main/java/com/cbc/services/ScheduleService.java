@@ -103,14 +103,14 @@ public class ScheduleService
 				//2.1 - Specify what is displaying (now , next , after next) for the current channel.
 				if(chnlTimeLines != null && !chnlTimeLines.isEmpty())
 				{
-					int currentHour = TimeUtils.getCurrentHourAs_24();
-					int nextTimeLineStartHour = 0;
-					int afterNextTimeLineStartHour = 0;
+					float currentHour = TimeUtils.getCurrentHourAs_24();
+					float nextTimeLineStartHour = 0;
+					float afterNextTimeLineStartHour = 0;
 					//2.1.a- NOW
 					for(TimeLine timeLine : chnlTimeLines)
 					{
-						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
-						int timeLineEndHour = timeLineStartHour + timeLine.getDuration();
+						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
+						float timeLineEndHour = timeLineStartHour + timeLine.getDuration();
 						if(timeLineEndHour > 24 )
 						{
 							timeLineEndHour = timeLineEndHour-24;
@@ -129,8 +129,8 @@ public class ScheduleService
 					//2.1.b- NEXT
 					for(TimeLine timeLine : chnlTimeLines)
 					{
-						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
-						int timeLineEndHour = timeLineStartHour + timeLine.getDuration();
+						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
+						float timeLineEndHour = timeLineStartHour + timeLine.getDuration();
 						if(timeLineEndHour > 24 )
 						{
 							timeLineEndHour = timeLineEndHour-24;
@@ -149,7 +149,7 @@ public class ScheduleService
 					//2.1.c- AFTER NEXT
 					for(TimeLine timeLine : chnlTimeLines)
 					{
-						int timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
+						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						if(afterNextTimeLineStartHour == timeLineStartHour) 
 						{
 							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);

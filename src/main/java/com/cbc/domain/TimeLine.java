@@ -14,7 +14,7 @@ public class TimeLine
 {
 	private long id;
 
-	private int duration;
+	private float duration;
 
 	private boolean repeated;
 	
@@ -52,14 +52,14 @@ public class TimeLine
 	/**
 	 * @return the duration
 	 */
-	public int getDuration() {
+	public float getDuration() {
 		return duration;
 	}
 
 	/**
 	 * @param duration the duration to set
 	 */
-	public void setDuration(int duration) {
+	public void setDuration(float duration) {
 		this.duration = duration;
 	}
 

@@ -48,11 +48,13 @@ public class TimeUtils
 	 * 
 	 * @return
 	 */
-	public static int getCurrentHourAs_24()
+	public static float getCurrentHourAs_24()
 	{
 		Calendar rightNow = Calendar.getInstance();
 		int hour = rightNow.get(Calendar.HOUR_OF_DAY);
-		return hour;
+		int minutes = rightNow.get(Calendar.MINUTE);
+		float t = hour + minutes/60;
+		return t;
 	}
 	
 	/**
@@ -60,9 +62,10 @@ public class TimeUtils
 	 * @param hhaaTime
 	 * @return
 	 */
-	public static int convert_hhaa_to_24(String hhaaTime)
+	public static float convert_hhaa_to_24(String hhaaTime)
 	{
 		int time_24 = 0;
+		float t = 0.0f;
 		if(hhaaTime != null & !hhaaTime.isEmpty())
 		{
 			SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
@@ -72,6 +75,8 @@ public class TimeUtils
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(date);
 				time_24 = calendar.get(Calendar.HOUR_OF_DAY);
+				int minutes = calendar.get(Calendar.MINUTE);
+				t = time_24 + minutes/60;
 			} catch (ParseException e) {
 				LOGGER.error("Error while formatting {"+hhaaTime+"} to date");
 				e.printStackTrace();
@@ -79,6 +84,6 @@ public class TimeUtils
 		}
 		
 		
-		return time_24;
+		return t;
 	}
 }
