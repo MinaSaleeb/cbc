@@ -16,6 +16,7 @@ public class MediaContentTuple
 	private String programName;
 	private String programImage;
 	private int programId;
+	private String description;
 	/**
 	 * @return the mediaType
 	 */
@@ -75,6 +76,18 @@ public class MediaContentTuple
 	 */
 	public void setProgramId(int programId) {
 		this.programId = programId;
+	}
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

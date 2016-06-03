@@ -80,12 +80,17 @@ public class ProgramsService
 		Channel channel = channelRepository.findOne(channelId);
 		if(channel != null)
 		{
-			programsList = programRepository.findByChannelBean(channel);
+			programsList = channel.getPrograms();
 		}
 		else
 		{
 			LOGGER.error("channelId {"+channelId+"} is not found in DB");
 			throw new Exception("channelId {"+channelId+"} is not found in DB");
+		}
+		
+		if(programsList == null)
+		{
+			programsList = new ArrayList<Program>();
 		}
 		
 		return programsList;
@@ -176,7 +181,7 @@ public class ProgramsService
 			imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
 		}
 		
-		return mapEpisodesAndImagesToTuple(episodes, imagesOrVedios, null);
+		return mapEpisodesAndImagesToTuple(episodes, imagesOrVedios, null, null);
 		/*
 		if(episodes != null && !episodes.isEmpty())
 		{
@@ -234,7 +239,7 @@ public class ProgramsService
 		List<Episode> hubSelectedVedios = EpisodeRepo.findByHubSelected(true);
 		List<ProgramScene> hubSelectedImages = ProgramSceneRepo.findByHubSelected(true);
 		
-	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages, null);
+	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages, null, null);
 	}
 	
 	/**
@@ -242,7 +247,7 @@ public class ProgramsService
 	 * @param hubSelectedVedios
 	 * @param hubSelectedImages
 	 */
-	private List<MediaContentTuple> mapEpisodesAndImagesToTuple(List<Episode> hubSelectedVedios, List<ProgramScene> hubSelectedImages, List<Program> hubSelectedPrograms)
+	private List<MediaContentTuple> mapEpisodesAndImagesToTuple(List<Episode> hubSelectedVedios, List<ProgramScene> hubSelectedImages, List<Program> hubSelectedPrograms, List<ProgramPromo> hubSelectedPromos)
 	{
 		List<MediaContentTuple> tuplesList = new ArrayList<MediaContentTuple>();
 		
@@ -257,6 +262,7 @@ public class ProgramsService
 				tuple.setProgramName(p.getTitle());
 				tuple.setProgramImage(e.getPhotoPath());// here will be the eposide image
 				tuple.setProgramId(p.getId());
+				tuple.setDescription(p.getDescription());
 				tuplesList.add(tuple);
 			}
 		}
@@ -270,6 +276,7 @@ public class ProgramsService
 				tuple.setProgramName(p.getTitle());
 				tuple.setProgramImage(p.getImageXPath());
 				tuple.setProgramId(p.getId());
+				tuple.setDescription(p.getDescription());
 				tuplesList.add(tuple);
 			}
 		}
@@ -293,6 +300,23 @@ public class ProgramsService
 				tuple.setProgramName(p.getTitle());
 				tuple.setProgramImage(p.getImageXPath());
 				tuple.setProgramId(p.getId());
+				tuple.setDescription(ps.getDescription());
+				tuplesList.add(tuple);
+			}
+		}
+		
+		if(hubSelectedPromos != null && !hubSelectedPromos.isEmpty())
+		{
+			for(ProgramPromo pp : hubSelectedPromos)
+			{
+				MediaContentTuple tuple = new MediaContentTuple();
+				tuple.setMediaType(MostViewedType.PROMO);
+				tuple.setUrl(pp.getPromoUrl());
+				Program p = pp.getProgramBean();
+				tuple.setProgramName(p.getTitle());
+				tuple.setProgramImage(pp.getThumbnailPath());// here will be the eposide image
+				tuple.setProgramId(p.getId());
+				tuple.setDescription(pp.getDescription());
 				tuplesList.add(tuple);
 			}
 		}
@@ -314,7 +338,7 @@ public class ProgramsService
 		{
 			for(HubSlick s : slicks)
 			{
-				hubSlicksList.add(new HubSlickContent(s.getTitle() ,mapEpisodesAndImagesToTuple(s.getEpisodes(), s.getProgramScenes() , s.getPrograms())));
+				hubSlicksList.add(new HubSlickContent(s.getTitle() ,mapEpisodesAndImagesToTuple(s.getEpisodes(), s.getProgramScenes() , s.getPrograms(), s.getPromos())));
 			}
 		}
 		

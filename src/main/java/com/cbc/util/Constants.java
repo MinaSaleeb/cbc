@@ -20,6 +20,7 @@ public interface Constants
 	{
 		VEDIO,
 		IMAGE,
-		PROGRAM
+		PROGRAM,
+		PROMO
 	}
 }

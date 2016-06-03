@@ -31,6 +31,10 @@ public class ProgramPromo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="program")
 	private Program programBean;
+	
+	@ManyToOne
+	@JoinColumn(name="hub_slick")
+	private HubSlick hubSlick;
 
 	public ProgramPromo() {
 	}
@@ -87,6 +91,20 @@ public class ProgramPromo implements Serializable {
 
 	public void setProgramBean(Program programBean) {
 		this.programBean = programBean;
+	}
+
+	/**
+	 * @return the hubSlick
+	 */
+	public HubSlick getHubSlick() {
+		return hubSlick;
+	}
+
+	/**
+	 * @param hubSlick the hubSlick to set
+	 */
+	public void setHubSlick(HubSlick hubSlick) {
+		this.hubSlick = hubSlick;
 	}
 
 }

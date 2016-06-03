@@ -3,6 +3,8 @@
  */
 package com.cbc.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
  */
 public class ModelToDomainMapper 
 {
+	
 	public static void mapChannel(com.cbc.model.Channel modChnl , com.cbc.domain.Channel domChnl)
 	{
 		domChnl.setId(modChnl.getId());
@@ -204,7 +207,9 @@ public class ModelToDomainMapper
 		domTimeLine.setId(modTimeLine.getId());
 		domTimeLine.setDuration(modTimeLine.getDuration());
 		domTimeLine.setRepeated(modTimeLine.getIsRepeated() == 1?true:false);
-		domTimeLine.setStartTime(modTimeLine.getStartTime());
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		String startDate = df.format(modTimeLine.getScheduleDay().getActualDate());
+		domTimeLine.setStartTime(startDate+" "+modTimeLine.getStartTime());
 		domTimeLine.setPlayingNow(modTimeLine.isPlayingNow());
 		domTimeLine.setProgram(new com.cbc.domain.Program(modTimeLine.getProgramBean()));
 	}

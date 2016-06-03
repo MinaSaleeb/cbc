@@ -41,8 +41,8 @@ public class Channel implements Serializable {
 	@OneToMany(mappedBy="channelBean")
 	private List<NewsCategory> newsCategories;
 
-	//bi-directional many-to-one association to Program
-	@OneToMany(mappedBy="channelBean")
+	//bi-directional many-to-many association to Program
+	@ManyToMany(mappedBy="channels")
 	private List<Program> programs;
 
 	//bi-directional many-to-one association to TimeLine
@@ -162,19 +162,6 @@ public class Channel implements Serializable {
 		this.programs = programs;
 	}
 
-	public Program addProgram(Program program) {
-		getPrograms().add(program);
-		program.setChannelBean(this);
-
-		return program;
-	}
-
-	public Program removeProgram(Program program) {
-		getPrograms().remove(program);
-		program.setChannelBean(null);
-
-		return program;
-	}
 
 	public List<TimeLine> getTimeLines() {
 		return this.timeLines;

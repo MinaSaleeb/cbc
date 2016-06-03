@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
+import com.cbc.model.Channel;
 import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPage;
@@ -205,6 +206,7 @@ public class ProgramsRestController
 		 else
 		 {
 			List<ProgramPagesAdDiv> pageAds = page.getProgramPagesAdDivs();
+			List<Channel> programChannels = page.getProgramBean().getChannels();
 			// Implement ads inheratance tree page -> program -> channel
 			if(pageAds != null && !pageAds.isEmpty())
 			{
@@ -220,11 +222,18 @@ public class ProgramsRestController
 					pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				}
 			}
-			else if(page.getProgramBean().getChannelBean().getChannelsAdDivs() != null && !page.getProgramBean().getChannelBean().getChannelsAdDivs().isEmpty())
+			else if(programChannels != null && !programChannels.isEmpty())
 			{
-				for(ChannelsAdDiv ad : page.getProgramBean().getChannelBean().getChannelsAdDivs()) // channel ads
+				for(Channel c : programChannels)
 				{
-					pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+					if(c.getChannelsAdDivs() != null && !c.getChannelsAdDivs().isEmpty())
+					{
+						for(ChannelsAdDiv ad : c.getChannelsAdDivs()) // channel ads
+						{
+							pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+						}
+						break;
+					}
 				}
 			}
 			else

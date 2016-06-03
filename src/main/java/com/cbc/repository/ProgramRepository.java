@@ -3,11 +3,8 @@
  */
 package com.cbc.repository;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
-import com.cbc.model.Channel;
 import com.cbc.model.Program;
 
 /**
@@ -16,5 +13,5 @@ import com.cbc.model.Program;
  */
 public interface ProgramRepository extends CrudRepository<Program, Integer> 
 {
-	List<Program> findByChannelBean(Channel channel);
+	
 }

@@ -41,10 +41,11 @@ public class Program implements Serializable {
 	@OneToMany(mappedBy="programBean")
 	private List<Episode> episodes;
 
-	//bi-directional many-to-one association to Channel
-	@ManyToOne
-	@JoinColumn(name="channel")
-	private Channel channelBean;
+	//bi-directional many-to-many association to Channel
+	@ManyToMany
+	@JoinTable(name = "programs_channels", joinColumns = { @JoinColumn(name = "program") }, inverseJoinColumns = {
+			@JoinColumn(name = "channel") })
+	private List<Channel> channels;
 
 	//bi-directional many-to-one association to Recipe
 	@OneToMany(mappedBy="programBean")
@@ -187,12 +188,12 @@ public class Program implements Serializable {
 		return episode;
 	}
 
-	public Channel getChannelBean() {
-		return this.channelBean;
+	public List<Channel> getChannels() {
+		return this.channels;
 	}
 
-	public void setChannelBean(Channel channelBean) {
-		this.channelBean = channelBean;
+	public void setChannels(List<Channel> channels) {
+		this.channels = channels;
 	}
 
 	public List<Recipe> getRecipes() {
