@@ -6,11 +6,11 @@ import java.util.List;
 
 
 /**
- * The persistent class for the program_pages database table.
+ * The persistent class for the site_pages database table.
  * 
  */
 @Entity
-@Table(name="program_pages")
+@Table(name="site_pages")
 public class ProgramPage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -22,10 +22,9 @@ public class ProgramPage implements Serializable {
 	@Column(name="page_name")
 	private String pageName;
 
-	//bi-directional many-to-one association to Program
-	@ManyToOne
-	@JoinColumn(name="program")
-	private Program programBean;
+	//bi-directional many-to-many association to Program
+	@ManyToMany(mappedBy="programPages")
+	private List<Program> programs;
 
 	//bi-directional many-to-one association to ProgramPagesAdDiv
 	@OneToMany(mappedBy="programPage")
@@ -50,12 +49,12 @@ public class ProgramPage implements Serializable {
 		this.pageName = pageName;
 	}
 
-	public Program getProgramBean() {
-		return this.programBean;
+	public List<Program> getProgramBean() {
+		return this.programs;
 	}
 
-	public void setProgramBean(Program programBean) {
-		this.programBean = programBean;
+	public void setProgramBean(List<Program> programs) {
+		this.programs = programs;
 	}
 
 	public List<ProgramPagesAdDiv> getProgramPagesAdDivs() {

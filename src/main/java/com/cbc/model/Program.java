@@ -63,8 +63,10 @@ public class Program implements Serializable {
 	@OneToMany(mappedBy="programBean")
 	private List<ProgramNew> programNews;
 
-	//bi-directional many-to-one association to ProgramPage
-	@OneToMany(mappedBy="programBean")
+	//bi-directional many-to-many association to ProgramPage
+	@ManyToMany
+	@JoinTable(name = "programs_site_pages", joinColumns = { @JoinColumn(name = "program") }, inverseJoinColumns = {
+			@JoinColumn(name = "page_code") })
 	private List<ProgramPage> programPages;
 
 	//bi-directional many-to-one association to ProgramPromo
@@ -78,7 +80,7 @@ public class Program implements Serializable {
 	//bi-directional many-to-one association to ProgramsAdDiv
 	@OneToMany(mappedBy="programBean")
 	private List<ProgramsAdDiv> programsAdDivs;
-
+	
 	//bi-directional many-to-many association to Presenter
 	@ManyToMany
 	@JoinTable(
@@ -292,19 +294,6 @@ public class Program implements Serializable {
 		this.programPages = programPages;
 	}
 
-	public ProgramPage addProgramPage(ProgramPage programPage) {
-		getProgramPages().add(programPage);
-		programPage.setProgramBean(this);
-
-		return programPage;
-	}
-
-	public ProgramPage removeProgramPage(ProgramPage programPage) {
-		getProgramPages().remove(programPage);
-		programPage.setProgramBean(null);
-
-		return programPage;
-	}
 
 	public List<ProgramPromo> getProgramPromos() {
 		return this.programPromos;

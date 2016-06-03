@@ -26,10 +26,10 @@ import com.cbc.domain.MediaContentTuple;
 import com.cbc.model.Channel;
 import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Program;
-import com.cbc.model.ProgramPage;
 import com.cbc.model.ProgramPagesAdDiv;
 import com.cbc.model.ProgramsAdDiv;
 import com.cbc.repository.ProgramPageRepository;
+import com.cbc.repository.ProgramPagesAdDivRepository;
 import com.cbc.services.ProgramsService;
 import com.cbc.util.ModelToDomainMapper;
 
@@ -50,6 +50,9 @@ public class ProgramsRestController
 	
 	@Autowired
 	private ProgramPageRepository programPageRepo;
+	
+	@Autowired
+	private ProgramPagesAdDivRepository programPagesAdDivRepo;
 	
 	
 	
@@ -157,12 +160,27 @@ public class ProgramsRestController
 		 }
 		 
 			List<ProgramsAdDiv> programAds = prgrm.getProgramsAdDivs();
+			List<Channel> prgmChannels = prgrm.getChannels();
 			
 			if(programAds != null && !programAds.isEmpty())
 			{
 				for(ProgramsAdDiv ad : programAds)
 				{
 					programAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+				}
+			}
+			else if(prgmChannels != null && !prgmChannels.isEmpty())
+			{
+				for(Channel c : prgmChannels)
+				{
+					if(c.getChannelsAdDivs() != null && !c.getChannelsAdDivs().isEmpty())
+					{
+						for(ChannelsAdDiv ad : c.getChannelsAdDivs()) // channel ads
+						{
+							programAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+						}
+						break;
+					}
 				}
 			}
 			else
@@ -191,22 +209,17 @@ public class ProgramsRestController
 	  * 
 	  * @param pageCode
 	  * @return
+	 * @throws Exception 
 	  */
-	 @RequestMapping(value = "/page/{pageCode}/ads", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<Map<String , String>> getPageAdsScripts(@PathVariable("pageCode") String pageCode)
+	 @RequestMapping(value = "/{programId}/page/{pageCode}/ads", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<Map<String , String>> getPageAdsScripts(@PathVariable("programId") int programId ,@PathVariable("pageCode") String pageCode) throws Exception
 	 {
-		 ProgramPage page = programPageRepo.findOne(pageCode);
 		 Map<String , String> pageAdsmap = new HashMap<String , String>();
 		 
-		 if(page == null)
-		 {
-			 LOGGER.error("pageCode {"+pageCode+"} is not found in DB");
-			 return new ResponseEntity<Map<String , String>>(HttpStatus.NOT_FOUND);
-		 }
-		 else
-		 {
-			List<ProgramPagesAdDiv> pageAds = page.getProgramPagesAdDivs();
-			List<Channel> programChannels = page.getProgramBean().getChannels();
+			List<ProgramPagesAdDiv> pageAds = programPagesAdDivRepo.findByPrmIdAndPageCode(programId, pageCode);
+			Program pageProgram = programsService.retrieveProgramById(programId);
+			List<Channel> programChannels = pageProgram != null? pageProgram.getChannels():null;
+			List<ProgramsAdDiv> programAds = pageProgram != null?pageProgram.getProgramsAdDivs():null;
 			// Implement ads inheratance tree page -> program -> channel
 			if(pageAds != null && !pageAds.isEmpty())
 			{
@@ -215,9 +228,9 @@ public class ProgramsRestController
 					pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				}
 			}
-			else if(page.getProgramBean().getProgramsAdDivs() != null && !page.getProgramBean().getProgramsAdDivs().isEmpty())
+			else if(programAds != null && !programAds.isEmpty())
 			{
-				for(ProgramsAdDiv ad : page.getProgramBean().getProgramsAdDivs()) // program ads
+				for(ProgramsAdDiv ad : programAds) // program ads
 				{
 					pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				}
@@ -241,8 +254,6 @@ public class ProgramsRestController
 				LOGGER.error("pageCode {"+pageCode+"} does not have ads");
 				return new ResponseEntity<Map<String , String>>(HttpStatus.NO_CONTENT);
 			}
-		 }
-		 
 		 
 		 return new ResponseEntity<Map<String , String>>(pageAdsmap , HttpStatus.OK);
 	 }

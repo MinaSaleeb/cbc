@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +21,14 @@ import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
+import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Episode;
 import com.cbc.model.EpisodesAdDiv;
 import com.cbc.model.HubSlick;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPromo;
 import com.cbc.model.ProgramScene;
+import com.cbc.model.ProgramsAdDiv;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.EpisodeRepository;
 import com.cbc.repository.HubSlickRepository;
@@ -383,6 +387,9 @@ public class ProgramsService
 		 else
 		 {
 			 List<EpisodesAdDiv> eAds = e.getEpisodesAdDivs();
+			 Program ePrgm = e.getProgramBean();
+			 List<ProgramsAdDiv> prgmAds = ePrgm != null?ePrgm.getProgramsAdDivs():null;
+			 List<Channel> programChannels = ePrgm != null? ePrgm.getChannels():null;
 			 if(eAds != null && !eAds.isEmpty())
 			 {
 				 for(EpisodesAdDiv ad :eAds)
@@ -390,6 +397,31 @@ public class ProgramsService
 					 eposideAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				 }
 			 }
+			 else if(prgmAds != null && !prgmAds.isEmpty())
+			 {
+					for(ProgramsAdDiv ad : prgmAds) // program ads
+					{
+						eposideAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+					}
+			 }
+			 else if(programChannels != null && !programChannels.isEmpty())
+				{
+					for(Channel c : programChannels)
+					{
+						if(c.getChannelsAdDivs() != null && !c.getChannelsAdDivs().isEmpty())
+						{
+							for(ChannelsAdDiv ad : c.getChannelsAdDivs()) // channel ads
+							{
+								eposideAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+							}
+							break;
+						}
+					}
+				}
+				else
+				{
+					LOGGER.error("eposideId {"+eposideId+"} does not have ads");
+				}
 		 }
 		return eposideAdsmap;
 	}

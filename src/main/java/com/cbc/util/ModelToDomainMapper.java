@@ -23,6 +23,7 @@ public class ModelToDomainMapper
 		domChnl.setChannelBgImage(modChnl.getChannelBgImage());
 		domChnl.setLiveStreamingUrl(modChnl.getLiveStreamingUrl());
 		domChnl.setHubCarouelImage(modChnl.getHubCarouelImage());
+		domChnl.setPromoUrl(modChnl.getPromoUrl());
 	}
 	
 	public static List<com.cbc.domain.Channel> mapChannelsList(List<com.cbc.model.Channel> modChannelList)

@@ -22,6 +22,8 @@ public class Channel
 	private String liveStreamingUrl;
 	
 	private String hubCarouelImage;
+	
+	private String promoUrl;
 
 	public Channel(com.cbc.model.Channel modChnl)
 	{
@@ -111,5 +113,19 @@ public class Channel
 	 */
 	public void setHubCarouelImage(String hubCarouelImage) {
 		this.hubCarouelImage = hubCarouelImage;
+	}
+
+	/**
+	 * @return the promoUrl
+	 */
+	public String getPromoUrl() {
+		return promoUrl;
+	}
+
+	/**
+	 * @param promoUrl the promoUrl to set
+	 */
+	public void setPromoUrl(String promoUrl) {
+		this.promoUrl = promoUrl;
 	}
 }

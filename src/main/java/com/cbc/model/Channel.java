@@ -32,6 +32,9 @@ public class Channel implements Serializable {
 
 	@Column(name="live_streaming_url")
 	private String liveStreamingUrl;
+	
+	@Column(name="promo_url")
+	private String promoUrl;
 
 	//bi-directional many-to-one association to Carousel
 	@OneToMany(mappedBy="channelBean")
@@ -108,6 +111,20 @@ public class Channel implements Serializable {
 
 	public void setLiveStreamingUrl(String liveStreamingUrl) {
 		this.liveStreamingUrl = liveStreamingUrl;
+	}
+
+	/**
+	 * @return the promoUrl
+	 */
+	public String getPromoUrl() {
+		return promoUrl;
+	}
+
+	/**
+	 * @param promoUrl the promoUrl to set
+	 */
+	public void setPromoUrl(String promoUrl) {
+		this.promoUrl = promoUrl;
 	}
 
 	public List<Carousel> getCarousels() {

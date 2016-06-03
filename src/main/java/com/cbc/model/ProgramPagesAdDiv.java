@@ -29,6 +29,11 @@ public class ProgramPagesAdDiv implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="page_code", insertable=false, updatable=false)
 	private ProgramPage programPage;
+	
+	//bi-directional many-to-one association to Program
+	@ManyToOne
+	@JoinColumn(name="program")
+	private Program programBean;
 
 	public ProgramPagesAdDiv() {
 	}
@@ -63,6 +68,20 @@ public class ProgramPagesAdDiv implements Serializable {
 
 	public void setProgramPage(ProgramPage programPage) {
 		this.programPage = programPage;
+	}
+
+	/**
+	 * @return the programBean
+	 */
+	public Program getProgramBean() {
+		return programBean;
+	}
+
+	/**
+	 * @param programBean the programBean to set
+	 */
+	public void setProgramBean(Program programBean) {
+		this.programBean = programBean;
 	}
 
 }
