@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
@@ -53,7 +54,7 @@ public class TimeUtils
 		Calendar rightNow = Calendar.getInstance();
 		int hour = rightNow.get(Calendar.HOUR_OF_DAY);
 		int minutes = rightNow.get(Calendar.MINUTE);
-		float t = hour + minutes/60;
+		float t = hour + minutes/60.0f;
 		return t;
 	}
 	
@@ -68,7 +69,7 @@ public class TimeUtils
 		float t = 0.0f;
 		if(hhaaTime != null & !hhaaTime.isEmpty())
 		{
-			SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+			SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
 			try
 			{
 				Date date = parseFormat.parse(hhaaTime);
@@ -76,7 +77,11 @@ public class TimeUtils
 				calendar.setTime(date);
 				time_24 = calendar.get(Calendar.HOUR_OF_DAY);
 				int minutes = calendar.get(Calendar.MINUTE);
-				t = time_24 + minutes/60;
+				t = time_24 + minutes/60.0f;
+				if(t == 0.0)
+				{
+					t = 24.0f;
+				}
 			} catch (ParseException e) {
 				LOGGER.error("Error while formatting {"+hhaaTime+"} to date");
 				e.printStackTrace();

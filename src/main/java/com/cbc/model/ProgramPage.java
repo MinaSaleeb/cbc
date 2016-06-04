@@ -21,11 +21,11 @@ public class ProgramPage implements Serializable {
 
 	@Column(name="page_name")
 	private String pageName;
-
+/*
 	//bi-directional many-to-many association to Program
 	@ManyToMany(mappedBy="programPages")
 	private List<Program> programs;
-
+*/
 	//bi-directional many-to-one association to ProgramPagesAdDiv
 	@OneToMany(mappedBy="programPage")
 	private List<ProgramPagesAdDiv> programPagesAdDivs;
@@ -48,7 +48,7 @@ public class ProgramPage implements Serializable {
 	public void setPageName(String pageName) {
 		this.pageName = pageName;
 	}
-
+/*
 	public List<Program> getProgramBean() {
 		return this.programs;
 	}
@@ -56,7 +56,7 @@ public class ProgramPage implements Serializable {
 	public void setProgramBean(List<Program> programs) {
 		this.programs = programs;
 	}
-
+*/
 	public List<ProgramPagesAdDiv> getProgramPagesAdDivs() {
 		return this.programPagesAdDivs;
 	}

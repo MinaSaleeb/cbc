@@ -6,6 +6,7 @@ package com.cbc.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +86,7 @@ public class ScheduleService
 					ScheduleDay yesterday = getMappedScheduleDay(TimeUtils.getYesterdayDate());
 					if(yesterday != null)
 					{
-						chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, yesterday));
+						chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDayAndStartTimeEndingWith(chnl, yesterday,"%PM%"));
 					}
 				}
 				
@@ -107,8 +108,9 @@ public class ScheduleService
 					float nextTimeLineStartHour = 0;
 					float afterNextTimeLineStartHour = 0;
 					//2.1.a- NOW
-					for(TimeLine timeLine : chnlTimeLines)
+					for(Iterator<TimeLine> iterator = chnlTimeLines.iterator(); iterator.hasNext();)
 					{
+						TimeLine timeLine = iterator.next();
 						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						float timeLineEndHour = timeLineStartHour + timeLine.getDuration();
 						if(timeLineEndHour > 24 )
@@ -121,8 +123,12 @@ public class ScheduleService
 							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
 							HubTimeLine nowHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
 							nowList.add(nowHubTmLn);
-							nextTimeLineStartHour = timeLineEndHour;
+							nextTimeLineStartHour = timeLineEndHour == 24.0f?0.0f:timeLineEndHour;
 							break;
+						}
+						else//For Optimization remove the time lines before now
+						{
+							iterator.remove();
 						}
 						
 					}

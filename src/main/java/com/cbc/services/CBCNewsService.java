@@ -4,16 +4,22 @@
 package com.cbc.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
+import com.cbc.model.ChannelsAdDiv;
+import com.cbc.model.NewsAdDiv;
+import com.cbc.model.NewsCategoriesAdDiv;
 import com.cbc.model.NewsCategory;
 import com.cbc.repository.CBCNewsRepository;
 import com.cbc.repository.ChannelRepository;
@@ -24,6 +30,7 @@ import com.cbc.repository.NewsCategoryRepository;
  *
  */
 @Service
+@Transactional
 public class CBCNewsService 
 {
 	private static final Logger LOGGER = Logger.getLogger(CBCNewsService.class);
@@ -175,6 +182,100 @@ public class CBCNewsService
 			}
 		}
 		return ns;
+	}
+	
+	/**
+	 * 
+	 * @param newId
+	 * @return
+	 */
+	public Map<String , String> getNewAds(long newId)
+	{
+		Map<String , String> newAdsmap = new HashMap<String , String>();
+		
+		CbcNew n = cBCNewsRepo.findOne(newId);
+		
+		if(n == null)
+		 {
+			 LOGGER.error("newId {"+newId+"} is not found in DB");
+		 }
+		 else
+		 {
+			 List<NewsAdDiv> nAds = n.getNewsAdDivs();
+			 NewsCategory nCategory = n.getNewsCategory();
+			 List<NewsCategoriesAdDiv> categoryAds = nCategory != null?nCategory.getNewsCategoryAdDivs():null;
+			 Channel categoryChannel = nCategory != null? nCategory.getChannelBean():null;
+			 List<ChannelsAdDiv> chnlAds = categoryChannel != null?categoryChannel.getChannelsAdDivs():null;
+			 if(nAds != null && !nAds.isEmpty())
+			 {
+				 for(NewsAdDiv ad :nAds)
+				 {
+					 newAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+				 }
+			 }
+			 else if(categoryAds != null && !categoryAds.isEmpty())
+			 {
+					for(NewsCategoriesAdDiv ad : categoryAds) // program ads
+					{
+						newAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+					}
+			 }
+			 else if(chnlAds != null && !chnlAds.isEmpty())
+				{
+				 	for(ChannelsAdDiv ad : chnlAds) // channel ads
+					{
+				 		newAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+					}
+				}
+				else
+				{
+					LOGGER.error("newId {"+newId+"} does not have ads");
+				}
+		 }
+		return newAdsmap;
+	}
+	
+	/**
+	 * 
+	 * @param categoryId
+	 * @return
+	 */
+	public Map<String , String> getNewCategoryAds(int categoryId)
+	{
+		Map<String , String> newsCategoryAdsmap = new HashMap<String , String>();
+		
+		NewsCategory nc = newsCategoryRepo.findOne(categoryId);
+		
+		if(nc == null)
+		 {
+			 LOGGER.error("categoryId {"+categoryId+"} is not found in DB");
+		 }
+		 else
+		 {
+			 List<NewsCategoriesAdDiv> categoryAds = nc.getNewsCategoryAdDivs();
+			 Channel categoryChannel = nc.getChannelBean();
+			 List<ChannelsAdDiv> chnlAds = categoryChannel != null?categoryChannel.getChannelsAdDivs():null;
+
+			 if(categoryAds != null && !categoryAds.isEmpty())
+			 {
+					for(NewsCategoriesAdDiv ad : categoryAds) // program ads
+					{
+						newsCategoryAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+					}
+			 }
+			 else if(chnlAds != null && !chnlAds.isEmpty())
+				{
+				 	for(ChannelsAdDiv ad : chnlAds) // channel ads
+					{
+				 		newsCategoryAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
+					}
+				}
+				else
+				{
+					LOGGER.error("categoryId {"+categoryId+"} does not have ads");
+				}
+		 }
+		return newsCategoryAdsmap;
 	}
 	
 	

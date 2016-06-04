@@ -33,6 +33,9 @@ public class NewsCategory implements Serializable {
 	@OneToOne
 	@JoinColumn(name="featured_news")
 	private CbcNew featuredNews;
+	
+	@OneToMany(mappedBy="newsCategory")
+	private List<NewsCategoriesAdDiv> newsCategoryAdDivs;
 
 	public NewsCategory() {
 	}
@@ -95,6 +98,20 @@ public class NewsCategory implements Serializable {
 	 */
 	public void setFeaturedNews(CbcNew featuredNews) {
 		this.featuredNews = featuredNews;
+	}
+
+	/**
+	 * @return the newsCategoryAdDivs
+	 */
+	public List<NewsCategoriesAdDiv> getNewsCategoryAdDivs() {
+		return newsCategoryAdDivs;
+	}
+
+	/**
+	 * @param newsCategoryAdDivs the newsCategoryAdDivs to set
+	 */
+	public void setNewsCategoryAdDivs(List<NewsCategoriesAdDiv> newsCategoryAdDivs) {
+		this.newsCategoryAdDivs = newsCategoryAdDivs;
 	}
 
 }

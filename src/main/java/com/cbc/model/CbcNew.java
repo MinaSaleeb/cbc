@@ -48,6 +48,10 @@ public class CbcNew implements Serializable {
 	
 	private String type;
 	
+	@OneToMany(mappedBy="cbcNew")
+	private List<NewsAdDiv> newsAdDivs;
+	
+	
 	public CbcNew() {
 	}
 
@@ -155,6 +159,20 @@ public class CbcNew implements Serializable {
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the newsAdDivs
+	 */
+	public List<NewsAdDiv> getNewsAdDivs() {
+		return newsAdDivs;
+	}
+
+	/**
+	 * @param newsAdDivs the newsAdDivs to set
+	 */
+	public void setNewsAdDivs(List<NewsAdDiv> newsAdDivs) {
+		this.newsAdDivs = newsAdDivs;
 	}
 
 }
