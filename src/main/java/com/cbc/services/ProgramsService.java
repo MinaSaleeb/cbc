@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,6 @@ import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
-import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Episode;
 import com.cbc.model.EpisodesAdDiv;
 import com.cbc.model.HubSlick;
@@ -67,6 +68,9 @@ public class ProgramsService
 	
 	@Autowired
 	private ProgramPromosRepository programPromosRepo;
+	
+	@Autowired
+	private AdDivsPropagationService adDivsPropagationService;
 	
 	
 	
@@ -174,16 +178,18 @@ public class ProgramsService
 	public List<MediaContentTuple> getMostViewedList(int size)
 	{
 		List<MediaContentTuple> resultList = new ArrayList<MediaContentTuple>();
-		Pageable pageSize = new PageRequest(0, size > 2 ?size-2:size == 2? 2 :1);
+		//Pageable pageSize = new PageRequest(0, size > 2 ?size-2:size == 2? 2 :1);
+		Pageable pageSize = new PageRequest(0, size);
 		List<Episode> episodes = EpisodeRepo.findRandomEpisodes(pageSize);
+		/*
 		List<ProgramScene> imagesOrVedios = null;
 		if(size > 2)
 		{
 			pageSize = new PageRequest(0, 2);
 			imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
 		}
-		
-		return mapEpisodesAndImagesToTuple(episodes, imagesOrVedios, null, null);
+		*/
+		return mapEpisodesAndImagesToTuple(episodes, null, null, null);
 		/*
 		if(episodes != null && !episodes.isEmpty())
 		{
@@ -240,8 +246,9 @@ public class ProgramsService
 		
 		List<Episode> hubSelectedVedios = EpisodeRepo.findByHubSelected(true);
 		List<ProgramScene> hubSelectedImages = ProgramSceneRepo.findByHubSelected(true);
+		List<Program> hubSelectedPrograms = programRepository.findByHubSelected(true);
 		
-	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages, null, null);
+	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages, hubSelectedPrograms, null);
 	}
 	
 	/**
@@ -334,7 +341,7 @@ public class ProgramsService
 	{
 		List<HubSlickContent> hubSlicksList = new ArrayList<HubSlickContent>();
 		
-		List<HubSlick> slicks = (List<HubSlick>) hubSlickRepo.findAll();
+		List<HubSlick> slicks = (List<HubSlick>) hubSlickRepo.findAll(new Sort(Sort.Direction.ASC , "orderNumber"));
 		
 		if(slicks != null  && !slicks.isEmpty())
 		{
@@ -388,6 +395,8 @@ public class ProgramsService
 			 Program ePrgm = e.getProgramBean();
 			 List<ProgramsAdDiv> prgmAds = ePrgm != null?ePrgm.getProgramsAdDivs():null;
 			 List<Channel> programChannels = ePrgm != null? ePrgm.getChannels():null;
+			 Set<String> checkedDivCodes = adDivsPropagationService.getAdDivsCodes();
+			 
 			 if(eAds != null && !eAds.isEmpty())
 			 {
 				 for(EpisodesAdDiv ad :eAds)
@@ -395,31 +404,24 @@ public class ProgramsService
 					 eposideAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				 }
 			 }
-			 else if(prgmAds != null && !prgmAds.isEmpty())
+			 
+			 if(prgmAds != null && !prgmAds.isEmpty())
 			 {
-					for(ProgramsAdDiv ad : prgmAds) // program ads
-					{
-						eposideAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-					}
+				// program ads
+				adDivsPropagationService.checkMissingPrgmAdDivsFromTree(prgmAds, eposideAdsmap, checkedDivCodes);
 			 }
-			 else if(programChannels != null && !programChannels.isEmpty())
-				{
-					for(Channel c : programChannels)
-					{
-						if(c.getChannelsAdDivs() != null && !c.getChannelsAdDivs().isEmpty())
-						{
-							for(ChannelsAdDiv ad : c.getChannelsAdDivs()) // channel ads
-							{
-								eposideAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-							}
-							break;
-						}
-					}
+			 
+			 if(programChannels != null && !programChannels.isEmpty())
+			 {
+				 for(Channel c : programChannels)
+				 {
+					 if(c.getChannelsAdDivs() != null && !c.getChannelsAdDivs().isEmpty())
+					 {
+						 adDivsPropagationService.checkMissingChnlAdDivsFromTree(c.getChannelsAdDivs(),eposideAdsmap,checkedDivCodes);
+						 break;
+					 }
 				}
-				else
-				{
-					LOGGER.error("eposideId {"+eposideId+"} does not have ads");
-				}
+			}
 		 }
 		return eposideAdsmap;
 	}

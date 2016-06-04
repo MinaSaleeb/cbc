@@ -60,6 +60,7 @@ public class ModelToDomainMapper
 		domProgram.setImageBgPath(modProgram.getImageBgPath());
 		domProgram.setRecipeRatingImagePath(modProgram.getRecipeRatingImagePath());
 		domProgram.setHideProgram(modProgram.isHideProgram());
+		domProgram.setSchedule(modProgram.getSchedule());
 	}
 	
 	public static List<com.cbc.domain.Program> mapProgramsList(List<com.cbc.model.Program> modProgramList)

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import com.cbc.model.ProgramPagesAdDiv;
 import com.cbc.model.ProgramsAdDiv;
 import com.cbc.repository.ProgramPageRepository;
 import com.cbc.repository.ProgramPagesAdDivRepository;
+import com.cbc.services.AdDivsPropagationService;
 import com.cbc.services.ProgramsService;
 import com.cbc.util.ModelToDomainMapper;
 
@@ -53,6 +55,9 @@ public class ProgramsRestController
 	
 	@Autowired
 	private ProgramPagesAdDivRepository programPagesAdDivRepo;
+	
+	@Autowired
+	private AdDivsPropagationService adDivsPropagationService;
 	
 	
 	
@@ -161,6 +166,7 @@ public class ProgramsRestController
 		 
 			List<ProgramsAdDiv> programAds = prgrm.getProgramsAdDivs();
 			List<Channel> prgmChannels = prgrm.getChannels();
+			Set<String> checkedDivCodes = adDivsPropagationService.getAdDivsCodes();
 			
 			if(programAds != null && !programAds.isEmpty())
 			{
@@ -169,26 +175,18 @@ public class ProgramsRestController
 					programAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				}
 			}
-			else if(prgmChannels != null && !prgmChannels.isEmpty())
+			
+			if(prgmChannels != null && !prgmChannels.isEmpty())
 			{
 				for(Channel c : prgmChannels)
 				{
 					if(c.getChannelsAdDivs() != null && !c.getChannelsAdDivs().isEmpty())
 					{
-						for(ChannelsAdDiv ad : c.getChannelsAdDivs()) // channel ads
-						{
-							programAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-						}
+						adDivsPropagationService.checkMissingChnlAdDivsFromTree(c.getChannelsAdDivs(),programAdsmap,checkedDivCodes);
 						break;
 					}
 				}
 			}
-			else
-			{
-				LOGGER.error("programId {"+programId+"} does not have ads");
-				return new ResponseEntity<Map<String , String>>(HttpStatus.NO_CONTENT);
-			}
-		 
 		 
 		 return new ResponseEntity<Map<String , String>>(programAdsmap , HttpStatus.OK);
 	 }
@@ -220,6 +218,8 @@ public class ProgramsRestController
 			Program pageProgram = programsService.retrieveProgramById(programId);
 			List<Channel> programChannels = pageProgram != null? pageProgram.getChannels():null;
 			List<ProgramsAdDiv> programAds = pageProgram != null?pageProgram.getProgramsAdDivs():null;
+			Set<String> checkedDivCodes = adDivsPropagationService.getAdDivsCodes();
+			
 			// Implement ads inheratance tree page -> program -> channel
 			if(pageAds != null && !pageAds.isEmpty())
 			{
@@ -228,32 +228,25 @@ public class ProgramsRestController
 					pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				}
 			}
-			else if(programAds != null && !programAds.isEmpty())
+			
+			if(programAds != null && !programAds.isEmpty())
 			{
-				for(ProgramsAdDiv ad : programAds) // program ads
-				{
-					pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-				}
+				// program ads
+				adDivsPropagationService.checkMissingPrgmAdDivsFromTree(programAds, pageAdsmap, checkedDivCodes);
 			}
-			else if(programChannels != null && !programChannels.isEmpty())
+			
+			if(programChannels != null && !programChannels.isEmpty())
 			{
 				for(Channel c : programChannels)
 				{
 					if(c.getChannelsAdDivs() != null && !c.getChannelsAdDivs().isEmpty())
 					{
-						for(ChannelsAdDiv ad : c.getChannelsAdDivs()) // channel ads
-						{
-							pageAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-						}
+						adDivsPropagationService.checkMissingChnlAdDivsFromTree(c.getChannelsAdDivs(),pageAdsmap,checkedDivCodes);
 						break;
 					}
 				}
 			}
-			else
-			{
-				LOGGER.error("pageCode {"+pageCode+"} does not have ads");
-				return new ResponseEntity<Map<String , String>>(HttpStatus.NO_CONTENT);
-			}
+			
 		 
 		 return new ResponseEntity<Map<String , String>>(pageAdsmap , HttpStatus.OK);
 	 }

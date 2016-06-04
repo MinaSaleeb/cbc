@@ -28,6 +28,22 @@ public class Program
 	private String title;
 	
 	private boolean hideProgram;
+	
+	private String schedule;
+
+	/**
+	 * @return the schedule
+	 */
+	public String getSchedule() {
+		return schedule;
+	}
+
+	/**
+	 * @param schedule the schedule to set
+	 */
+	public void setSchedule(String schedule) {
+		this.schedule = schedule;
+	}
 
 	/**
 	 * 

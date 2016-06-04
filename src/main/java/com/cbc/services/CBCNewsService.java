@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class CBCNewsService
 	
 	@Autowired
 	private ChannelRepository channelRepo;
+	
+	@Autowired
+	private AdDivsPropagationService adDivsPropagationService;
 	
 	/**
 	 * 
@@ -89,7 +93,7 @@ public class CBCNewsService
 		
 		if(category != null)
 		{
-			newsList = cBCNewsRepo.findByNewsCategory(category);
+			newsList = cBCNewsRepo.findByNewsCategoryOrderByPostingDateDesc(category);
 		}
 		else
 		{
@@ -206,6 +210,7 @@ public class CBCNewsService
 			 List<NewsCategoriesAdDiv> categoryAds = nCategory != null?nCategory.getNewsCategoryAdDivs():null;
 			 Channel categoryChannel = nCategory != null? nCategory.getChannelBean():null;
 			 List<ChannelsAdDiv> chnlAds = categoryChannel != null?categoryChannel.getChannelsAdDivs():null;
+			 Set<String> checkedDivCodes = adDivsPropagationService.getAdDivsCodes();
 			 if(nAds != null && !nAds.isEmpty())
 			 {
 				 for(NewsAdDiv ad :nAds)
@@ -213,24 +218,16 @@ public class CBCNewsService
 					 newAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 				 }
 			 }
-			 else if(categoryAds != null && !categoryAds.isEmpty())
+			 
+			 if(categoryAds != null && !categoryAds.isEmpty())
 			 {
-					for(NewsCategoriesAdDiv ad : categoryAds) // program ads
-					{
-						newAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-					}
+				 adDivsPropagationService.checkMissingNewsCategoryAdDivsFromTree(categoryAds,newAdsmap,checkedDivCodes);
 			 }
-			 else if(chnlAds != null && !chnlAds.isEmpty())
-				{
-				 	for(ChannelsAdDiv ad : chnlAds) // channel ads
-					{
-				 		newAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-					}
-				}
-				else
-				{
-					LOGGER.error("newId {"+newId+"} does not have ads");
-				}
+			 
+			 if(chnlAds != null && !chnlAds.isEmpty())
+			 {
+				 	adDivsPropagationService.checkMissingChnlAdDivsFromTree(chnlAds,newAdsmap,checkedDivCodes);
+			 }
 		 }
 		return newAdsmap;
 	}
@@ -255,25 +252,20 @@ public class CBCNewsService
 			 List<NewsCategoriesAdDiv> categoryAds = nc.getNewsCategoryAdDivs();
 			 Channel categoryChannel = nc.getChannelBean();
 			 List<ChannelsAdDiv> chnlAds = categoryChannel != null?categoryChannel.getChannelsAdDivs():null;
-
+			 Set<String> checkedDivCodes = adDivsPropagationService.getAdDivsCodes();
+			 
 			 if(categoryAds != null && !categoryAds.isEmpty())
 			 {
-					for(NewsCategoriesAdDiv ad : categoryAds) // program ads
+					for(NewsCategoriesAdDiv ad : categoryAds) // category ads
 					{
 						newsCategoryAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
 					}
 			 }
-			 else if(chnlAds != null && !chnlAds.isEmpty())
-				{
-				 	for(ChannelsAdDiv ad : chnlAds) // channel ads
-					{
-				 		newsCategoryAdsmap.put(ad.getAdDiv().getDivCode(), ad.getAdScript());
-					}
-				}
-				else
-				{
-					LOGGER.error("categoryId {"+categoryId+"} does not have ads");
-				}
+			 
+			 if(chnlAds != null && !chnlAds.isEmpty())
+			 {
+				 adDivsPropagationService.checkMissingChnlAdDivsFromTree(chnlAds,newsCategoryAdsmap,checkedDivCodes);
+			 }
 		 }
 		return newsCategoryAdsmap;
 	}

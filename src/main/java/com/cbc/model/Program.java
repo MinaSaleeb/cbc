@@ -36,6 +36,12 @@ public class Program implements Serializable {
 	private String recipeRatingImagePath;
 
 	private String title;
+	
+	@Column(name="hub_selected")
+	private boolean hubSelected;
+	
+	private String schedule;
+	
 
 	//bi-directional many-to-one association to Episode
 	@OneToMany(mappedBy="programBean")
@@ -166,6 +172,34 @@ public class Program implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * @return the hubSelected
+	 */
+	public boolean isHubSelected() {
+		return hubSelected;
+	}
+
+	/**
+	 * @param hubSelected the hubSelected to set
+	 */
+	public void setHubSelected(boolean hubSelected) {
+		this.hubSelected = hubSelected;
+	}
+
+	/**
+	 * @return the schedule
+	 */
+	public String getSchedule() {
+		return schedule;
+	}
+
+	/**
+	 * @param schedule the schedule to set
+	 */
+	public void setSchedule(String schedule) {
+		this.schedule = schedule;
 	}
 
 	public List<Episode> getEpisodes() {

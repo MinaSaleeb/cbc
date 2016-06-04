@@ -18,7 +18,7 @@ import com.cbc.model.Episode;
  */
 public interface EpisodeRepository extends CrudRepository<Episode, Long> 
 {
-	@Query("select e from Episode e order by RAND()")
+	@Query("select e from Episode e INNER JOIN e.programBean.channels chnl WHERE chnl.id in (5 ,7) order by RAND()")
 	List<Episode> findRandomEpisodes(Pageable pageable);
 	
 	List<Episode> findByHubSelected(boolean hubSelected);

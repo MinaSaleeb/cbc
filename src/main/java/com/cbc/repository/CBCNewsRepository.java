@@ -18,12 +18,12 @@ import java.util.List;
  */
 public interface CBCNewsRepository extends CrudRepository<CbcNew, Long> 
 {
-	List<CbcNew> findByNewsCategory(NewsCategory newsCategory);
+	List<CbcNew> findByNewsCategoryOrderByPostingDateDesc(NewsCategory newsCategory);
 	
-	@Query("SELECT n FROM CbcNew n WHERE n.newsCategory.channelBean.id = :channelId")
+	@Query("SELECT n FROM CbcNew n WHERE n.newsCategory.channelBean.id = :channelId ORDER BY n.postingDate DESC")
 	List<CbcNew> findByChannelId(@Param("channelId") int channelId);
 	
-	@Query("SELECT n FROM CbcNew n WHERE n.newsCategory.id= :categoryId AND n.videoUrl IS NOT NULL AND LENGTH(n.videoUrl) > 0")
+	@Query("SELECT n FROM CbcNew n WHERE n.newsCategory.id= :categoryId AND n.videoUrl IS NOT NULL AND LENGTH(n.videoUrl) > 0 ORDER BY n.postingDate DESC")
 	List<CbcNew> findNewsWzVideosByCategoryId(@Param("categoryId") int categoryId);
 	
 	@Query("SELECT n FROM CbcNew n WHERE n.newsCategory.id= :categoryId ORDER BY n.postingDate DESC")

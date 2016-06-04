@@ -21,6 +21,9 @@ public class HubSlick implements Serializable {
 
 	private String title;
 	
+	@Column(name="order_number")
+	private int orderNumber;
+	
 	@OneToMany(mappedBy = "hubSlick")
 	private List<Episode> episodes;
 	
@@ -50,6 +53,20 @@ public class HubSlick implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * @return the orderNumber
+	 */
+	public int getOrderNumber() {
+		return orderNumber;
+	}
+
+	/**
+	 * @param orderNumber the orderNumber to set
+	 */
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
 	}
 
 	/**
