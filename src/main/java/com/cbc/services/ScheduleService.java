@@ -113,16 +113,17 @@ public class ScheduleService
 						TimeLine timeLine = iterator.next();
 						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						float timeLineEndHour = timeLineStartHour + timeLine.getDuration();
-						if(timeLineEndHour > 24 )
-						{
-							timeLineEndHour = timeLineEndHour-24;
-							timeLineStartHour = timeLineStartHour -24;
-						}
+						
 						if(currentHour >= timeLineStartHour && currentHour < timeLineEndHour) 
 						{
 							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
 							HubTimeLine nowHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
 							nowList.add(nowHubTmLn);
+							if(timeLineEndHour > 24 )
+							{
+								timeLineEndHour = timeLineEndHour-24;
+								timeLineStartHour = timeLineStartHour<24?timeLineStartHour:timeLineStartHour-24;
+							}
 							nextTimeLineStartHour = timeLineEndHour == 24.0f?0.0f:timeLineEndHour;
 							break;
 						}
