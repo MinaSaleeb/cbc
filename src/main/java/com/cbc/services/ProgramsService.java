@@ -181,6 +181,27 @@ public class ProgramsService
 		//Pageable pageSize = new PageRequest(0, size > 2 ?size-2:size == 2? 2 :1);
 		Pageable pageSize = new PageRequest(0, size);
 		List<Episode> episodes = EpisodeRepo.findRandomEpisodes(pageSize);
+		
+		if(episodes != null && !episodes.isEmpty())
+		{
+			int episodesSize = episodes.size();
+			if(episodesSize == size)
+			{
+				pageSize = new PageRequest(0, size/2);
+				for(int i = 0;i <size/2; i++ )
+				{
+					episodes.remove(i);
+				}
+				
+			}
+			else if(episodesSize < size)
+			{
+				pageSize = new PageRequest(0, size - episodesSize);
+			}
+			
+		}
+		
+		List<ProgramPromo> promos = programPromosRepo.findRandomProgramPromos(pageSize);
 		/*
 		List<ProgramScene> imagesOrVedios = null;
 		if(size > 2)
@@ -189,7 +210,7 @@ public class ProgramsService
 			imagesOrVedios = ProgramSceneRepo.findRandomProgramScene(pageSize);
 		}
 		*/
-		return mapEpisodesAndImagesToTuple(episodes, null, null, null);
+		return mapEpisodesAndImagesToTuple(episodes, null, null, promos);
 		/*
 		if(episodes != null && !episodes.isEmpty())
 		{

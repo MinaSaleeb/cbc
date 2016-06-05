@@ -5,6 +5,7 @@ package com.cbc.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +20,7 @@ public interface ProgramPromosRepository extends CrudRepository<ProgramPromo, Lo
 {
 	@Query("select pp from ProgramPromo pp Where pp.programBean.id= :programId")
 	List<ProgramPromo> findByProgramId(@Param("programId") int programId);
+	
+	@Query("select pp from ProgramPromo pp order by RAND()")
+	List<ProgramPromo> findRandomProgramPromos(Pageable pageable);
 }
