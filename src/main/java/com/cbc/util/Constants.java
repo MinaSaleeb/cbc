@@ -23,4 +23,8 @@ public interface Constants
 		PROGRAM,
 		PROMO
 	}
+	
+	public static final String PAGE_NUMBER_PARAM_NAME = "pageNumber";
+	
+	public static final String PAGE_SIZE_PARAM_NAME = "size";
 }

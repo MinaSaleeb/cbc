@@ -22,6 +22,7 @@ import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.NewsAdDiv;
 import com.cbc.model.NewsCategoriesAdDiv;
 import com.cbc.model.NewsCategory;
+import com.cbc.model.NewsContent;
 import com.cbc.repository.CBCNewsRepository;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.NewsCategoryRepository;
@@ -83,9 +84,10 @@ public class CBCNewsService
 	/**
 	 * 
 	 * @param newsCategoryId
+	 * @param page TODO
 	 * @return
 	 */
-	public List<CbcNew> getCbcNewsByCategoryId(int newsCategoryId)
+	public List<CbcNew> getCbcNewsByCategoryId(int newsCategoryId, Pageable page)
 	{
 		List<CbcNew> newsList = new ArrayList<CbcNew>();
 		
@@ -93,7 +95,7 @@ public class CBCNewsService
 		
 		if(category != null)
 		{
-			newsList = cBCNewsRepo.findByNewsCategoryOrderByPostingDateDesc(category);
+			newsList = cBCNewsRepo.findByNewsCategoryOrderByPostingDateDesc(category,page);
 		}
 		else
 		{
@@ -116,12 +118,23 @@ public class CBCNewsService
 	
 	/**
 	 * 
+	 * @param newId
+	 * @return
+	 */
+	public NewsContent getNewsContentById(long newId)
+	{
+		return cBCNewsRepo.getNewsContentById(newId);
+	}
+	
+	
+	/**
+	 * 
 	 * @param channelId
 	 * @return
 	 */
-	public List<CbcNew> getCbcNewsByChannelId(int channelId)
+	public List<CbcNew> getCbcNewsByChannelId(int channelId, Pageable page)
 	{
-		return cBCNewsRepo.findByChannelId(channelId);
+		return cBCNewsRepo.findByChannelId(channelId,page);
 	}
 	
 	/**
@@ -129,9 +142,9 @@ public class CBCNewsService
 	 * @param categoryId
 	 * @return
 	 */
-	public List<CbcNew> findNewsWzVideosByCategoryId(int categoryId)
+	public List<CbcNew> findNewsWzVideosByCategoryId(int categoryId, Pageable page)
 	{
-		return cBCNewsRepo.findNewsWzVideosByCategoryId(categoryId);
+		return cBCNewsRepo.findNewsWzVideosByCategoryId(categoryId, page);
 	}
 	
 	/**
@@ -163,26 +176,30 @@ public class CBCNewsService
 	 * @param size
 	 * @return
 	 */
-	public List<CbcNew> findNMostLatestNewsBycategoryId(int categoryId, int size)
+	public List<CbcNew> findNMostLatestNewsBycategoryId(int categoryId, Pageable page)
 	{
-		Pageable pageSize = new PageRequest(0, size > 1 ?size:1);
-		return cBCNewsRepo.findNMostLatestNewsBycategoryId(categoryId, pageSize);
+		//Pageable pageSize = new PageRequest(0, size > 1 ?size:1);
+		return cBCNewsRepo.findNMostLatestNewsBycategoryId(categoryId, page);
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<CbcNew> findVarietyNews()
+	public List<CbcNew> findVarietyNews(Pageable page)
 	{
 		List<NewsCategory> cats = (List<NewsCategory>) newsCategoryRepo.findAll();
 		List<CbcNew> ns = new ArrayList<CbcNew>();
-		Pageable pageSize = new PageRequest(1, 10);
+		if(page.getPageSize() == 0 )
+		{
+			page = new PageRequest(0, 10);
+		}
+		
 		if(cats != null && !cats.isEmpty())
 		{
 			for(NewsCategory cat : cats)
 			{
-				ns.addAll(cBCNewsRepo.findNMostLatestNewsBycategoryId(cat.getId(), pageSize));
+				ns.addAll(cBCNewsRepo.findNMostLatestNewsBycategoryId(cat.getId(), page));
 			}
 		}
 		return ns;

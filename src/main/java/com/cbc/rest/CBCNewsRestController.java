@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.model.CbcNew;
 import com.cbc.model.NewsCategory;
+import com.cbc.model.NewsContent;
 import com.cbc.services.CBCNewsService;
+import com.cbc.util.CommonUtils;
+import com.cbc.util.Constants;
 import com.cbc.util.ModelToDomainMapper;
 
 /**
@@ -86,9 +89,21 @@ public class CBCNewsRestController
 	 * @return
 	 */
 	@RequestMapping(value = "/getByCategoryId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getByCategoryId(@RequestParam(required = true , value = "categoryId") int categoryId)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getByCategoryId(@RequestParam(required = true , value = "categoryId") int categoryId,
+			 															@RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber,
+			 															@RequestParam(required = false , value = Constants.PAGE_SIZE_PARAM_NAME) Integer pageSize)
 	 {
-		List<CbcNew> newsList = cBCNewsService.getCbcNewsByCategoryId(categoryId);
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 if(pageSize == null)
+		 {
+			 pageSize = new Integer(0);
+		 }
+		
+		List<CbcNew> newsList = cBCNewsService.getCbcNewsByCategoryId(categoryId, CommonUtils.getPageableObj(pageNumber, pageSize));
 		
 		if(newsList != null && !newsList.isEmpty())
 		{
@@ -108,14 +123,15 @@ public class CBCNewsRestController
 	 public ResponseEntity<com.cbc.domain.CbcNew> getNewById(@PathVariable("id") int newId)
 	 {
 		CbcNew cbcNew = cBCNewsService.getCbcNewsById(newId);
+		NewsContent content = cBCNewsService.getNewsContentById(newId);
 		
-		if(cbcNew == null)
+		if(cbcNew == null || content == null)
 		{
 			LOGGER.error("newId {"+newId+"} is not found in DB");
 			return new ResponseEntity<com.cbc.domain.CbcNew>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<com.cbc.domain.CbcNew>(new com.cbc.domain.CbcNew(cbcNew) , HttpStatus.OK);
+		return new ResponseEntity<com.cbc.domain.CbcNew>(new com.cbc.domain.CbcNew(cbcNew, content.getContent()) , HttpStatus.OK);
 	 }
 	
 	@RequestMapping(value = "/{id}/ads", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -125,16 +141,39 @@ public class CBCNewsRestController
 	 }
 	
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId,
+			 														   @RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber,
+			 														   @RequestParam(required = false , value = Constants.PAGE_SIZE_PARAM_NAME) Integer pageSize)
 	 {
-		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.getCbcNewsByChannelId(channelId)) , HttpStatus.OK);
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 if(pageSize == null)
+		 {
+			 pageSize = new Integer(0);
+		 }
+		 
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.getCbcNewsByChannelId(channelId, CommonUtils.getPageableObj(pageNumber, pageSize))) , HttpStatus.OK);
 	 }
 	 
 	 
 	 @RequestMapping(value = "/wzVideos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<com.cbc.domain.CbcNew>> findNewsWzVideosByCategoryId(@RequestParam(required = true , value = "categoryId") int categoryId)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> findNewsWzVideosByCategoryId(@RequestParam(required = true , value = "categoryId") int categoryId,
+			   																		 @RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber,
+			   																		 @RequestParam(required = false , value = Constants.PAGE_SIZE_PARAM_NAME) Integer pageSize)
 	 {
-		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNewsWzVideosByCategoryId(categoryId)) , HttpStatus.OK);
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 if(pageSize == null)
+		 {
+			 pageSize = new Integer(0);
+		 }
+		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNewsWzVideosByCategoryId(categoryId, CommonUtils.getPageableObj(pageNumber.intValue(), pageSize.intValue()))) , HttpStatus.OK);
 	 }
 	 
 	 
@@ -156,15 +195,31 @@ public class CBCNewsRestController
 	 }
 	 
 	 @RequestMapping(value = "/categories/{categoryId}/latestNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<com.cbc.domain.CbcNew>> findNMostLatestNewsBycategoryId(@PathVariable("categoryId") int categoryId, @RequestParam(required = true , value = "size") int size)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> findNMostLatestNewsBycategoryId(@PathVariable("categoryId") int categoryId, @RequestParam(required = true , value = "size") int size,
+			   																			@RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber)
 	 {
-		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNMostLatestNewsBycategoryId(categoryId, size)) , HttpStatus.OK);
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNMostLatestNewsBycategoryId(categoryId, CommonUtils.getPageableObj(pageNumber, size))) , HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/varietyNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getVarietyNews()
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getVarietyNews( @RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber,
+			   @RequestParam(required = false , value = Constants.PAGE_SIZE_PARAM_NAME) Integer pageSize)
 	 {
-		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findVarietyNews()) , HttpStatus.OK);
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 if(pageSize == null)
+		 {
+			 pageSize = new Integer(0);
+		 }
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findVarietyNews(CommonUtils.getPageableObj(pageNumber, pageSize))) , HttpStatus.OK);
 	 }
 	 
 }

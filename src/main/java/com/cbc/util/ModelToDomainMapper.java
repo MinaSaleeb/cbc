@@ -88,10 +88,12 @@ public class ModelToDomainMapper
 		domCbcNew.setDescription(modCbcNew.getDescription());
 		domCbcNew.setPostingDate(modCbcNew.getPostingDate());
 		domCbcNew.setPhotoPath(modCbcNew.getPhotoPath());
+		/*
 		if(modCbcNew.getNewsContent() != null)
 		{
 			domCbcNew.setContent(modCbcNew.getNewsContent().getContent());
 		}
+		*/
 		domCbcNew.setVideoUrl(modCbcNew.getVideoUrl());
 		domCbcNew.setType(modCbcNew.getType());
 	}

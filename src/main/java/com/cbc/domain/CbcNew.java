@@ -39,6 +39,13 @@ public class CbcNew
 		super();
 		ModelToDomainMapper.mapCBCNew(n , this);
 	}
+	
+	public CbcNew(com.cbc.model.CbcNew n, String content) 
+	{
+		super();
+		ModelToDomainMapper.mapCBCNew(n , this);
+		this.content = content;
+	}
 
 	/**
 	 * @return the id

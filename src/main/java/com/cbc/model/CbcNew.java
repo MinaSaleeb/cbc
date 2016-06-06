@@ -35,14 +35,6 @@ public class CbcNew implements Serializable {
 	@JoinColumn(name="category")
 	private NewsCategory newsCategory;
 
-	//bi-directional one-to-one association to NewsContent
-	@OneToOne(mappedBy="cbcNew")
-	private NewsContent newsContent;
-
-	//bi-directional many-to-one association to ProgramNew
-	@OneToMany(mappedBy="cbcNew")
-	private List<ProgramNew> programNews;
-	
 	@Column(name="video_url")
 	private String videoUrl;
 	
@@ -103,35 +95,6 @@ public class CbcNew implements Serializable {
 		this.newsCategory = newsCategory;
 	}
 
-	public NewsContent getNewsContent() {
-		return this.newsContent;
-	}
-
-	public void setNewsContent(NewsContent newsContent) {
-		this.newsContent = newsContent;
-	}
-
-	public List<ProgramNew> getProgramNews() {
-		return this.programNews;
-	}
-
-	public void setProgramNews(List<ProgramNew> programNews) {
-		this.programNews = programNews;
-	}
-
-	public ProgramNew addProgramNew(ProgramNew programNew) {
-		getProgramNews().add(programNew);
-		programNew.setCbcNew(this);
-
-		return programNew;
-	}
-
-	public ProgramNew removeProgramNew(ProgramNew programNew) {
-		getProgramNews().remove(programNew);
-		programNew.setCbcNew(null);
-
-		return programNew;
-	}
 
 	/**
 	 * @return the videoUrl
