@@ -104,13 +104,13 @@ public class ScheduleService
 				//2.1 - Specify what is displaying (now , next , after next) for the current channel.
 				if(chnlTimeLines != null && !chnlTimeLines.isEmpty())
 				{
-					float currentHour = TimeUtils.getCurrentHourAs_24();
-					float nextTimeLineStartHour = 0;
-					float afterNextTimeLineStartHour = 0;
+					float nextTimeLineStartHour = TimeUtils.getCurrentHourAs_24();
+					float afterNextTimeLineStartHour = TimeUtils.getCurrentHourAs_24();
 					//2.1.a- NOW
 					for(Iterator<TimeLine> iterator = chnlTimeLines.iterator(); iterator.hasNext();)
 					{
 						TimeLine timeLine = iterator.next();
+						float currentHour = TimeUtils.getCurrentHourAs_24();
 						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
 						float timeLineEndHour = timeLineStartHour + timeLine.getDuration();
 						if(timeLineEndHour > 24 )
@@ -132,42 +132,52 @@ public class ScheduleService
 						}
 						else//For Optimization remove the time lines before now
 						{
-							iterator.remove();
+							//iterator.remove();
 						}
 						
 					}
 					//2.1.b- NEXT
-					for(TimeLine timeLine : chnlTimeLines)
+					if(chnlTimeLines != null && !chnlTimeLines.isEmpty())
 					{
-						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
-						float timeLineEndHour = timeLineStartHour + timeLine.getDuration();
-						if(timeLineEndHour > 24 )
+						for(Iterator<TimeLine> iterator = chnlTimeLines.iterator(); iterator.hasNext();)
 						{
-							timeLineEndHour = timeLineEndHour-24;
-							timeLineStartHour = timeLineStartHour -24;
+							TimeLine timeLine = iterator.next();
+							float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
+							float timeLineEndHour = timeLineStartHour + timeLine.getDuration();
+							if(timeLineEndHour > 24 )
+							{
+								timeLineEndHour = timeLineEndHour-24;
+								timeLineStartHour = timeLineStartHour -24;
+							}
+							if(timeLineStartHour >= nextTimeLineStartHour) 
+							{
+								com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
+								HubTimeLine nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								nextList.add(nextHubTmLn);
+								afterNextTimeLineStartHour = timeLineEndHour;
+								break;
+							}
+							else//For Optimization remove the time lines before now
+							{
+								//iterator.remove();
+							}
 						}
-						if(nextTimeLineStartHour == timeLineStartHour) 
-						{
-							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
-							HubTimeLine nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
-							nextList.add(nextHubTmLn);
-							afterNextTimeLineStartHour = timeLineEndHour;
-							break;
-						}
-						
 					}
 					//2.1.c- AFTER NEXT
-					for(TimeLine timeLine : chnlTimeLines)
+					if(chnlTimeLines != null && !chnlTimeLines.isEmpty())
 					{
-						float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
-						if(afterNextTimeLineStartHour == timeLineStartHour) 
+						for(TimeLine timeLine : chnlTimeLines)
 						{
-							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
-							HubTimeLine afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
-							afterNextList.add(afterNextHubTmLn);
-							break;
+							float timeLineStartHour = TimeUtils.convert_hhaa_to_24(timeLine.getStartTime());
+							if(timeLineStartHour >= afterNextTimeLineStartHour) 
+							{
+								com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
+								HubTimeLine afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								afterNextList.add(afterNextHubTmLn);
+								break;
+							}
+							
 						}
-						
 					}
 					
 				}
