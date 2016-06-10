@@ -3,6 +3,7 @@
  */
 package com.cbc.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,6 +20,10 @@ public class TimeUtils
 {
 	
 	private static final Logger LOGGER = Logger.getLogger(TimeUtils.class);
+	
+	private static final DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+	
+	private static final DateFormat dtf = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.ENGLISH);
 	
 	/**
 	 * 
@@ -78,10 +83,12 @@ public class TimeUtils
 				time_24 = calendar.get(Calendar.HOUR_OF_DAY);
 				int minutes = calendar.get(Calendar.MINUTE);
 				t = time_24 + minutes/60.0f;
+				/*
 				if(t == 0.0)
 				{
 					t = 24.0f;
 				}
+				*/
 			} catch (ParseException e) {
 				LOGGER.error("Error while formatting {"+hhaaTime+"} to date");
 				e.printStackTrace();
@@ -90,5 +97,38 @@ public class TimeUtils
 		
 		
 		return t;
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @param hhaaTime
+	 * @return
+	 */
+	public static Date getDateTime(Date date,String hhaaTime)
+	{
+		String dateTimeFormat = df.format(date)+" "+hhaaTime;
+		Date result = null;
+		try 
+		{
+			result = dtf.parse(dateTimeFormat);
+		} catch (ParseException e) 
+		{
+			LOGGER.error("Faild to parse date : "+dateTimeFormat);
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	
+	public static Date addMinuts(Date date,float duration)
+	{
+		Calendar cal = Calendar.getInstance();
+		 cal.setTime(date);
+		 int minuts = (int) (60 * duration);
+		 cal.add(Calendar.MINUTE, minuts);
+		 
+		 return cal.getTime();
 	}
 }

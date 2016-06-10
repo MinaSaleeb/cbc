@@ -1,7 +1,18 @@
 package com.cbc.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.cbc.util.TimeUtils;
 
@@ -33,7 +44,7 @@ public class TimeLine implements Serializable {
 	private Channel channelBean;
 
 	//bi-directional many-to-one association to Program
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="program")
 	private Program programBean;
 
@@ -44,6 +55,12 @@ public class TimeLine implements Serializable {
 	
 	@Transient
 	private boolean playingNow = false;
+	
+	@Transient
+	private Date startDateTime;
+	
+	@Transient
+	private Date endDateTime;
 
 	
 	public TimeLine() {
@@ -120,6 +137,33 @@ public class TimeLine implements Serializable {
 		}
 		
 		return false;
+	}
+
+	/**
+	 * @return the startDateTime
+	 */
+	@Transient
+	public Date getStartDateTime() 
+	{
+		if(this.startDateTime == null)
+		{
+			this.startDateTime = TimeUtils.getDateTime(this.scheduleDay.getActualDate() , this.startTime);
+		}
+		return this.startDateTime;
+	}
+
+	/**
+	 * @return the endDateTime
+	 */
+	@Transient
+	public Date getEndDateTime() 
+	{
+		if(this.endDateTime == null)
+		{
+			this.endDateTime = TimeUtils.addMinuts(getStartDateTime(), this.duration);
+		}
+		
+		return this.endDateTime;
 	}
 
 }

@@ -47,7 +47,7 @@ public class ScheduleRestController
 	@RequestMapping(value = "/hub/timeline", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String,List<HubTimeLine>>> getHubPageTimeLine()
 	{
-		return new ResponseEntity<Map<String,List<HubTimeLine>>>(scheduleService.getHubTimeLine(),HttpStatus.OK);
+		return new ResponseEntity<Map<String,List<HubTimeLine>>>(scheduleService.getHubTimeLineV2(),HttpStatus.OK);
 	}
 	
 	/**

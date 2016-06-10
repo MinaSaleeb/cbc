@@ -30,7 +30,8 @@ public class HubSlick implements Serializable {
 	@OneToMany(mappedBy = "hubSlick")
 	private List<ProgramScene> programScenes;
 	
-	@OneToMany(mappedBy = "hubSlick")
+	@OneToMany
+	@JoinColumn(name="hub_slick")
 	private List<Program> programs;
 	
 	@OneToMany(mappedBy = "hubSlick")

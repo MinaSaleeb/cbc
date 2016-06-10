@@ -4,6 +4,8 @@
 package com.cbc.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +15,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cbc.domain.HubTimeLine;
 import com.cbc.domain.Schedule;
@@ -31,6 +34,7 @@ import com.cbc.util.TimeUtils;
  *
  */
 @Service
+@Transactional
 public class ScheduleService 
 {
 	private static final Logger LOGGER = Logger.getLogger(ScheduleService.class);
@@ -179,6 +183,131 @@ public class ScheduleService
 							
 						}
 					}
+					
+				}
+			}
+		}
+		
+		
+		
+		hubTimeLineMap.put(Constants.TimeLineStages.NOW.name(), nowList);
+		hubTimeLineMap.put(Constants.TimeLineStages.NEXT.name(), nextList);
+		hubTimeLineMap.put(Constants.TimeLineStages.AFTER_NEXT.name(), afterNextList);
+		
+		return hubTimeLineMap;
+	}
+	
+	public Map<String , List<HubTimeLine>> getHubTimeLineV2()
+	{
+		Map<String,List<HubTimeLine>> hubTimeLineMap = new HashMap<String,List<HubTimeLine>>();
+		List<HubTimeLine> nowList = new ArrayList<HubTimeLine>();
+		List<HubTimeLine> nextList = new ArrayList<HubTimeLine>();
+		List<HubTimeLine> afterNextList = new ArrayList<HubTimeLine>();
+		
+		//1- list all channels
+		List<Channel> allChannels = (List<Channel>) channelRepo.findAll();
+		if(allChannels != null && !allChannels.isEmpty())
+		{
+			ScheduleDay today = getMappedScheduleDay(TimeUtils.getTodayDate());
+			
+			//2- loop on each channel to get its schedule by today date
+			for(Channel chnl : allChannels)
+			{
+				List<TimeLine> chnlTimeLines = new ArrayList<TimeLine>();
+				//Yesterday
+				ScheduleDay yesterday = getMappedScheduleDay(TimeUtils.getYesterdayDate());
+				if(yesterday != null)
+				{
+					chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, yesterday));
+				}
+				//Today
+				chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, today));
+				//Tomorrow
+				ScheduleDay tomorrow = getMappedScheduleDay(TimeUtils.getTomorrowDate());
+				if(tomorrow != null)
+				{
+					chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, tomorrow));
+				}
+				
+				
+				//2.1 - Specify what is displaying (now , next , after next) for the current channel.
+				if(chnlTimeLines != null && !chnlTimeLines.isEmpty())
+				{
+					//order the list by start date ASC
+					Collections.sort(chnlTimeLines, new Comparator<TimeLine>(){
+						@Override
+						public int compare(TimeLine o1, TimeLine o2) {
+							if (o1.getStartDateTime() == null || o2.getStartDateTime() == null)
+							{
+						        return 0;
+							}
+						      return o1.getStartDateTime().compareTo(o2.getStartDateTime());
+						}});
+					
+					boolean isThereGap = true;
+					List<TimeLine> afterNowchnlTimeLines = new ArrayList<TimeLine>();
+					//2.1.a- NOW
+					for(Iterator<TimeLine> iterator = chnlTimeLines.iterator(); iterator.hasNext();)
+					{
+						TimeLine timeLine = iterator.next();
+						Date now = new Date();
+						//NOW
+						if((now.after(timeLine.getStartDateTime()) || now.equals(timeLine.getStartDateTime())) && now.before(timeLine.getEndDateTime()))
+						{
+							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
+							HubTimeLine nowHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+							nowList.add(nowHubTmLn);
+							if(iterator.hasNext()) //NEXT
+							{
+								timeLine = iterator.next();
+								HubTimeLine nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								nextList.add(nextHubTmLn);
+							}
+							
+							if(iterator.hasNext()) //AFTER NEXT
+							{
+								timeLine = iterator.next();
+								HubTimeLine afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								afterNextList.add(afterNextHubTmLn);
+							}
+							isThereGap = false;
+							break;
+						}
+						
+						if(now.before(timeLine.getStartDateTime()))
+						{
+							afterNowchnlTimeLines.add(timeLine);
+						}
+					}
+					
+					if(isThereGap)
+					{
+						for(Iterator<TimeLine> iterator = afterNowchnlTimeLines.iterator(); iterator.hasNext();)
+						{
+							TimeLine timeLine = iterator.next();
+							Date now = new Date();
+							
+							if((now.before(timeLine.getStartDateTime())))
+							{
+								com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
+								if(iterator.hasNext()) //NEXT
+								{
+									HubTimeLine nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+									nextList.add(nextHubTmLn);
+								}
+								
+								if(iterator.hasNext()) //AFTER NEXT
+								{
+									timeLine = iterator.next();
+									HubTimeLine afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+									afterNextList.add(afterNextHubTmLn);
+								}
+								break;
+							}
+						}
+					}
+					
+					
 					
 				}
 			}
