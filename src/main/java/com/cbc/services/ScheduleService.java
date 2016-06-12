@@ -218,15 +218,18 @@ public class ScheduleService
 				ScheduleDay yesterday = getMappedScheduleDay(TimeUtils.getYesterdayDate());
 				if(yesterday != null)
 				{
-					chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, yesterday));
+					//chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, yesterday));
+					chnlTimeLines.addAll(timeLineRepo.findByChannelIdAndDayId(chnl.getId(), yesterday.getId()));
 				}
 				//Today
-				chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, today));
+				//chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, today));
+				chnlTimeLines.addAll(timeLineRepo.findByChannelIdAndDayId(chnl.getId(), today.getId()));
 				//Tomorrow
 				ScheduleDay tomorrow = getMappedScheduleDay(TimeUtils.getTomorrowDate());
 				if(tomorrow != null)
 				{
-					chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, tomorrow));
+					//chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, tomorrow));
+					chnlTimeLines.addAll(timeLineRepo.findByChannelIdAndDayId(chnl.getId(), tomorrow.getId()));
 				}
 				
 				

@@ -1,9 +1,16 @@
 package com.cbc.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -23,10 +30,6 @@ public class ScheduleDay implements Serializable {
 	@Column(name="actual_date")
 	private Date actualDate;
 
-	//bi-directional many-to-one association to TimeLine
-	@OneToMany(mappedBy="scheduleDay")
-	private List<TimeLine> timeLines;
-
 	public ScheduleDay() {
 	}
 
@@ -45,27 +48,4 @@ public class ScheduleDay implements Serializable {
 	public void setActualDate(Date actualDate) {
 		this.actualDate = actualDate;
 	}
-
-	public List<TimeLine> getTimeLines() {
-		return this.timeLines;
-	}
-
-	public void setTimeLines(List<TimeLine> timeLines) {
-		this.timeLines = timeLines;
-	}
-
-	public TimeLine addTimeLine(TimeLine timeLine) {
-		getTimeLines().add(timeLine);
-		timeLine.setScheduleDay(this);
-
-		return timeLine;
-	}
-
-	public TimeLine removeTimeLine(TimeLine timeLine) {
-		getTimeLines().remove(timeLine);
-		timeLine.setScheduleDay(null);
-
-		return timeLine;
-	}
-
 }

@@ -39,7 +39,7 @@ public class TimeLine implements Serializable {
 	private String startTime;
 
 	//bi-directional many-to-one association to Channel
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="channel")
 	private Channel channelBean;
 
