@@ -34,6 +34,9 @@ public class NewsCategory implements Serializable {
 	@JoinColumn(name="featured_news")
 	private CbcNew featuredNews;
 	
+	@Column(name="bg_image")
+	private String bgImage;
+	
 	@OneToMany(mappedBy="newsCategory")
 	private List<NewsCategoriesAdDiv> newsCategoryAdDivs;
 
@@ -98,6 +101,20 @@ public class NewsCategory implements Serializable {
 	 */
 	public void setFeaturedNews(CbcNew featuredNews) {
 		this.featuredNews = featuredNews;
+	}
+
+	/**
+	 * @return the bgImage
+	 */
+	public String getBgImage() {
+		return bgImage;
+	}
+
+	/**
+	 * @param bgImage the bgImage to set
+	 */
+	public void setBgImage(String bgImage) {
+		this.bgImage = bgImage;
 	}
 
 	/**

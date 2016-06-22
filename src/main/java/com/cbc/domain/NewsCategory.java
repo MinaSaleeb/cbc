@@ -15,6 +15,8 @@ public class NewsCategory
 	
 	private String categoryName;
 	
+	private String bgImage;
+	
 	
 	
 
@@ -53,6 +55,20 @@ public class NewsCategory
 	 */
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+
+	/**
+	 * @return the bgImage
+	 */
+	public String getBgImage() {
+		return bgImage;
+	}
+
+	/**
+	 * @param bgImage the bgImage to set
+	 */
+	public void setBgImage(String bgImage) {
+		this.bgImage = bgImage;
 	}
 	
 	

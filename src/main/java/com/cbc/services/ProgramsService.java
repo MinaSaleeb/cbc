@@ -257,6 +257,14 @@ public class ProgramsService
 		*/
 	}
 	
+	public List<MediaContentTuple> getMostViewedListV2(int size)
+	{
+		Pageable pageSize = new PageRequest(0, size);
+		List<Episode> episodes = EpisodeRepo.findLatestEpisodes(pageSize);
+		
+		return mapEpisodesAndImagesToTuple(episodes, null, null, null);
+	}
+	
 	/**
 	 * 
 	 * @return

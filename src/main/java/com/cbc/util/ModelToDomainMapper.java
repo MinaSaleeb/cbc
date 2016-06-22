@@ -117,6 +117,7 @@ public class ModelToDomainMapper
 	{
 		domNewsCategory.setId(modNewsCategory.getId());
 		domNewsCategory.setCategoryName(modNewsCategory.getCategoryName());
+		domNewsCategory.setBgImage(modNewsCategory.getBgImage());
 		
 	}
 	

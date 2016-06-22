@@ -26,6 +26,7 @@ import com.cbc.model.NewsContent;
 import com.cbc.repository.CBCNewsRepository;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.NewsCategoryRepository;
+import com.cbc.repository.ProgramNewsRepository;
 
 /**
  * @author Mina Saleeb
@@ -48,6 +49,9 @@ public class CBCNewsService
 	
 	@Autowired
 	private AdDivsPropagationService adDivsPropagationService;
+	
+	@Autowired
+	private ProgramNewsRepository programNewsRepo;
 	
 	/**
 	 * 
@@ -287,6 +291,15 @@ public class CBCNewsService
 		return newsCategoryAdsmap;
 	}
 	
-	
+	/**
+	 * 
+	 * @param channelId
+	 * @param page
+	 * @return
+	 */
+	public List<CbcNew> findRelatedToProgramsByChannelId(int channelId, Pageable page)
+	{
+		return programNewsRepo.findRelatedToProgramsByChannelId(channelId,page);
+	}
 	
 }

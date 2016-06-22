@@ -283,7 +283,7 @@ public class ProgramsRestController
 	 @RequestMapping(value = "/mostViewed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<List<MediaContentTuple>> getMostViewed(@RequestParam(required = true , value = "size") int size)
 	 {
-		 return new ResponseEntity<List<MediaContentTuple>>(programsService.getMostViewedList(size) , HttpStatus.OK);
+		 return new ResponseEntity<List<MediaContentTuple>>(programsService.getMostViewedListV2(size) , HttpStatus.OK);
 	 }
 	 
 	 

@@ -125,13 +125,13 @@ public class CBCNewsRestController
 		CbcNew cbcNew = cBCNewsService.getCbcNewsById(newId);
 		NewsContent content = cBCNewsService.getNewsContentById(newId);
 		
-		if(cbcNew == null || content == null)
+		if(cbcNew == null)
 		{
 			LOGGER.error("newId {"+newId+"} is not found in DB");
 			return new ResponseEntity<com.cbc.domain.CbcNew>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<com.cbc.domain.CbcNew>(new com.cbc.domain.CbcNew(cbcNew, content.getContent()) , HttpStatus.OK);
+		return new ResponseEntity<com.cbc.domain.CbcNew>(new com.cbc.domain.CbcNew(cbcNew, content != null? content.getContent() : "") , HttpStatus.OK);
 	 }
 	
 	@RequestMapping(value = "/{id}/ads", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -156,6 +156,24 @@ public class CBCNewsRestController
 		 }
 		 
 		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.getCbcNewsByChannelId(channelId, CommonUtils.getPageableObj(pageNumber, pageSize))) , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/relatedToPrograms/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getRelatedToProgramsByChannelId(@RequestParam(required = true , value = "channelId") int channelId,
+			 														   @RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber,
+			 														   @RequestParam(required = false , value = Constants.PAGE_SIZE_PARAM_NAME) Integer pageSize)
+	 {
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 if(pageSize == null)
+		 {
+			 pageSize = new Integer(0);
+		 }
+		 
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findRelatedToProgramsByChannelId(channelId, CommonUtils.getPageableObj(pageNumber, pageSize))) , HttpStatus.OK);
 	 }
 	 
 	 
