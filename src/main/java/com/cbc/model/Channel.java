@@ -36,21 +36,9 @@ public class Channel implements Serializable {
 	@Column(name="promo_url")
 	private String promoUrl;
 
-	//bi-directional many-to-one association to Carousel
-	@OneToMany(mappedBy="channelBean")
-	private List<Carousel> carousels;
-
-	//bi-directional many-to-one association to NewsCategory
-	@OneToMany(mappedBy="channelBean")
-	private List<NewsCategory> newsCategories;
-
 	//bi-directional many-to-many association to Program
 	@ManyToMany(mappedBy="channels")
 	private List<Program> programs;
-
-	//bi-directional many-to-one association to TimeLine
-	@OneToMany(mappedBy="channelBean")
-	private List<TimeLine> timeLines;
 
 	//bi-directional many-to-one association to ChannelsAdDiv
 	@OneToMany(mappedBy="channelBean")
@@ -127,50 +115,6 @@ public class Channel implements Serializable {
 		this.promoUrl = promoUrl;
 	}
 
-	public List<Carousel> getCarousels() {
-		return this.carousels;
-	}
-
-	public void setCarousels(List<Carousel> carousels) {
-		this.carousels = carousels;
-	}
-
-	public Carousel addCarousel(Carousel carousel) {
-		getCarousels().add(carousel);
-		carousel.setChannelBean(this);
-
-		return carousel;
-	}
-
-	public Carousel removeCarousel(Carousel carousel) {
-		getCarousels().remove(carousel);
-		carousel.setChannelBean(null);
-
-		return carousel;
-	}
-
-	public List<NewsCategory> getNewsCategories() {
-		return this.newsCategories;
-	}
-
-	public void setNewsCategories(List<NewsCategory> newsCategories) {
-		this.newsCategories = newsCategories;
-	}
-
-	public NewsCategory addNewsCategory(NewsCategory newsCategory) {
-		getNewsCategories().add(newsCategory);
-		newsCategory.setChannelBean(this);
-
-		return newsCategory;
-	}
-
-	public NewsCategory removeNewsCategory(NewsCategory newsCategory) {
-		getNewsCategories().remove(newsCategory);
-		newsCategory.setChannelBean(null);
-
-		return newsCategory;
-	}
-
 	public List<Program> getPrograms() {
 		return this.programs;
 	}
@@ -179,28 +123,6 @@ public class Channel implements Serializable {
 		this.programs = programs;
 	}
 
-
-	public List<TimeLine> getTimeLines() {
-		return this.timeLines;
-	}
-
-	public void setTimeLines(List<TimeLine> timeLines) {
-		this.timeLines = timeLines;
-	}
-
-	public TimeLine addTimeLine(TimeLine timeLine) {
-		getTimeLines().add(timeLine);
-		timeLine.setChannelBean(this);
-
-		return timeLine;
-	}
-
-	public TimeLine removeTimeLine(TimeLine timeLine) {
-		getTimeLines().remove(timeLine);
-		timeLine.setChannelBean(null);
-
-		return timeLine;
-	}
 
 	public List<ChannelsAdDiv> getChannelsAdDivs() {
 		return this.channelsAdDivs;

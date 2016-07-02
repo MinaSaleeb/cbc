@@ -194,6 +194,23 @@ public class CBCNewsRestController
 		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNewsWzVideosByCategoryId(categoryId, CommonUtils.getPageableObj(pageNumber.intValue(), pageSize.intValue()))) , HttpStatus.OK);
 	 }
 	 
+	 @RequestMapping(value = "/getByTitle", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> searchNewsByTitle(@RequestParam(required = true , value = "title") String title,
+			   																		 @RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber,
+			   																		 @RequestParam(required = false , value = Constants.PAGE_SIZE_PARAM_NAME) Integer pageSize)
+	 {
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 if(pageSize == null)
+		 {
+			 pageSize = new Integer(0);
+		 }
+		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.searchNewsByTitle(title, CommonUtils.getPageableObj(pageNumber.intValue(), pageSize.intValue()))) , HttpStatus.OK);
+	 }
+	 
 	 
 	 @RequestMapping(value = "/categories/{categoryId}/featuredNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<com.cbc.domain.CbcNew> getFeaturedNewsByCategoryId(@PathVariable("categoryId") int categoryId)

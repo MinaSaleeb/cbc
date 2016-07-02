@@ -302,4 +302,15 @@ public class CBCNewsService
 		return programNewsRepo.findRelatedToProgramsByChannelId(channelId,page);
 	}
 	
+	/**
+	 * 
+	 * @param title
+	 * @param page
+	 * @return
+	 */
+	public List<CbcNew> searchNewsByTitle(String title, Pageable page)
+	{
+		return cBCNewsRepo.findByTitleContainingOrderByPostingDateDesc(title, page);
+	}
+	
 }

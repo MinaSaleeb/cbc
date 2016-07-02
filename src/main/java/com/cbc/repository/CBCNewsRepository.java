@@ -14,6 +14,8 @@ import com.cbc.model.NewsContent;
 
 import java.util.List;
 
+import javax.persistence.NamedNativeQuery;
+
 /**
  * @author Mina Saleeb
  *
@@ -33,5 +35,10 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	
 	@Query("SELECT nc FROM NewsContent nc WHERE nc.id= :newsId")
 	NewsContent getNewsContentById(@Param("newsId") long newsId);
+	
+	List<CbcNew> findByTitleContainingOrderByPostingDateDesc(String title, Pageable pageable);
+	
+	@Query("SELECT n FROM CbcNew n WHERE n.title LIKE :title ORDER BY n.postingDate DESC")
+	List<CbcNew> test(@Param("title") String title, Pageable pageable);
 	
 }

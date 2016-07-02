@@ -24,6 +24,9 @@ public class CarouselImage implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="carousel")
 	private Carousel carouselBean;
+	
+	@OneToOne
+	private Program programBean;
 
 	public CarouselImage() {
 	}
@@ -50,6 +53,20 @@ public class CarouselImage implements Serializable {
 
 	public void setCarouselBean(Carousel carouselBean) {
 		this.carouselBean = carouselBean;
+	}
+
+	/**
+	 * @return the programBean
+	 */
+	public Program getProgramBean() {
+		return programBean;
+	}
+
+	/**
+	 * @param programBean the programBean to set
+	 */
+	public void setProgramBean(Program programBean) {
+		this.programBean = programBean;
 	}
 
 }
