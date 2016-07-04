@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.domain.CarouselItem;
 import com.cbc.model.Carousel;
 import com.cbc.model.CarouselImage;
 import com.cbc.model.Channel;
@@ -48,29 +49,23 @@ public class CarouselRestController
 	 * @return
 	 */
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<String>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 public ResponseEntity<List<CarouselItem>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
 	 {
-		 Carousel carousel = null;
-		 
-		 Channel channel = channelRepository.findOne(channelId);
-		 if(channel != null)
-		 {
-			carousel = carouselRepo.findByChannelBean(channel);
-		 }
+		 Carousel carousel = carouselRepo.findByChannelId(channelId);
 		 
 		 if(carousel == null)
 		 {
-			 return new ResponseEntity<List<String>>(HttpStatus.NOT_FOUND);
+			 return new ResponseEntity<List<CarouselItem>>(HttpStatus.NOT_FOUND);
 		 }
 		 
-		 List<String> carouselImagesList = new ArrayList<String>();
+		 List<CarouselItem> carouselImagesList = new ArrayList<CarouselItem>();
 		 
-		 for(CarouselImage i : carousel.getCarouselImages())
+		 for(CarouselImage c : carousel.getCarouselImages())
 		 {
-			 carouselImagesList.add(i.getImagePath());
+			 carouselImagesList.add(new CarouselItem(c.getImagePath(),c.getProgramBean() != null ? c.getProgramBean().getId() : -1));
 		 }
 		 
-		 return new ResponseEntity<List<String>>(carouselImagesList , HttpStatus.OK);
+		 return new ResponseEntity<List<CarouselItem>>(carouselImagesList , HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/hub", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

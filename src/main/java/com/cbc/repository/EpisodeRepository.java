@@ -26,6 +26,6 @@ public interface EpisodeRepository extends CrudRepository<Episode, Long>
 	
 	List<Episode> findByHubSelected(boolean hubSelected);
 	
-	@Query("select e from Episode e Where e.programBean.id= :programId ORDER BY e.displayingDate DESC")
+	@Query("select e from Episode e Where e.programBean.id= :programId ORDER BY e.id DESC")
 	List<Episode> findByProgramId(@Param("programId") int programId);
 }

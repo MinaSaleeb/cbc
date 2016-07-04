@@ -4,6 +4,7 @@
 package com.cbc.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cbc.util.ModelToDomainMapper;
 
@@ -29,8 +30,8 @@ public class CbcNew
 	
 	private String type;
 	
+	private List<String> images;
 	
-
 	/**
 	 * 
 	 */
@@ -157,6 +158,20 @@ public class CbcNew
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the images
+	 */
+	public List<String> getImages() {
+		return images;
+	}
+
+	/**
+	 * @param images the images to set
+	 */
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 	
 	

@@ -26,6 +26,7 @@ import com.cbc.model.NewsContent;
 import com.cbc.repository.CBCNewsRepository;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.NewsCategoryRepository;
+import com.cbc.repository.NewsMediaRepository;
 import com.cbc.repository.ProgramNewsRepository;
 
 /**
@@ -53,6 +54,9 @@ public class CBCNewsService
 	@Autowired
 	private ProgramNewsRepository programNewsRepo;
 	
+	@Autowired
+	private NewsMediaRepository newsMediaRepo;
+	
 	/**
 	 * 
 	 * @return
@@ -69,22 +73,9 @@ public class CBCNewsService
 	 */
 	public List<NewsCategory> getCbcNewsCategoriesByChannelId(int channelId)
 	{
-		List<NewsCategory> categoriesList = new ArrayList<NewsCategory>();
-		
-		Channel chnl = channelRepo.findOne(channelId);
-		
-		if(chnl != null)
-		{
-			categoriesList = newsCategoryRepo.findByChannelBean(chnl);
-		}
-		else
-		{
-			LOGGER.error("channelId {"+channelId+"} is not found in DB");
-		}
-		
-		return categoriesList;
+		return newsCategoryRepo.findByChannelId(channelId);
 	}
-	
+		
 	/**
 	 * 
 	 * @param newsCategoryId
@@ -311,6 +302,26 @@ public class CBCNewsService
 	public List<CbcNew> searchNewsByTitle(String title, Pageable page)
 	{
 		return cBCNewsRepo.findByTitleContainingOrderByPostingDateDesc(title, page);
+	}
+	
+	/**
+	 * 
+	 * @param newId
+	 * @return
+	 */
+	public List<String> getNewImages(long newId)
+	{
+		return newsMediaRepo.findNewImagesById(newId);
+	}
+	
+	/**
+	 * 
+	 * @param channelId
+	 * @return
+	 */
+	public List<CbcNew> getLatestNewFromEachCatagoryByChannelId(int channelId)
+	{
+		return cBCNewsRepo.findLatestNewFromEachCatagoryByChannelId(channelId);
 	}
 	
 }

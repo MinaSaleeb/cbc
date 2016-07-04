@@ -26,6 +26,7 @@ public class CarouselImage implements Serializable {
 	private Carousel carouselBean;
 	
 	@OneToOne
+	@JoinColumn(name="program")
 	private Program programBean;
 
 	public CarouselImage() {

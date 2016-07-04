@@ -24,6 +24,13 @@ public interface Constants
 		PROMO
 	}
 	
+	public static enum NewsType
+	{
+		NORMAL,
+		VIDEO,
+		GALLERY
+	}
+	
 	public static final String PAGE_NUMBER_PARAM_NAME = "pageNumber";
 	
 	public static final String PAGE_SIZE_PARAM_NAME = "size";

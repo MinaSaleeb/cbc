@@ -83,6 +83,13 @@ public class CBCNewsRestController
 	 }
 	
 	
+	 @RequestMapping(value = "/latestOfCategories/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getLatestNewFromEachCatagoryByChannelId(@RequestParam(required = true , value = "channelId") int channelId)
+	 {
+		 return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.getLatestNewFromEachCatagoryByChannelId(channelId)) , HttpStatus.OK);
+	 }
+	
+	
 	/**
 	 * 
 	 * @param categoryId
@@ -131,13 +138,26 @@ public class CBCNewsRestController
 			return new ResponseEntity<com.cbc.domain.CbcNew>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<com.cbc.domain.CbcNew>(new com.cbc.domain.CbcNew(cbcNew, content != null? content.getContent() : "") , HttpStatus.OK);
+		com.cbc.domain.CbcNew cbcNewDom = new com.cbc.domain.CbcNew(cbcNew, content != null? content.getContent() : "");
+		
+		if(Constants.NewsType.GALLERY.toString().equals(cbcNewDom.getType()))
+		{
+			cbcNewDom.setImages(cBCNewsService.getNewImages(newId));
+		}
+		
+		return new ResponseEntity<com.cbc.domain.CbcNew>(cbcNewDom, HttpStatus.OK);
 	 }
 	
 	@RequestMapping(value = "/{id}/ads", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<Map<String , String>> getNewAdsById(@PathVariable("id") int newId)
 	 {
 		return new ResponseEntity<Map<String , String>>(cBCNewsService.getNewAds(newId) , HttpStatus.OK);
+	 }
+	
+	 @RequestMapping(value = "/{id}/images", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<String>> getNewImages(@PathVariable("id") int newId)
+	 {
+		return new ResponseEntity<List<String>>(cBCNewsService.getNewImages(newId) , HttpStatus.OK);
 	 }
 	
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

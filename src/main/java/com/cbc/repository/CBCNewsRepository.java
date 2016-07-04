@@ -3,6 +3,8 @@
  */
 package com.cbc.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,10 +13,6 @@ import org.springframework.data.repository.query.Param;
 import com.cbc.model.CbcNew;
 import com.cbc.model.NewsCategory;
 import com.cbc.model.NewsContent;
-
-import java.util.List;
-
-import javax.persistence.NamedNativeQuery;
 
 /**
  * @author Mina Saleeb
@@ -38,7 +36,13 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	
 	List<CbcNew> findByTitleContainingOrderByPostingDateDesc(String title, Pageable pageable);
 	
-	@Query("SELECT n FROM CbcNew n WHERE n.title LIKE :title ORDER BY n.postingDate DESC")
-	List<CbcNew> test(@Param("title") String title, Pageable pageable);
-	
+	@Query(value = "SELECT * "+
+				   "FROM cbc_news n "+
+				   "INNER JOIN ("+
+				   					"SELECT category, max(posting_date) AS MaxDate "+
+				   					"FROM cbc_news "+
+				   					"GROUP BY category "+
+				   				") nij "+
+				  "ON n.category IN (SELECT nc.id FROM news_categories nc WHERE nc.channel = :channelId) AND n.posting_date = nij.MaxDate", nativeQuery =true)
+	List<CbcNew> findLatestNewFromEachCatagoryByChannelId(@Param("channelId") int channelId);
 }

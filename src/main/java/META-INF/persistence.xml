@@ -35,5 +35,6 @@
 		<class>com.cbc.model.EpisodesAdDiv</class>
 		<class>com.cbc.model.NewsAdDiv</class>
 		<class>com.cbc.model.NewsCategoriesAdDiv</class>
+		<class>com.cbc.model.NewsMedia</class>
 	</persistence-unit>
 </persistence>
