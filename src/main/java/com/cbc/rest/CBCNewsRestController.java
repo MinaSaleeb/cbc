@@ -231,6 +231,23 @@ public class CBCNewsRestController
 		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.searchNewsByTitle(title, CommonUtils.getPageableObj(pageNumber.intValue(), pageSize.intValue()))) , HttpStatus.OK);
 	 }
 	 
+	 @RequestMapping(value = "/ByCatagoryAndType", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> findNewsByCatagoryAndType(@RequestParam(required = true , value = "categoryId") int categoryId,
+			 																		 @RequestParam(required = false , value = "type") String type,
+			   																		 @RequestParam(required = false , value = Constants.PAGE_NUMBER_PARAM_NAME) Integer pageNumber,
+			   																		 @RequestParam(required = false , value = Constants.PAGE_SIZE_PARAM_NAME) Integer pageSize)
+	 {
+		 if(pageNumber == null)
+		 {
+			 pageNumber = new Integer(0);
+		 }
+		 
+		 if(pageSize == null)
+		 {
+			 pageSize = new Integer(0);
+		 }
+		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findNewsByCatagoryAndType(categoryId, type, CommonUtils.getPageableObj(pageNumber.intValue(), pageSize.intValue()))) , HttpStatus.OK);
+	 }
 	 
 	 @RequestMapping(value = "/categories/{categoryId}/featuredNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<com.cbc.domain.CbcNew> getFeaturedNewsByCategoryId(@PathVariable("categoryId") int categoryId)

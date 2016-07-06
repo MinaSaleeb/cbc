@@ -28,6 +28,7 @@ import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.NewsCategoryRepository;
 import com.cbc.repository.NewsMediaRepository;
 import com.cbc.repository.ProgramNewsRepository;
+import com.cbc.util.Constants.NewsType;
 
 /**
  * @author Mina Saleeb
@@ -323,5 +324,32 @@ public class CBCNewsService
 	{
 		return cBCNewsRepo.findLatestNewFromEachCatagoryByChannelId(channelId);
 	}
+	
+	/**
+	 * 
+	 * @param categoryId
+	 * @param type
+	 * @param page
+	 * @return
+	 */
+	public List<CbcNew> findNewsByCatagoryAndType(int categoryId, String type, Pageable page)
+	{
+		List<String> types = new ArrayList<String>();
+		if(type == null || type.isEmpty())
+		{
+			StringBuilder sb = new StringBuilder();
+			for(NewsType nt : NewsType.values())
+			{
+				types.add(nt.toString());
+			}
+		}
+		else
+		{
+			types.add(type);
+		}
+		
+		return cBCNewsRepo.findNewsByCatagoryAndType(categoryId, types, page);
+	}
+	
 	
 }

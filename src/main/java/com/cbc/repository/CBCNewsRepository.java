@@ -45,4 +45,7 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 				   				") nij "+
 				  "ON n.category IN (SELECT nc.id FROM news_categories nc WHERE nc.channel = :channelId) AND n.posting_date = nij.MaxDate", nativeQuery =true)
 	List<CbcNew> findLatestNewFromEachCatagoryByChannelId(@Param("channelId") int channelId);
+	
+	@Query(value = "SELECT n FROM CbcNew n WHERE n.newsCategory.id= :categoryId AND n.type IN (:type) ORDER BY n.postingDate DESC")
+	List<CbcNew> findNewsByCatagoryAndType(@Param("categoryId") int categoryId, @Param("type") List<String> type, Pageable pageable);
 }

@@ -42,6 +42,8 @@ public class Program implements Serializable {
 	
 	private String schedule;
 	
+	private String type;
+	
 	//bi-directional many-to-many association to Channel
 	@ManyToMany
 	@JoinTable(name = "programs_channels", joinColumns = { @JoinColumn(name = "program") }, inverseJoinColumns = {
@@ -172,6 +174,20 @@ public class Program implements Serializable {
 		this.schedule = schedule;
 	}
 
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public List<Channel> getChannels() {
 		return this.channels;

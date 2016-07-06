@@ -31,6 +31,12 @@ public interface Constants
 		GALLERY
 	}
 	
+	public static enum ProgramType
+	{
+		SERIES,
+		TV_SHOW
+	}
+	
 	public static final String PAGE_NUMBER_PARAM_NAME = "pageNumber";
 	
 	public static final String PAGE_SIZE_PARAM_NAME = "size";
