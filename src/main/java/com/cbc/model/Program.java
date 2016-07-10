@@ -44,6 +44,9 @@ public class Program implements Serializable {
 	
 	private String type;
 	
+	@Column(name="on_air")
+	private boolean onAir;
+	
 	//bi-directional many-to-many association to Channel
 	@ManyToMany
 	@JoinTable(name = "programs_channels", joinColumns = { @JoinColumn(name = "program") }, inverseJoinColumns = {
@@ -187,6 +190,20 @@ public class Program implements Serializable {
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the onAir
+	 */
+	public boolean isOnAir() {
+		return onAir;
+	}
+
+	/**
+	 * @param onAir the onAir to set
+	 */
+	public void setOnAir(boolean onAir) {
+		this.onAir = onAir;
 	}
 
 	public List<Channel> getChannels() {

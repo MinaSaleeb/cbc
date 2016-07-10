@@ -53,6 +53,12 @@ public class TimeLine implements Serializable {
 	@JoinColumn(name="day")
 	private ScheduleDay scheduleDay;
 	
+	@Column(name="static_program_title")
+	private String staticProgramTitle;
+	
+	@Column(name="static_program_image")
+	private String staticProgramImage;
+	
 	@Transient
 	private boolean playingNow = false;
 	
@@ -122,6 +128,34 @@ public class TimeLine implements Serializable {
 		this.scheduleDay = scheduleDay;
 	}
 	
+	/**
+	 * @return the staticProgramTitle
+	 */
+	public String getStaticProgramTitle() {
+		return staticProgramTitle;
+	}
+
+	/**
+	 * @param staticProgramTitle the staticProgramTitle to set
+	 */
+	public void setStaticProgramTitle(String staticProgramTitle) {
+		this.staticProgramTitle = staticProgramTitle;
+	}
+
+	/**
+	 * @return the staticProgramImage
+	 */
+	public String getStaticProgramImage() {
+		return staticProgramImage;
+	}
+
+	/**
+	 * @param staticProgramImage the staticProgramImage to set
+	 */
+	public void setStaticProgramImage(String staticProgramImage) {
+		this.staticProgramImage = staticProgramImage;
+	}
+
 	/**
 	 * @return the playingNow
 	 */

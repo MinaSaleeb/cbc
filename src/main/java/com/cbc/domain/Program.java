@@ -55,6 +55,20 @@ public class Program
 	}
 
 	/**
+	 * @param image1xPath
+	 * @param image2xPath
+	 * @param imageXPath
+	 * @param title
+	 */
+	public Program(String image1xPath, String image2xPath, String imageXPath, String title) {
+		super();
+		this.image1xPath = image1xPath;
+		this.image2xPath = image2xPath;
+		this.imageXPath = imageXPath;
+		this.title = title;
+	}
+
+	/**
 	 * @return the id
 	 */
 	public int getId() {

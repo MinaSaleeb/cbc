@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cbc.domain.HubSlickContent;
 import com.cbc.domain.MediaContentTuple;
 import com.cbc.model.Channel;
-import com.cbc.model.ChannelsAdDiv;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPagesAdDiv;
 import com.cbc.model.ProgramsAdDiv;
@@ -74,6 +73,76 @@ public class ProgramsRestController
 		  
 		 return new ResponseEntity<List<com.cbc.domain.Program>>(ModelToDomainMapper.mapProgramsList(allPrgms) , HttpStatus.OK);
 	 }
+	 
+	 @RequestMapping(value = "/find", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.Program>> searchPrograms(@RequestParam(required = false , value = "channelId") Integer channelId,
+			 															@RequestParam(required = false , value = "onAir") Boolean onAir,
+			 															@RequestParam(required = false , value = "type") String type,
+				 														@RequestParam(required = false , value = "excludedPrgm") int[] excludedProgramsIds)
+	 {
+		 List<Program> prgrms = new ArrayList<Program>();
+		 boolean isByTypeOnly = false;
+		 
+		 if(channelId == null && onAir == null)
+		 {
+			 isByTypeOnly = true;
+		 }
+		 
+		 if(channelId == null && onAir == null && type == null)
+		 {
+			 prgrms = programsService.listAllPrograms();
+		 }
+		 else if(channelId != null && onAir != null && type != null)
+		 {
+			 prgrms = programsService.findByChannelIdAndOnAirAndType(channelId, onAir, type);
+		 }
+		 else if(channelId != null && type != null)
+		 {
+			 prgrms = programsService.findByChannelIdAndType(channelId, type);
+		 }
+		 else if(onAir != null && type != null)
+		 {
+			 prgrms = programsService.findByOnAirAndType(onAir, type);
+		 }
+		 else if(channelId != null && onAir != null)
+		 {
+			 prgrms = programsService.findByChannelIdAndOnAir(channelId, onAir);
+		 }
+		 else if(channelId != null)
+		 {
+			 prgrms = programsService.findByChannelId(channelId);
+		 }
+		 else if(onAir != null)
+		 {
+			 prgrms = programsService.findByOnAir(onAir);
+		 }
+		 else if(isByTypeOnly)
+		 {
+			 prgrms = programsService.findByType(type);
+		 }
+		 
+		 if(excludedProgramsIds != null && excludedProgramsIds.length > 0)
+		 {
+			 for(int id : excludedProgramsIds)
+			 {
+				 if(prgrms != null && prgrms.size() > 0)
+				 { 
+					 for(int i = 0; i < prgrms.size() ; i++)
+					 {
+						 Program prgm = prgrms.get(i);
+						 if(id == prgm.getId())
+						 {
+							 prgrms.remove(i);
+							 break;
+						 }
+					 }
+				 }
+			 }
+		 }
+		 
+		 return new ResponseEntity<List<com.cbc.domain.Program>>(ModelToDomainMapper.mapProgramsList(prgrms)  , HttpStatus.OK);
+	 }
+	 
 	
 	/**
 	 * 

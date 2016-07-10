@@ -454,4 +454,87 @@ public class ProgramsService
 		 }
 		return eposideAdsmap;
 	}
+	
+	/**
+	 * 
+	 * @param chnlId
+	 * @param onAir
+	 * @param type TODO
+	 * @return
+	 */
+	public List<Program> findByChannelIdAndOnAirAndType(int chnlId, boolean onAir, String type)
+	{
+		byte on_air = 0;
+		if(onAir)
+		{
+			on_air = 1;
+		}
+		
+		return programRepository.findByChannelIdAndOnAirAndType(chnlId, on_air, type);
+	}
+	
+	/**
+	 * 
+	 * @param chnlId
+	 * @param type TODO
+	 * @return
+	 */
+	public List<Program> findByChannelIdAndType(int chnlId, String type)
+	{
+		return programRepository.findByChannelIdAndType(chnlId, type);
+	}
+	
+	/**
+	 * 
+	 * @param onAir
+	 * @param type TODO
+	 * @return
+	 */
+	public List<Program> findByOnAirAndType(boolean onAir, String type)
+	{
+		return programRepository.findByOnAirAndType(onAir, type);
+	}
+	
+	public List<Program> findByChannelIdAndOnAir(int chnlId, boolean onAir)
+	{
+		byte on_air = 0;
+		if(onAir)
+		{
+			on_air = 1;
+		}
+		
+		return programRepository.findByChannelIdAndOnAir(chnlId, on_air);
+	}
+	
+	/**
+	 * 
+	 * @param chnlId
+	 * @param type TODO
+	 * @return
+	 */
+	public List<Program> findByChannelId(int chnlId)
+	{
+		return programRepository.findByChannelId(chnlId);
+	}
+	
+	/**
+	 * 
+	 * @param onAir
+	 * @param type TODO
+	 * @return
+	 */
+	public List<Program> findByOnAir(boolean onAir)
+	{
+		return programRepository.findByOnAir(onAir);
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public List<Program> findByType(String type)
+	{
+		return programRepository.findByType(type);
+	}
 }

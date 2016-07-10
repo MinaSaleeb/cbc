@@ -216,7 +216,14 @@ public class ModelToDomainMapper
 		String startDate = df.format(modTimeLine.getScheduleDay().getActualDate());
 		domTimeLine.setStartTime(startDate+" "+modTimeLine.getStartTime());
 		domTimeLine.setPlayingNow(modTimeLine.isPlayingNow());
-		domTimeLine.setProgram(new com.cbc.domain.Program(modTimeLine.getProgramBean()));
+		if(modTimeLine.getProgramBean() != null)
+		{
+			domTimeLine.setProgram(new com.cbc.domain.Program(modTimeLine.getProgramBean()));
+		}
+		else
+		{
+			domTimeLine.setProgram(new com.cbc.domain.Program(modTimeLine.getStaticProgramImage(), modTimeLine.getStaticProgramImage(), modTimeLine.getStaticProgramImage(), modTimeLine.getStaticProgramTitle()));
+		}
 	}
 	
 	public static List<com.cbc.domain.TimeLine> mapTimeLineList(List<com.cbc.model.TimeLine> modTimeLineList)
