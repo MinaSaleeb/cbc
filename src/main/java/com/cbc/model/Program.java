@@ -42,6 +42,7 @@ public class Program implements Serializable {
 	
 	private String schedule;
 	
+	@Column(name="program_type")
 	private String type;
 	
 	@Column(name="on_air")

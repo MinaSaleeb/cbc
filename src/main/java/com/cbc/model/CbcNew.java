@@ -38,6 +38,7 @@ public class CbcNew implements Serializable {
 	@Column(name="video_url")
 	private String videoUrl;
 	
+	@Column(name="news_type")
 	private String type;
 	
 	@OneToMany(mappedBy="cbcNew")

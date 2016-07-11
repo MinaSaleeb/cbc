@@ -27,12 +27,12 @@ public interface ProgramRepository extends CrudRepository<Program, Integer>
 	
 	@Query(value="SELECT * "+
 			 "FROM programs p INNER JOIN programs_channels pc ON p.id = pc.program "+
-			 "WHERE pc.channel = :channelId AND p.type = :type" ,nativeQuery =true)
+			 "WHERE pc.channel = :channelId AND p.program_type = :type" ,nativeQuery =true)
 	List<Program> findByChannelIdAndType(@Param("channelId") int channelId, @Param("type") String type);
 	
 	@Query(value="SELECT * "+
 				 "FROM programs p INNER JOIN programs_channels pc ON p.id = pc.program "+
-				 "WHERE pc.channel = :channelId AND p.on_air = :onAir AND p.type = :type" ,nativeQuery =true)
+				 "WHERE pc.channel = :channelId AND p.on_air = :onAir AND p.program_type = :type" ,nativeQuery =true)
 	List<Program> findByChannelIdAndOnAirAndType(@Param("channelId") int channelId, @Param("onAir") byte onAir, @Param("type") String type);
 	
 	@Query(value="SELECT * "+

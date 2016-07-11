@@ -221,9 +221,14 @@ public class ScheduleService
 					//chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, yesterday));
 					chnlTimeLines.addAll(timeLineRepo.findByChannelIdAndDayId(chnl.getId(), yesterday.getId()));
 				}
+				
 				//Today
 				//chnlTimeLines.addAll(timeLineRepo.findByChannelBeanAndScheduleDay(chnl, today));
-				chnlTimeLines.addAll(timeLineRepo.findByChannelIdAndDayId(chnl.getId(), today.getId()));
+				if(today != null)
+				{
+					chnlTimeLines.addAll(timeLineRepo.findByChannelIdAndDayId(chnl.getId(), today.getId()));
+				}
+				
 				//Tomorrow
 				ScheduleDay tomorrow = getMappedScheduleDay(TimeUtils.getTomorrowDate());
 				if(tomorrow != null)
@@ -258,19 +263,43 @@ public class ScheduleService
 						if((now.after(timeLine.getStartDateTime()) || now.equals(timeLine.getStartDateTime())) && now.before(timeLine.getEndDateTime()))
 						{
 							com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
-							HubTimeLine nowHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+							HubTimeLine nowHubTmLn = null;
+							if(timeLine.getProgramBean() != null)
+							{
+								nowHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+							}
+							else
+							{
+								nowHubTmLn = new HubTimeLine(domChnl , timeLine.getStaticProgramTitle(), 0);
+							}
 							nowList.add(nowHubTmLn);
 							if(iterator.hasNext()) //NEXT
 							{
 								timeLine = iterator.next();
-								HubTimeLine nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								HubTimeLine nextHubTmLn = null;
+								if(timeLine.getProgramBean() != null)
+								{
+									nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								}
+								else
+								{
+									nextHubTmLn = new HubTimeLine(domChnl , timeLine.getStaticProgramTitle(), 0);
+								}
 								nextList.add(nextHubTmLn);
 							}
 							
 							if(iterator.hasNext()) //AFTER NEXT
 							{
 								timeLine = iterator.next();
-								HubTimeLine afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								HubTimeLine afterNextHubTmLn = null;
+								if(timeLine.getProgramBean() != null)
+								{
+									afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+								}
+								else
+								{
+									afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getStaticProgramTitle(), 0);
+								}
 								afterNextList.add(afterNextHubTmLn);
 							}
 							isThereGap = false;
@@ -295,14 +324,30 @@ public class ScheduleService
 								com.cbc.domain.Channel domChnl = new com.cbc.domain.Channel(chnl);
 								if(iterator.hasNext()) //NEXT
 								{
-									HubTimeLine nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+									HubTimeLine nextHubTmLn = null;
+									if(timeLine.getProgramBean() != null)
+									{
+										nextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+									}
+									else
+									{
+										nextHubTmLn = new HubTimeLine(domChnl , timeLine.getStaticProgramTitle(), 0);
+									}
 									nextList.add(nextHubTmLn);
 								}
 								
 								if(iterator.hasNext()) //AFTER NEXT
 								{
 									timeLine = iterator.next();
-									HubTimeLine afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+									HubTimeLine afterNextHubTmLn = null;
+									if(timeLine.getProgramBean() != null)
+									{
+										afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getProgramBean().getTitle() , timeLine.getProgramBean().getId());
+									}
+									else
+									{
+										afterNextHubTmLn = new HubTimeLine(domChnl , timeLine.getStaticProgramTitle(), 0);
+									}
 									afterNextList.add(afterNextHubTmLn);
 								}
 								break;
