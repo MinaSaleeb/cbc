@@ -17,31 +17,31 @@ import com.cbc.model.Program;
  */
 public interface ProgramRepository extends CrudRepository<Program, Integer> 
 {
-	List<Program> findByHubSelected(boolean hubSelected);
+	List<Program> findByHubSelectedOrderByOrderingFactorAsc(boolean hubSelected);
 	
-	List<Program> findByOnAirAndType(boolean onAir, String type);
+	List<Program> findByOnAirAndTypeOrderByOrderingFactorAsc(boolean onAir, String type);
 	
-	List<Program> findByOnAir(boolean onAir);
+	List<Program> findByOnAirOrderByOrderingFactorAsc(boolean onAir);
 	
-	List<Program> findByType(String type);
+	List<Program> findByTypeOrderByOrderingFactorAsc(String type);
 	
 	@Query(value="SELECT * "+
 			 "FROM programs p INNER JOIN programs_channels pc ON p.id = pc.program "+
-			 "WHERE pc.channel = :channelId AND p.program_type = :type" ,nativeQuery =true)
+			 "WHERE pc.channel = :channelId AND p.program_type = :type ORDER BY p.ordering_factor" ,nativeQuery =true)
 	List<Program> findByChannelIdAndType(@Param("channelId") int channelId, @Param("type") String type);
 	
 	@Query(value="SELECT * "+
 				 "FROM programs p INNER JOIN programs_channels pc ON p.id = pc.program "+
-				 "WHERE pc.channel = :channelId AND p.on_air = :onAir AND p.program_type = :type" ,nativeQuery =true)
+				 "WHERE pc.channel = :channelId AND p.on_air = :onAir AND p.program_type = :type ORDER BY p.ordering_factor" ,nativeQuery =true)
 	List<Program> findByChannelIdAndOnAirAndType(@Param("channelId") int channelId, @Param("onAir") byte onAir, @Param("type") String type);
 	
 	@Query(value="SELECT * "+
 			 "FROM programs p INNER JOIN programs_channels pc ON p.id = pc.program "+
-			 "WHERE pc.channel = :channelId" ,nativeQuery =true)
+			 "WHERE pc.channel = :channelId ORDER BY p.ordering_factor" ,nativeQuery =true)
 	List<Program> findByChannelId(@Param("channelId") int channelId);
 	
 	@Query(value="SELECT * "+
 				 "FROM programs p INNER JOIN programs_channels pc ON p.id = pc.program "+
-				 "WHERE pc.channel = :channelId AND p.on_air = :onAir" ,nativeQuery =true)
+				 "WHERE pc.channel = :channelId AND p.on_air = :onAir ORDER BY p.ordering_factor" ,nativeQuery =true)
 	List<Program> findByChannelIdAndOnAir(@Param("channelId") int channelId, @Param("onAir") byte onAir);
 }

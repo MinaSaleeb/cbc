@@ -24,6 +24,9 @@ public interface EpisodeRepository extends CrudRepository<Episode, Long>
 	@Query("select DISTINCT e from Episode e INNER JOIN e.programBean.channels chnl WHERE chnl.id in (5 ,7) AND e.programBean.hideProgram = false ORDER BY e.displayingDate DESC")
 	List<Episode> findLatestEpisodes(Pageable pageable);
 	
+	@Query("select DISTINCT e from Episode e INNER JOIN e.programBean.channels chnl WHERE chnl.id = :channelId  AND e.programBean.hideProgram = false ORDER BY e.displayingDate DESC")
+	List<Episode> findLatestEpisodesByChannelId(@Param("channelId") int channelId, Pageable pageable);
+	
 	List<Episode> findByHubSelected(boolean hubSelected);
 	
 	@Query("select e from Episode e Where e.programBean.id= :programId ORDER BY e.id DESC")

@@ -34,6 +34,8 @@ public class NewsMedia implements Serializable
 	
 	@Column(name="image_path")
 	private String imagePath;
+	
+	private String description;
 
 	/**
 	 * @return the id
@@ -75,6 +77,20 @@ public class NewsMedia implements Serializable
 	 */
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }	

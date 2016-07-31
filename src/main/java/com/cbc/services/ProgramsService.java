@@ -257,10 +257,18 @@ public class ProgramsService
 		*/
 	}
 	
-	public List<MediaContentTuple> getMostViewedListV2(int size)
+	public List<MediaContentTuple> getMostViewedListV2(int size, int channelId)
 	{
+		List<Episode> episodes = null;
 		Pageable pageSize = new PageRequest(0, size);
-		List<Episode> episodes = EpisodeRepo.findLatestEpisodes(pageSize);
+		if(channelId > 0)
+		{
+			episodes = EpisodeRepo.findLatestEpisodesByChannelId(channelId, pageSize);
+		}
+		else
+		{
+			episodes = EpisodeRepo.findLatestEpisodes(pageSize);
+		}
 		
 		return mapEpisodesAndImagesToTuple(episodes, null, null, null);
 	}
@@ -275,7 +283,7 @@ public class ProgramsService
 		
 		List<Episode> hubSelectedVedios = EpisodeRepo.findByHubSelected(true);
 		List<ProgramScene> hubSelectedImages = ProgramSceneRepo.findByHubSelected(true);
-		List<Program> hubSelectedPrograms = programRepository.findByHubSelected(true);
+		List<Program> hubSelectedPrograms = programRepository.findByHubSelectedOrderByOrderingFactorAsc(true);
 		
 	 	return mapEpisodesAndImagesToTuple(hubSelectedVedios , hubSelectedImages, hubSelectedPrograms, null);
 	}
@@ -492,7 +500,7 @@ public class ProgramsService
 	 */
 	public List<Program> findByOnAirAndType(boolean onAir, String type)
 	{
-		return programRepository.findByOnAirAndType(onAir, type);
+		return programRepository.findByOnAirAndTypeOrderByOrderingFactorAsc(onAir, type);
 	}
 	
 	public List<Program> findByChannelIdAndOnAir(int chnlId, boolean onAir)
@@ -525,7 +533,7 @@ public class ProgramsService
 	 */
 	public List<Program> findByOnAir(boolean onAir)
 	{
-		return programRepository.findByOnAir(onAir);
+		return programRepository.findByOnAirOrderByOrderingFactorAsc(onAir);
 	}
 	
 	/**
@@ -535,6 +543,6 @@ public class ProgramsService
 	 */
 	public List<Program> findByType(String type)
 	{
-		return programRepository.findByType(type);
+		return programRepository.findByTypeOrderByOrderingFactorAsc(type);
 	}
 }

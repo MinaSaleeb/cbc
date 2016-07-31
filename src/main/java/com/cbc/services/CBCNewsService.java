@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cbc.domain.NewsImage;
 import com.cbc.model.CbcNew;
 import com.cbc.model.Channel;
 import com.cbc.model.ChannelsAdDiv;
@@ -310,9 +311,18 @@ public class CBCNewsService
 	 * @param newId
 	 * @return
 	 */
-	public List<String> getNewImages(long newId)
+	public List<NewsImage> getNewImages(long newId)
 	{
-		return newsMediaRepo.findNewImagesById(newId);
+		List<Object[]> result = newsMediaRepo.findNewImagesById(newId);
+		List<NewsImage> imagesList = new ArrayList<NewsImage>();
+		if(result != null && !result.isEmpty())
+		{
+			for(Object[] row : result)
+			{
+				imagesList.add(new NewsImage((String)row[0], (String)row[1]));
+			}
+		}
+		return imagesList;
 	}
 	
 	/**

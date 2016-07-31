@@ -17,6 +17,6 @@ import com.cbc.model.NewsMedia;
  */
 public interface NewsMediaRepository extends CrudRepository<NewsMedia, Long> 
 {
-	@Query(value = "SELECT nmi.image_path FROM news_media_items nmi WHERE nmi.new_id = :newsId" , nativeQuery = true)
-	List<String> findNewImagesById(@Param("newsId") long newsId);
+	@Query(value = "SELECT nmi.image_path, nmi.description FROM news_media_items nmi WHERE nmi.new_id = :newsId" , nativeQuery = true)
+	List<Object[]> findNewImagesById(@Param("newsId") long newsId);
 }

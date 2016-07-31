@@ -3,6 +3,7 @@
  */
 package com.cbc.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.domain.NewsImage;
 import com.cbc.model.CbcNew;
 import com.cbc.model.NewsCategory;
 import com.cbc.model.NewsContent;
@@ -142,7 +144,17 @@ public class CBCNewsRestController
 		
 		if(Constants.NewsType.GALLERY.toString().equals(cbcNewDom.getType()))
 		{
-			cbcNewDom.setImages(cBCNewsService.getNewImages(newId));
+			List<NewsImage> images = cBCNewsService.getNewImages(newId);
+			List<String> imagesUrls = new ArrayList<String>();
+			if(images != null && !images.isEmpty())
+			{
+				for(NewsImage image : images)
+				{
+					imagesUrls.add(image.getImageUrl());
+				}
+			}
+			
+			cbcNewDom.setImages(imagesUrls);
 		}
 		
 		return new ResponseEntity<com.cbc.domain.CbcNew>(cbcNewDom, HttpStatus.OK);
@@ -155,9 +167,9 @@ public class CBCNewsRestController
 	 }
 	
 	 @RequestMapping(value = "/{id}/images", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<String>> getNewImages(@PathVariable("id") int newId)
+	 public ResponseEntity<List<NewsImage>> getNewImages(@PathVariable("id") int newId)
 	 {
-		return new ResponseEntity<List<String>>(cBCNewsService.getNewImages(newId) , HttpStatus.OK);
+		return new ResponseEntity<List<NewsImage>>(cBCNewsService.getNewImages(newId) , HttpStatus.OK);
 	 }
 	
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

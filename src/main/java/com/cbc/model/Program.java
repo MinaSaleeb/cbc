@@ -48,6 +48,9 @@ public class Program implements Serializable {
 	@Column(name="on_air")
 	private boolean onAir;
 	
+	@Column(name = "ordering_factor", nullable = false, columnDefinition = "int default 0")
+	private int orderingFactor;
+	
 	//bi-directional many-to-many association to Channel
 	@ManyToMany
 	@JoinTable(name = "programs_channels", joinColumns = { @JoinColumn(name = "program") }, inverseJoinColumns = {
@@ -205,6 +208,20 @@ public class Program implements Serializable {
 	 */
 	public void setOnAir(boolean onAir) {
 		this.onAir = onAir;
+	}
+
+	/**
+	 * @return the order
+	 */
+	public int getOrderingFactor() {
+		return orderingFactor;
+	}
+
+	/**
+	 * @param order the order to set
+	 */
+	public void setOrderingFactor(int order) {
+		this.orderingFactor = order;
 	}
 
 	public List<Channel> getChannels() {
