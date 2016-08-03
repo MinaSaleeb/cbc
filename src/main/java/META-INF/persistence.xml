@@ -36,5 +36,6 @@
 		<class>com.cbc.model.NewsAdDiv</class>
 		<class>com.cbc.model.NewsCategoriesAdDiv</class>
 		<class>com.cbc.model.NewsMedia</class>
+		<class>com.cbc.model.PrayerTime</class>
 	</persistence-unit>
 </persistence>

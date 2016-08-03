@@ -30,7 +30,7 @@ public class CbcNew
 	
 	private String type;
 	
-	private List<String> images;
+	private List<NewsImage> images;
 	
 	/**
 	 * 
@@ -163,14 +163,14 @@ public class CbcNew
 	/**
 	 * @return the images
 	 */
-	public List<String> getImages() {
+	public List<NewsImage> getImages() {
 		return images;
 	}
 
 	/**
 	 * @param images the images to set
 	 */
-	public void setImages(List<String> images) {
+	public void setImages(List<NewsImage> images) {
 		this.images = images;
 	}
 	

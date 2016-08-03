@@ -3,7 +3,6 @@
  */
 package com.cbc.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -144,17 +143,7 @@ public class CBCNewsRestController
 		
 		if(Constants.NewsType.GALLERY.toString().equals(cbcNewDom.getType()))
 		{
-			List<NewsImage> images = cBCNewsService.getNewImages(newId);
-			List<String> imagesUrls = new ArrayList<String>();
-			if(images != null && !images.isEmpty())
-			{
-				for(NewsImage image : images)
-				{
-					imagesUrls.add(image.getImageUrl());
-				}
-			}
-			
-			cbcNewDom.setImages(imagesUrls);
+			cbcNewDom.setImages(cBCNewsService.getNewImages(newId));
 		}
 		
 		return new ResponseEntity<com.cbc.domain.CbcNew>(cbcNewDom, HttpStatus.OK);
