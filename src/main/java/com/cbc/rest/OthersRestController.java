@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.model.CitizenService;
+import com.cbc.model.Currency;
 import com.cbc.model.PrayerTime;
 import com.cbc.repository.CitizenServiceRepository;
+import com.cbc.repository.CurrencyRepository;
 import com.cbc.repository.PrayerTimeRepository;
 
 /**
@@ -40,6 +42,9 @@ public class OthersRestController
 	
 	@Autowired
 	private PrayerTimeRepository prayerTimeRepository;
+	
+	@Autowired
+	private CurrencyRepository currencyRepository; 
 	
 	/**
 	 * 
@@ -72,5 +77,19 @@ public class OthersRestController
 		 }
 		 
 		 return new ResponseEntity<List<PrayerTime>>(prayingTimes , HttpStatus.OK);
+	 }
+	
+	 @RequestMapping(value = "/currencies", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<Currency>> listCurrencies()
+	 {
+		List<Currency> currencies = (List<Currency>)currencyRepository.findAll();
+		
+		if(currencies == null || currencies.isEmpty())
+		 {
+			 LOGGER.error("No Currencies in DB");
+			 return new ResponseEntity<List<Currency>>(HttpStatus.NO_CONTENT);
+		 }
+		
+		return new ResponseEntity<List<Currency>>(currencies , HttpStatus.OK);
 	 }
 }
