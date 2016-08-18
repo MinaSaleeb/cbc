@@ -44,6 +44,11 @@ public class CbcNew implements Serializable {
 	@OneToMany(mappedBy="cbcNew")
 	private List<NewsAdDiv> newsAdDivs;
 	
+	private String tags;
+	
+	@Column(name="thumbnail_image")
+	private String thumbnailImage;
+	
 	
 	public CbcNew() {
 	}
@@ -137,6 +142,34 @@ public class CbcNew implements Serializable {
 	 */
 	public void setNewsAdDivs(List<NewsAdDiv> newsAdDivs) {
 		this.newsAdDivs = newsAdDivs;
+	}
+
+	/**
+	 * @return the tags
+	 */
+	public String getTags() {
+		return tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 
 }

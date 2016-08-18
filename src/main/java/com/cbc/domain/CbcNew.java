@@ -32,6 +32,10 @@ public class CbcNew
 	
 	private List<NewsImage> images;
 	
+	private List<String> tags;
+	
+	private String thumbnail;
+	
 	/**
 	 * 
 	 */
@@ -172,6 +176,34 @@ public class CbcNew
 	 */
 	public void setImages(List<NewsImage> images) {
 		this.images = images;
+	}
+
+	/**
+	 * @return the tags
+	 */
+	public List<String> getTags() {
+		return tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	/**
+	 * @return the thumbnail
+	 */
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	/**
+	 * @param thumbnail the thumbnail to set
+	 */
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 	
 	

@@ -6,6 +6,7 @@ package com.cbc.util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -96,6 +97,14 @@ public class ModelToDomainMapper
 		*/
 		domCbcNew.setVideoUrl(modCbcNew.getVideoUrl());
 		domCbcNew.setType(modCbcNew.getType());
+		domCbcNew.setThumbnail(modCbcNew.getThumbnailImage());
+		List<String> tagsList = new ArrayList<String>();
+		String tags = modCbcNew.getTags();
+		if(tags != null && !tags.isEmpty())
+		{
+			tagsList.addAll(Arrays.asList(tags.split("\\^")));
+		}
+		domCbcNew.setTags(tagsList);
 	}
 	
 	public static List<com.cbc.domain.CbcNew> mapCbcNewsList(List<com.cbc.model.CbcNew> modCbcNewList)
@@ -118,7 +127,16 @@ public class ModelToDomainMapper
 		domNewsCategory.setId(modNewsCategory.getId());
 		domNewsCategory.setCategoryName(modNewsCategory.getCategoryName());
 		domNewsCategory.setBgImage(modNewsCategory.getBgImage());
-		
+		List<com.cbc.model.NewsCategory> subCategories = modNewsCategory.getSubCategories();
+		if(subCategories != null && !subCategories.isEmpty())
+		{
+			List<com.cbc.domain.NewsCategory> domSubCats = new ArrayList<com.cbc.domain.NewsCategory>();
+			for(com.cbc.model.NewsCategory cat : subCategories)
+			{
+				domSubCats.add(new com.cbc.domain.NewsCategory(cat));
+			}
+			domNewsCategory.setSubCategories(domSubCats);
+		}
 	}
 	
 	public static List<com.cbc.domain.NewsCategory> mapNewsCategoryList(List<com.cbc.model.NewsCategory> modNewsCategoryList)
@@ -128,9 +146,16 @@ public class ModelToDomainMapper
 		{
 			for(com.cbc.model.NewsCategory n : modNewsCategoryList)
 			{
-				domList.add(new com.cbc.domain.NewsCategory(n));
+				//filter child categories from first level
+				if(n.getParentCategory() == null)
+				{
+					domList.add(new com.cbc.domain.NewsCategory(n));
+				}
 			}
 		}
+		
+		
+		
 		
 		return domList;
 	}

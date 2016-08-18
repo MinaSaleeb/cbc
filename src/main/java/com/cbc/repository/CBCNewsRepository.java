@@ -34,7 +34,7 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	@Query("SELECT nc FROM NewsContent nc WHERE nc.id= :newsId")
 	NewsContent getNewsContentById(@Param("newsId") long newsId);
 	
-	List<CbcNew> findByTitleContainingOrderByPostingDateDesc(String title, Pageable pageable);
+	List<CbcNew> findByTitleContainingOrTagsContainingOrderByPostingDateDesc(String title, String tags, Pageable pageable);
 	
 	@Query(value = "SELECT * "+
 				   "FROM cbc_news n "+

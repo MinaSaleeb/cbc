@@ -3,6 +3,8 @@
  */
 package com.cbc.domain;
 
+import java.util.List;
+
 import com.cbc.util.ModelToDomainMapper;
 
 /**
@@ -16,6 +18,10 @@ public class NewsCategory
 	private String categoryName;
 	
 	private String bgImage;
+	
+	private NewsCategory parentCategory;
+	
+	private List<NewsCategory> subCategories;
 	
 	
 	
@@ -69,6 +75,34 @@ public class NewsCategory
 	 */
 	public void setBgImage(String bgImage) {
 		this.bgImage = bgImage;
+	}
+
+	/**
+	 * @return the parentCategory
+	 */
+	public NewsCategory getParentCategory() {
+		return parentCategory;
+	}
+
+	/**
+	 * @param parentCategory the parentCategory to set
+	 */
+	public void setParentCategory(NewsCategory parentCategory) {
+		this.parentCategory = parentCategory;
+	}
+
+	/**
+	 * @return the subCategories
+	 */
+	public List<NewsCategory> getSubCategories() {
+		return subCategories;
+	}
+
+	/**
+	 * @param subCategories the subCategories to set
+	 */
+	public void setSubCategories(List<NewsCategory> subCategories) {
+		this.subCategories = subCategories;
 	}
 	
 	

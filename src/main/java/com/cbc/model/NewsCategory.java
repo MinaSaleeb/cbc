@@ -39,6 +39,14 @@ public class NewsCategory implements Serializable {
 	
 	@OneToMany(mappedBy="newsCategory")
 	private List<NewsCategoriesAdDiv> newsCategoryAdDivs;
+	
+	@ManyToOne
+	@JoinColumn(name="parent_category")
+	private NewsCategory parentCategory;
+
+	//bi-directional many-to-one association to NewsCategory
+	@OneToMany(mappedBy="parentCategory")
+	private List<NewsCategory> subCategories;
 
 	public NewsCategory() {
 	}
@@ -129,6 +137,34 @@ public class NewsCategory implements Serializable {
 	 */
 	public void setNewsCategoryAdDivs(List<NewsCategoriesAdDiv> newsCategoryAdDivs) {
 		this.newsCategoryAdDivs = newsCategoryAdDivs;
+	}
+
+	/**
+	 * @return the parentCategory
+	 */
+	public NewsCategory getParentCategory() {
+		return parentCategory;
+	}
+
+	/**
+	 * @param parentCategory the parentCategory to set
+	 */
+	public void setParentCategory(NewsCategory parentCategory) {
+		this.parentCategory = parentCategory;
+	}
+
+	/**
+	 * @return the subCategories
+	 */
+	public List<NewsCategory> getSubCategories() {
+		return subCategories;
+	}
+
+	/**
+	 * @param subCategories the subCategories to set
+	 */
+	public void setSubCategories(List<NewsCategory> subCategories) {
+		this.subCategories = subCategories;
 	}
 
 }

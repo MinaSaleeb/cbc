@@ -303,7 +303,7 @@ public class CBCNewsService
 	 */
 	public List<CbcNew> searchNewsByTitle(String title, Pageable page)
 	{
-		return cBCNewsRepo.findByTitleContainingOrderByPostingDateDesc(title, page);
+		return cBCNewsRepo.findByTitleContainingOrTagsContainingOrderByPostingDateDesc(title,title ,page);
 	}
 	
 	/**
