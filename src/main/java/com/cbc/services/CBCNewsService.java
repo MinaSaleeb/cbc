@@ -115,6 +115,16 @@ public class CBCNewsService
 	
 	/**
 	 * 
+	 * @param slug
+	 * @return
+	 */
+	public CbcNew getCbcNewsBySlug(String slug)
+	{
+		return cBCNewsRepo.findBySlug(slug);
+	}
+	
+	/**
+	 * 
 	 * @param newId
 	 * @return
 	 */
@@ -359,6 +369,11 @@ public class CBCNewsService
 		}
 		
 		return cBCNewsRepo.findNewsByCatagoryAndType(categoryId, types, page);
+	}
+	
+	public List<CbcNew> getRSSNewsList()
+	{
+		return cBCNewsRepo.findRSSNews(new PageRequest(0, 100));
 	}
 	
 	

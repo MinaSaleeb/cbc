@@ -130,10 +130,18 @@ public class CBCNewsRestController
 	 * @return
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<com.cbc.domain.CbcNew> getNewById(@PathVariable("id") int newId)
+	 public ResponseEntity<com.cbc.domain.CbcNew> getNewById(@PathVariable("id") String newId)
 	 {
-		CbcNew cbcNew = cBCNewsService.getCbcNewsById(newId);
-		NewsContent content = cBCNewsService.getNewsContentById(newId);
+		CbcNew cbcNew = null;
+		try  
+		{
+			long newIdLong = Long.parseLong(newId.trim());
+			cbcNew = cBCNewsService.getCbcNewsById(newIdLong);
+		} 
+		catch (NumberFormatException nfe) 
+		{
+			cbcNew = cBCNewsService.getCbcNewsBySlug(newId.trim());
+		}
 		
 		if(cbcNew == null)
 		{
@@ -141,11 +149,12 @@ public class CBCNewsRestController
 			return new ResponseEntity<com.cbc.domain.CbcNew>(HttpStatus.NOT_FOUND);
 		}
 		
+		NewsContent content = cBCNewsService.getNewsContentById(cbcNew.getId());
 		com.cbc.domain.CbcNew cbcNewDom = new com.cbc.domain.CbcNew(cbcNew, content != null? content.getContent() : "");
 		
 		if(Constants.NewsType.GALLERY.toString().equals(cbcNewDom.getType()))
 		{
-			cbcNewDom.setImages(cBCNewsService.getNewImages(newId));
+			cbcNewDom.setImages(cBCNewsService.getNewImages(cbcNew.getId()));
 		}
 		
 		return new ResponseEntity<com.cbc.domain.CbcNew>(cbcNewDom, HttpStatus.OK);

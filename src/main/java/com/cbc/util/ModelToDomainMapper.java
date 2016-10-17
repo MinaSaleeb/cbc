@@ -84,7 +84,7 @@ public class ModelToDomainMapper
 	
 	public static void mapCBCNew(com.cbc.model.CbcNew modCbcNew , com.cbc.domain.CbcNew domCbcNew)
 	{
-		domCbcNew.setId(modCbcNew.getId());
+		domCbcNew.setId(modCbcNew.getSlug() != null && !"".equals(modCbcNew.getSlug()) ? modCbcNew.getSlug() : String.valueOf(modCbcNew.getId()));
 		domCbcNew.setTitle(modCbcNew.getTitle());
 		domCbcNew.setDescription(modCbcNew.getDescription());
 		domCbcNew.setPostingDate(modCbcNew.getPostingDate());
@@ -282,6 +282,51 @@ public class ModelToDomainMapper
 			for(com.cbc.model.ProgramPromo pp : modProgramPromoList)
 			{
 				domList.add(new com.cbc.domain.ProgramPromo(pp));
+			}
+		}
+		
+		return domList;
+	}
+	
+	public static void mapProgramTab(com.cbc.model.ProgramTab modProgramTab , com.cbc.domain.ProgramTab domProgramTab)
+	{
+		domProgramTab.setId(modProgramTab.getId());
+		domProgramTab.setName(modProgramTab.getName());
+		domProgramTab.setContents(mapProgramTabContentsList(modProgramTab.getProgramTabContents()));
+	}
+	
+	public static void mapProgramTabContent(com.cbc.model.ProgramTabContent modProgramTabc , com.cbc.domain.ProgramTabContent domProgramTabc)
+	{
+		domProgramTabc.setId(modProgramTabc.getId());
+		domProgramTabc.setTitle(modProgramTabc.getTitle());
+		domProgramTabc.setDescription(modProgramTabc.getDescription());
+		domProgramTabc.setContentUrl(modProgramTabc.getContentUrl());
+		domProgramTabc.setContentType(modProgramTabc.getContentType());
+		
+	}
+	
+	public static List<com.cbc.domain.ProgramTab> mapProgramTabsList(List<com.cbc.model.ProgramTab> modProgramTabList)
+	{
+		List<com.cbc.domain.ProgramTab> domList = new ArrayList<com.cbc.domain.ProgramTab>();
+		if(modProgramTabList != null && !modProgramTabList.isEmpty())
+		{
+			for(com.cbc.model.ProgramTab pt : modProgramTabList)
+			{
+				domList.add(new com.cbc.domain.ProgramTab(pt));
+			}
+		}
+		
+		return domList;
+	}
+	
+	public static List<com.cbc.domain.ProgramTabContent> mapProgramTabContentsList(List<com.cbc.model.ProgramTabContent> modProgramTabCntsList)
+	{
+		List<com.cbc.domain.ProgramTabContent> domList = new ArrayList<com.cbc.domain.ProgramTabContent>();
+		if(modProgramTabCntsList != null && !modProgramTabCntsList.isEmpty())
+		{
+			for(com.cbc.model.ProgramTabContent ptc : modProgramTabCntsList)
+			{
+				domList.add(new com.cbc.domain.ProgramTabContent(ptc));
 			}
 		}
 		

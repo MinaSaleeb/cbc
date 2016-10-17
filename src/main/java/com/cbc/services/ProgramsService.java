@@ -27,6 +27,7 @@ import com.cbc.model.HubSlick;
 import com.cbc.model.Program;
 import com.cbc.model.ProgramPromo;
 import com.cbc.model.ProgramScene;
+import com.cbc.model.ProgramTab;
 import com.cbc.model.ProgramsAdDiv;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.EpisodeRepository;
@@ -35,6 +36,7 @@ import com.cbc.repository.ProgramNewsRepository;
 import com.cbc.repository.ProgramPromosRepository;
 import com.cbc.repository.ProgramRepository;
 import com.cbc.repository.ProgramSceneRepository;
+import com.cbc.repository.ProgramTabRepository;
 import com.cbc.util.Constants.MostViewedType;
 
 /**
@@ -71,6 +73,9 @@ public class ProgramsService
 	
 	@Autowired
 	private AdDivsPropagationService adDivsPropagationService;
+	
+	@Autowired
+	private ProgramTabRepository programTabRepository;
 	
 	
 	
@@ -404,6 +409,11 @@ public class ProgramsService
 	public List<ProgramScene> getProgramGalleryById(int programId)
 	{
 		return ProgramSceneRepo.findByProgramId(programId);
+	}
+	
+	public List<ProgramTab> getProgramTabsById(int programId)
+	{
+		return programTabRepository.findByProgramId(programId);
 	}
 	
 	public List<ProgramPromo> getProgramPromosById(int programId)

@@ -49,6 +49,8 @@ public class CbcNew implements Serializable {
 	@Column(name="thumbnail_image")
 	private String thumbnailImage;
 	
+	private String slug;
+	
 	
 	public CbcNew() {
 	}
@@ -170,6 +172,20 @@ public class CbcNew implements Serializable {
 	 */
 	public void setThumbnailImage(String thumbnailImage) {
 		this.thumbnailImage = thumbnailImage;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 
 }

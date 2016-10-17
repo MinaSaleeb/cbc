@@ -36,6 +36,8 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	
 	List<CbcNew> findByTitleContainingOrTagsContainingOrderByPostingDateDesc(String title, String tags, Pageable pageable);
 	
+	CbcNew findBySlug(String slug);
+	
 	@Query(value = "SELECT * "+
 				   "FROM cbc_news n "+
 				   "INNER JOIN ("+
@@ -48,4 +50,7 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	
 	@Query(value = "SELECT n FROM CbcNew n WHERE n.newsCategory.id= :categoryId AND n.type IN (:type) ORDER BY n.postingDate DESC")
 	List<CbcNew> findNewsByCatagoryAndType(@Param("categoryId") int categoryId, @Param("type") List<String> type, Pageable pageable);
+	
+	@Query("SELECT n FROM CbcNew n ORDER BY n.postingDate DESC")
+	List<CbcNew> findRSSNews(Pageable pageable);
 }

@@ -349,6 +349,12 @@ public class ProgramsRestController
 		 return new ResponseEntity<List<com.cbc.domain.ProgramPromo>>(ModelToDomainMapper.mapProgramPromoList(programsService.getProgramPromosById(programId)), HttpStatus.OK);
 	 }
 	 
+	 @RequestMapping(value = "/{id}/tabs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.ProgramTab>> getProgramTabs(@PathVariable("id") int programId)
+	 {
+		 return new ResponseEntity<List<com.cbc.domain.ProgramTab>>(ModelToDomainMapper.mapProgramTabsList(programsService.getProgramTabsById(programId)), HttpStatus.OK);
+	 }
+	 
 	 @RequestMapping(value = "/mostViewed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<List<MediaContentTuple>> getMostViewed(@RequestParam(required = true , value = "size") int size, @RequestParam(required = false , value = "channelId") Integer channelId)
 	 {
