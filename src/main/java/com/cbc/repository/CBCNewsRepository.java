@@ -53,4 +53,7 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	
 	@Query("SELECT n FROM CbcNew n ORDER BY n.postingDate DESC")
 	List<CbcNew> findRSSNews(Pageable pageable);
+	
+	@Query(value = "SELECT * FROM cbc_news n  WHERE n.tags REGEXP :tags AND n.id != :newsId ORDER BY n.posting_date DESC LIMIT 20", nativeQuery = true)
+	List<CbcNew> getSimilarNews(@Param("tags") String tags,@Param("newsId") long newsId);
 }

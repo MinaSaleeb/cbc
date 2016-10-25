@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,10 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cbc.model.CitizenService;
 import com.cbc.model.Currency;
+import com.cbc.model.ExternalPage;
 import com.cbc.model.PrayerTime;
+import com.cbc.model.UserAnswer;
 import com.cbc.repository.CitizenServiceRepository;
 import com.cbc.repository.CurrencyRepository;
+import com.cbc.repository.ExternalPageRepository;
 import com.cbc.repository.PrayerTimeRepository;
+import com.cbc.repository.UserAnswerRepository;
 
 /**
  * @author Mina Saleeb
@@ -46,6 +51,12 @@ public class OthersRestController
 	@Autowired
 	private CurrencyRepository currencyRepository; 
 	
+	@Autowired
+	private ExternalPageRepository externalPageRepository;
+	
+	@Autowired
+	private UserAnswerRepository userAnswerRepository;
+	
 	/**
 	 * 
 	 * @return
@@ -64,6 +75,36 @@ public class OthersRestController
 		 return new ResponseEntity<List<CitizenService>>(citizenServices , HttpStatus.OK);
 	 }
 	
+	@RequestMapping(value = "/external_page/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<ExternalPage> getExternalPageDate(@PathVariable("id") int companyId)
+	 {
+		ExternalPage externalPage = externalPageRepository.findOne(companyId);
+		
+		if(externalPage == null)
+		 {
+			 LOGGER.error("No externalPage in DB");
+			 return new ResponseEntity<ExternalPage>(HttpStatus.NO_CONTENT);
+		 }
+		 
+		 return new ResponseEntity<ExternalPage>(externalPage , HttpStatus.OK);
+	 }
+	
+	
+	@RequestMapping(value = "/question_answer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> postUserAnswer(@RequestParam(required = true , value = "userId") long userId,
+			@RequestParam(required = true , value = "questionId") long questionId,
+			@RequestParam(required = true , value = "answer") String answer)
+	 {
+		
+		 UserAnswer userAnswer = new UserAnswer();
+		 userAnswer.setUserId(userId);
+		 userAnswer.setQuestionId(questionId);
+		 userAnswer.setAnswer(answer);
+		 
+		 userAnswerRepository.save(userAnswer);
+		 
+		 return new ResponseEntity<>(HttpStatus.CREATED);
+	 }
 	
 	@RequestMapping(value = "/prayerTimes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<List<PrayerTime>> getPrayerTimes(@RequestParam(required = true , value = "fromDate") String fromDate , @RequestParam(required = true , value = "toDate") String toDate) throws ParseException

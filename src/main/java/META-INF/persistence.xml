@@ -40,5 +40,7 @@
 		<class>com.cbc.model.Currency</class>
 		<class>com.cbc.model.ProgramTab</class>
 		<class>com.cbc.model.ProgramTabContent</class>
+		<class>com.cbc.model.ExternalPage</class>
+		<class>com.cbc.model.UserAnswer</class>
 	</persistence-unit>
 </persistence>

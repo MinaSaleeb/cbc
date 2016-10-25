@@ -171,6 +171,12 @@ public class CBCNewsRestController
 	 {
 		return new ResponseEntity<List<NewsImage>>(cBCNewsService.getNewImages(newId) , HttpStatus.OK);
 	 }
+	 
+	 @RequestMapping(value = "/{id}/similarNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getSimilarNews(@PathVariable("id") int newId)
+	 {
+		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findSimilarNews(newId)) , HttpStatus.OK);
+	 }
 	
 	 @RequestMapping(value = "/getByChannelId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getByChannelId(@RequestParam(required = true , value = "channelId") int channelId,
