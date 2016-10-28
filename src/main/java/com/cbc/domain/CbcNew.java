@@ -36,6 +36,10 @@ public class CbcNew
 	
 	private String thumbnail;
 	
+	private CbcNew nextNew;
+	
+	private CbcNew previousNew;
+	
 	/**
 	 * 
 	 */
@@ -204,6 +208,34 @@ public class CbcNew
 	 */
 	public void setThumbnail(String thumbnail) {
 		this.thumbnail = thumbnail;
+	}
+
+	/**
+	 * @return the nextNew
+	 */
+	public CbcNew getNextNew() {
+		return nextNew;
+	}
+
+	/**
+	 * @param nextNew the nextNew to set
+	 */
+	public void setNextNew(CbcNew nextNew) {
+		this.nextNew = nextNew;
+	}
+
+	/**
+	 * @return the previousNew
+	 */
+	public CbcNew getPreviousNew() {
+		return previousNew;
+	}
+
+	/**
+	 * @param previousNew the previousNew to set
+	 */
+	public void setPreviousNew(CbcNew previousNew) {
+		this.previousNew = previousNew;
 	}
 	
 	

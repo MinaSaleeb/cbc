@@ -157,6 +157,12 @@ public class CBCNewsRestController
 			cbcNewDom.setImages(cBCNewsService.getNewImages(cbcNew.getId()));
 		}
 		
+		// Find next and previous of the current cbc new
+		CbcNew nextOne = cBCNewsService.findNextNew(cbcNew.getNewsCategory().getId(), cbcNew.getId());
+		CbcNew previousOne = cBCNewsService.findPreviousNew(cbcNew.getNewsCategory().getId(), cbcNew.getId());
+		if(nextOne != null) cbcNewDom.setNextNew(new com.cbc.domain.CbcNew(nextOne));
+		if(previousOne != null) cbcNewDom.setPreviousNew(new com.cbc.domain.CbcNew(previousOne));
+		
 		return new ResponseEntity<com.cbc.domain.CbcNew>(cbcNewDom, HttpStatus.OK);
 	 }
 	

@@ -56,4 +56,10 @@ public interface CBCNewsRepository extends CrudRepository<CbcNew, Long>
 	
 	@Query(value = "SELECT * FROM cbc_news n  WHERE n.tags REGEXP :tags AND n.id != :newsId ORDER BY n.posting_date DESC LIMIT 20", nativeQuery = true)
 	List<CbcNew> getSimilarNews(@Param("tags") String tags,@Param("newsId") long newsId);
+	
+	@Query(value = "select * from cbc_news n where n.id = (select min(n2.id) from cbc_news n2 where n2.id > :newId and n2.category = :categoryId)", nativeQuery = true)
+	CbcNew findNextNew(@Param("categoryId") int categoryId,@Param("newId") long currentNewId);
+	
+	@Query(value = "select * from cbc_news n where n.id = (select max(n2.id) from cbc_news n2 where n2.id < :newId and n2.category = :categoryId)", nativeQuery = true)
+	CbcNew findPreviousNew(@Param("categoryId") int categoryId,@Param("newId") long currentNewId);
 }

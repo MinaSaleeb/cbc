@@ -17,6 +17,8 @@ public class ProgramTab
 	
 	private String name;
 	
+	private String contentType;
+	
 	private List<ProgramTabContent> contents;
 	
 	public ProgramTab(com.cbc.model.ProgramTab pt) 
@@ -51,6 +53,20 @@ public class ProgramTab
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	/**

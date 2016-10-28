@@ -20,6 +20,8 @@ public class ProgramTabContent
 	
 	private String contentUrl;
 	
+	private String thumbnail;
+	
 	private String contentType;
 
 
@@ -91,6 +93,22 @@ public class ProgramTabContent
 	 */
 	public void setContentUrl(String contentUrl) {
 		this.contentUrl = contentUrl;
+	}
+
+
+	/**
+	 * @return the thumbnail
+	 */
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+
+	/**
+	 * @param thumbnail the thumbnail to set
+	 */
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 

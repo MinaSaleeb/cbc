@@ -40,6 +40,9 @@ public class ProgramTabContent implements Serializable
 	@Column(name="content_type")
 	private String contentType;
 	
+	@Column(name="thumbnail_image")
+	private String thumbnailImage;
+	
 	@ManyToOne
 	@JoinColumn(name="program_tab_id")
 	private ProgramTab programTabBean;
@@ -112,6 +115,20 @@ public class ProgramTabContent implements Serializable
 	 */
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 
 	/**

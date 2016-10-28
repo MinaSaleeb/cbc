@@ -6,6 +6,7 @@ package com.cbc.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +34,9 @@ public class ProgramTab implements Serializable
 	private int id;
 	
 	private String name;
+	
+	@Column(name="content_type")
+	private String contentType;
 	
 	@ManyToOne
 	@JoinColumn(name="program_id")
@@ -67,6 +71,20 @@ public class ProgramTab implements Serializable
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	/**

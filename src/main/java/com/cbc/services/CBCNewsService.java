@@ -387,5 +387,16 @@ public class CBCNewsService
 		return cBCNewsRepo.getSimilarNews(tags,newId);
 	}
 	
+	public CbcNew findNextNew(int categoryId,long currentNewId)
+	{
+		return cBCNewsRepo.findNextNew(categoryId, currentNewId);
+	}
+	
+	
+	public CbcNew findPreviousNew(int categoryId,long currentNewId)
+	{
+		return cBCNewsRepo.findPreviousNew(categoryId, currentNewId);
+	}
+	
 	
 }

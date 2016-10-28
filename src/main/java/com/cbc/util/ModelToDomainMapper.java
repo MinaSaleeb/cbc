@@ -292,6 +292,7 @@ public class ModelToDomainMapper
 	{
 		domProgramTab.setId(modProgramTab.getId());
 		domProgramTab.setName(modProgramTab.getName());
+		domProgramTab.setContentType(modProgramTab.getContentType());
 		domProgramTab.setContents(mapProgramTabContentsList(modProgramTab.getProgramTabContents()));
 	}
 	
@@ -301,6 +302,7 @@ public class ModelToDomainMapper
 		domProgramTabc.setTitle(modProgramTabc.getTitle());
 		domProgramTabc.setDescription(modProgramTabc.getDescription());
 		domProgramTabc.setContentUrl(modProgramTabc.getContentUrl());
+		domProgramTabc.setThumbnail(modProgramTabc.getThumbnailImage());
 		domProgramTabc.setContentType(modProgramTabc.getContentType());
 		
 	}
