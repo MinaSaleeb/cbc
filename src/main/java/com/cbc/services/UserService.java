@@ -29,16 +29,9 @@ public class UserService
 		return success;
 	}
 	
-	public boolean login(String userEmail, String password)
+	public User login(String userEmail, String password)
 	{
-		boolean exist = false;
-		
-		if(userRepository.findByEmailAndPassword(userEmail, password) != null)
-		{
-			exist = true; 
-		}
-		
-		return exist;
+		return userRepository.findByEmailAndPassword(userEmail, password);
 	}
 	
 	public boolean validateUserData(String userEmail)

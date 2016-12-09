@@ -60,9 +60,10 @@ public class UsersRestController
 	public ResponseEntity<?> login(@RequestParam(required = true , value = "userName") String userName,
 			@RequestParam(required = true , value = "password") String password)
 	{
-		if(userService.login(userName, password))
+		User user = userService.login(userName, password);
+		if(user != null)
 		{
-			return new ResponseEntity<>(HttpStatus.FOUND);
+			return new ResponseEntity<>(user.getId(),HttpStatus.FOUND);
 		}
 		
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
