@@ -85,6 +85,11 @@ public class Program implements Serializable {
 	
 	@Column(name="hide_program")
 	private boolean hideProgram;
+	
+	@ManyToMany
+	@JoinTable(name = "programs_widgets", joinColumns = { @JoinColumn(name = "program") }, inverseJoinColumns = {
+			@JoinColumn(name = "widget") })
+	private List<Widget> widgets;
 
 	public Program() {
 	}
@@ -284,6 +289,20 @@ public class Program implements Serializable {
 	 */
 	public void setHideProgram(boolean hideProgram) {
 		this.hideProgram = hideProgram;
+	}
+
+	/**
+	 * @return the widgets
+	 */
+	public List<Widget> getWidgets() {
+		return widgets;
+	}
+
+	/**
+	 * @param widgets the widgets to set
+	 */
+	public void setWidgets(List<Widget> widgets) {
+		this.widgets = widgets;
 	}
 
 }

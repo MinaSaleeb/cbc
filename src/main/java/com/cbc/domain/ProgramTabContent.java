@@ -23,6 +23,8 @@ public class ProgramTabContent
 	private String thumbnail;
 	
 	private String contentType;
+	
+	private String htmlContent;
 
 
 	public ProgramTabContent(com.cbc.model.ProgramTabContent ptc) 
@@ -125,6 +127,22 @@ public class ProgramTabContent
 	 */
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+
+	/**
+	 * @return the htmlContent
+	 */
+	public String getHtmlContent() {
+		return htmlContent;
+	}
+
+
+	/**
+	 * @param htmlContent the htmlContent to set
+	 */
+	public void setHtmlContent(String htmlContent) {
+		this.htmlContent = htmlContent;
 	}
 	
 	

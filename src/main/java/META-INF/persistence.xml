@@ -42,5 +42,9 @@
 		<class>com.cbc.model.ProgramTabContent</class>
 		<class>com.cbc.model.ExternalPage</class>
 		<class>com.cbc.model.UserAnswer</class>
+		<class>com.cbc.model.Widget</class>
+		<class>com.cbc.model.WidgetContent</class>
+		<class>com.cbc.model.TabsContainer</class>
+		<class>com.cbc.model.MeasureUnit</class>
 	</persistence-unit>
 </persistence>

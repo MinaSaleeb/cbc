@@ -29,6 +29,7 @@ import com.cbc.model.ProgramPromo;
 import com.cbc.model.ProgramScene;
 import com.cbc.model.ProgramTab;
 import com.cbc.model.ProgramsAdDiv;
+import com.cbc.model.Widget;
 import com.cbc.repository.ChannelRepository;
 import com.cbc.repository.EpisodeRepository;
 import com.cbc.repository.HubSlickRepository;
@@ -554,5 +555,17 @@ public class ProgramsService
 	public List<Program> findByType(String type)
 	{
 		return programRepository.findByTypeOrderByOrderingFactorAsc(type);
+	}
+	
+	/**
+	 * 
+	 * @param programId
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Widget> findProgramWidgets(int programId) throws Exception
+	{
+		Program prgm = retrieveProgramById(programId);
+		return prgm.getWidgets();
 	}
 }

@@ -44,6 +44,13 @@ public class ProgramTab implements Serializable
 	
 	@OneToMany(mappedBy="programTabBean")
 	private List<ProgramTabContent> programTabContents;
+	
+	@ManyToOne
+	@JoinColumn(name="parent_tab")
+	private ProgramTab parentTab;
+
+	@OneToMany(mappedBy="parentTab")
+	private List<ProgramTab> childTabs;
 
 	/**
 	 * @return the id
@@ -113,6 +120,34 @@ public class ProgramTab implements Serializable
 	 */
 	public void setProgramTabContents(List<ProgramTabContent> programTabContents) {
 		this.programTabContents = programTabContents;
+	}
+
+	/**
+	 * @return the parentTab
+	 */
+	public ProgramTab getParentTab() {
+		return parentTab;
+	}
+
+	/**
+	 * @param parentTab the parentTab to set
+	 */
+	public void setParentTab(ProgramTab parentTab) {
+		this.parentTab = parentTab;
+	}
+
+	/**
+	 * @return the childTabs
+	 */
+	public List<ProgramTab> getChildTabs() {
+		return childTabs;
+	}
+
+	/**
+	 * @param childTabs the childTabs to set
+	 */
+	public void setChildTabs(List<ProgramTab> childTabs) {
+		this.childTabs = childTabs;
 	}
 	
 	

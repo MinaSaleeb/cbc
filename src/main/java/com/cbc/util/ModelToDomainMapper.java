@@ -294,6 +294,16 @@ public class ModelToDomainMapper
 		domProgramTab.setName(modProgramTab.getName());
 		domProgramTab.setContentType(modProgramTab.getContentType());
 		domProgramTab.setContents(mapProgramTabContentsList(modProgramTab.getProgramTabContents()));
+		List<com.cbc.model.ProgramTab> subTabs = modProgramTab.getChildTabs();
+		if(subTabs != null && !subTabs.isEmpty())
+		{
+			List<com.cbc.domain.ProgramTab> domSubChilds = new ArrayList<com.cbc.domain.ProgramTab>();
+			for(com.cbc.model.ProgramTab tab : subTabs)
+			{
+				domSubChilds.add(new com.cbc.domain.ProgramTab(tab));
+			}
+			domProgramTab.setChildTabs(domSubChilds);
+		}
 	}
 	
 	public static void mapProgramTabContent(com.cbc.model.ProgramTabContent modProgramTabc , com.cbc.domain.ProgramTabContent domProgramTabc)
@@ -304,6 +314,7 @@ public class ModelToDomainMapper
 		domProgramTabc.setContentUrl(modProgramTabc.getContentUrl());
 		domProgramTabc.setThumbnail(modProgramTabc.getThumbnailImage());
 		domProgramTabc.setContentType(modProgramTabc.getContentType());
+		domProgramTabc.setHtmlContent(modProgramTabc.getHtmlContent());
 		
 	}
 	
@@ -314,7 +325,11 @@ public class ModelToDomainMapper
 		{
 			for(com.cbc.model.ProgramTab pt : modProgramTabList)
 			{
-				domList.add(new com.cbc.domain.ProgramTab(pt));
+				//filter child tabs from first level
+				if(pt.getParentTab() == null)
+				{
+					domList.add(new com.cbc.domain.ProgramTab(pt));
+				}
 			}
 		}
 		
@@ -329,6 +344,49 @@ public class ModelToDomainMapper
 			for(com.cbc.model.ProgramTabContent ptc : modProgramTabCntsList)
 			{
 				domList.add(new com.cbc.domain.ProgramTabContent(ptc));
+			}
+		}
+		
+		return domList;
+	}
+	
+	public static void mapWidget(com.cbc.model.Widget modWidget , com.cbc.domain.Widget domWidget)
+	{
+		domWidget.setId(modWidget.getId());
+		domWidget.setName(modWidget.getName());
+		domWidget.setWidgetContents(mapWidgetContentsList(modWidget.getWidgetContents()));
+	}
+	
+	public static List<com.cbc.domain.WidgetContent> mapWidgetContentsList(List<com.cbc.model.WidgetContent> modWidgetCntsList)
+	{
+		List<com.cbc.domain.WidgetContent> domList = new ArrayList<com.cbc.domain.WidgetContent>();
+		if(modWidgetCntsList != null && !modWidgetCntsList.isEmpty())
+		{
+			for(com.cbc.model.WidgetContent wc : modWidgetCntsList)
+			{
+				domList.add(new com.cbc.domain.WidgetContent(wc));
+			}
+		}
+		
+		return domList;
+	}
+	
+	public static void mapWidgetContent(com.cbc.model.WidgetContent modWidgetContent , com.cbc.domain.WidgetContent domWidgetContent)
+	{
+		domWidgetContent.setId(modWidgetContent.getId());
+		domWidgetContent.setContentUrl(modWidgetContent.getContentUrl());;
+		domWidgetContent.setContentUrlType(modWidgetContent.getContentUrlType());
+		domWidgetContent.setHtmlContent(modWidgetContent.getHtmlContent());	
+	}
+	
+	public static List<com.cbc.domain.Widget> mapWidgetsList(List<com.cbc.model.Widget> modWidgetList)
+	{
+		List<com.cbc.domain.Widget> domList = new ArrayList<com.cbc.domain.Widget>();
+		if(modWidgetList != null && !modWidgetList.isEmpty())
+		{
+			for(com.cbc.model.Widget w : modWidgetList)
+			{
+				domList.add(new com.cbc.domain.Widget(w));
 			}
 		}
 		

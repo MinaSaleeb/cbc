@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,13 @@ import com.cbc.model.Currency;
 import com.cbc.model.ExternalPage;
 import com.cbc.model.PrayerTime;
 import com.cbc.model.UserAnswer;
+import com.cbc.model.Widget;
 import com.cbc.repository.CitizenServiceRepository;
 import com.cbc.repository.CurrencyRepository;
 import com.cbc.repository.ExternalPageRepository;
 import com.cbc.repository.PrayerTimeRepository;
 import com.cbc.repository.UserAnswerRepository;
+import com.cbc.repository.WidgetRepository;
 
 /**
  * @author Mina Saleeb
@@ -37,6 +40,7 @@ import com.cbc.repository.UserAnswerRepository;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/others")
+@Transactional
 public class OthersRestController 
 {
 	private static final Logger LOGGER = Logger.getLogger(OthersRestController.class);
@@ -56,6 +60,9 @@ public class OthersRestController
 	
 	@Autowired
 	private UserAnswerRepository userAnswerRepository;
+	
+	@Autowired
+	private WidgetRepository widgetRepo;
 	
 	/**
 	 * 
@@ -132,5 +139,18 @@ public class OthersRestController
 		 }
 		
 		return new ResponseEntity<List<Currency>>(currencies , HttpStatus.OK);
+	 }
+	 
+	 @RequestMapping(value = "/widget/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<com.cbc.domain.Widget> getWidgetByName(@PathVariable("name") String name)
+	 {
+		 Widget w = widgetRepo.findByName(name);
+		 if(w != null)
+		 {
+			 return new ResponseEntity<com.cbc.domain.Widget>(new com.cbc.domain.Widget(w) , HttpStatus.OK); 
+		 }
+		 
+		 return new ResponseEntity<com.cbc.domain.Widget>(HttpStatus.NOT_FOUND);
+		 
 	 }
 }

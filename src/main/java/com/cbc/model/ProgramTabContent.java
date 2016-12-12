@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -46,6 +47,10 @@ public class ProgramTabContent implements Serializable
 	@ManyToOne
 	@JoinColumn(name="program_tab_id")
 	private ProgramTab programTabBean;
+	
+	@Lob
+	@Column(name="html_content")
+	private String htmlContent;
 
 	/**
 	 * @return the id
@@ -143,6 +148,20 @@ public class ProgramTabContent implements Serializable
 	 */
 	public void setProgramTabBean(ProgramTab programTabBean) {
 		this.programTabBean = programTabBean;
+	}
+
+	/**
+	 * @return the htmlContent
+	 */
+	public String getHtmlContent() {
+		return htmlContent;
+	}
+
+	/**
+	 * @param htmlContent the htmlContent to set
+	 */
+	public void setHtmlContent(String htmlContent) {
+		this.htmlContent = htmlContent;
 	}
 	
 }

@@ -40,6 +40,11 @@ public class FoodItem implements Serializable {
 	//bi-directional many-to-one association to RecipeIngredient
 	@OneToMany(mappedBy="foodItem")
 	private List<RecipeIngredient> recipeIngredients;
+	
+	@ManyToMany
+	@JoinTable(name = "food_items_measure_units", joinColumns = { @JoinColumn(name = "food_item_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "measure_unit_id") })
+	private List<MeasureUnit> measureUnits;
 
 	public FoodItem() {
 	}
@@ -112,6 +117,20 @@ public class FoodItem implements Serializable {
 		recipeIngredient.setFoodItem(null);
 
 		return recipeIngredient;
+	}
+
+	/**
+	 * @return the measureUnits
+	 */
+	public List<MeasureUnit> getMeasureUnits() {
+		return measureUnits;
+	}
+
+	/**
+	 * @param measureUnits the measureUnits to set
+	 */
+	public void setMeasureUnits(List<MeasureUnit> measureUnits) {
+		this.measureUnits = measureUnits;
 	}
 
 }

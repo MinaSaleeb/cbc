@@ -21,6 +21,8 @@ public class ProgramTab
 	
 	private List<ProgramTabContent> contents;
 	
+	private List<ProgramTab> childTabs;
+	
 	public ProgramTab(com.cbc.model.ProgramTab pt) 
 	{
 		super();
@@ -81,5 +83,19 @@ public class ProgramTab
 	 */
 	public void setContents(List<ProgramTabContent> contents) {
 		this.contents = contents;
+	}
+
+	/**
+	 * @return the childTabs
+	 */
+	public List<ProgramTab> getChildTabs() {
+		return childTabs;
+	}
+
+	/**
+	 * @param childTabs the childTabs to set
+	 */
+	public void setChildTabs(List<ProgramTab> childTabs) {
+		this.childTabs = childTabs;
 	}
 }
