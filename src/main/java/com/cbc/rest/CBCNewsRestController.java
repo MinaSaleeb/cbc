@@ -132,16 +132,7 @@ public class CBCNewsRestController
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<com.cbc.domain.CbcNew> getNewById(@PathVariable("id") String newId)
 	 {
-		CbcNew cbcNew = null;
-		try  
-		{
-			long newIdLong = Long.parseLong(newId.trim());
-			cbcNew = cBCNewsService.getCbcNewsById(newIdLong);
-		} 
-		catch (NumberFormatException nfe) 
-		{
-			cbcNew = cBCNewsService.getCbcNewsBySlug(newId.trim());
-		}
+		CbcNew cbcNew = cBCNewsService.getCbcNewByIdentifier(newId);
 		
 		if(cbcNew == null)
 		{
@@ -167,7 +158,7 @@ public class CBCNewsRestController
 	 }
 	
 	@RequestMapping(value = "/{id}/ads", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<Map<String , String>> getNewAdsById(@PathVariable("id") int newId)
+	 public ResponseEntity<Map<String , String>> getNewAdsById(@PathVariable("id") String newId)
 	 {
 		return new ResponseEntity<Map<String , String>>(cBCNewsService.getNewAds(newId) , HttpStatus.OK);
 	 }

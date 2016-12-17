@@ -217,11 +217,11 @@ public class CBCNewsService
 	 * @param newId
 	 * @return
 	 */
-	public Map<String , String> getNewAds(long newId)
+	public Map<String , String> getNewAds(String newId)
 	{
 		Map<String , String> newAdsmap = new HashMap<String , String>();
 		
-		CbcNew n = cBCNewsRepo.findOne(newId);
+		CbcNew n = getCbcNewByIdentifier(newId);
 		
 		if(n == null)
 		 {
@@ -396,6 +396,22 @@ public class CBCNewsService
 	public CbcNew findPreviousNew(int categoryId,long currentNewId)
 	{
 		return cBCNewsRepo.findPreviousNew(categoryId, currentNewId);
+	}
+	
+	public CbcNew getCbcNewByIdentifier(String newId)
+	{
+		CbcNew cbcNew = null;
+		try  
+		{
+			long newIdLong = Long.parseLong(newId.trim());
+			cbcNew = getCbcNewsById(newIdLong);
+		} 
+		catch (NumberFormatException nfe) 
+		{
+			cbcNew = getCbcNewsBySlug(newId.trim());
+		}
+		
+		return cbcNew;
 	}
 	
 	
