@@ -376,15 +376,15 @@ public class CBCNewsService
 		return cBCNewsRepo.findRSSNews(new PageRequest(0, 100));
 	}
 	
-	public List<CbcNew> findSimilarNews(long newId)
+	public List<CbcNew> findSimilarNews(String newId)
 	{
-		CbcNew cbcNew = cBCNewsRepo.findOne(newId);
+		CbcNew cbcNew = getCbcNewByIdentifier(newId);
 		String tags = cbcNew.getTags();
 		if(tags != null && !tags.isEmpty())
 		{
 			tags = tags.replace('^', '|');
 		}
-		return cBCNewsRepo.getSimilarNews(tags,newId);
+		return cBCNewsRepo.getSimilarNews(tags,cbcNew.getId());
 	}
 	
 	public CbcNew findNextNew(int categoryId,long currentNewId)

@@ -170,7 +170,7 @@ public class CBCNewsRestController
 	 }
 	 
 	 @RequestMapping(value = "/{id}/similarNews", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getSimilarNews(@PathVariable("id") int newId)
+	 public ResponseEntity<List<com.cbc.domain.CbcNew>> getSimilarNews(@PathVariable("id") String newId)
 	 {
 		return new ResponseEntity<List<com.cbc.domain.CbcNew>>(ModelToDomainMapper.mapCbcNewsList(cBCNewsService.findSimilarNews(newId)) , HttpStatus.OK);
 	 }

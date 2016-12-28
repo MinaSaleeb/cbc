@@ -26,6 +26,9 @@ public class FoodItem implements Serializable {
 
 	@Column(name="to_price")
 	private double toPrice;
+	
+	@Column(name="number_of_calories")
+	private double numberOfCalories;
 
 	//bi-directional many-to-one association to FoodSupplier
 	@ManyToOne
@@ -131,6 +134,20 @@ public class FoodItem implements Serializable {
 	 */
 	public void setMeasureUnits(List<MeasureUnit> measureUnits) {
 		this.measureUnits = measureUnits;
+	}
+
+	/**
+	 * @return the numberOfCalories
+	 */
+	public double getNumberOfCalories() {
+		return numberOfCalories;
+	}
+
+	/**
+	 * @param numberOfCalories the numberOfCalories to set
+	 */
+	public void setNumberOfCalories(double numberOfCalories) {
+		this.numberOfCalories = numberOfCalories;
 	}
 
 }
