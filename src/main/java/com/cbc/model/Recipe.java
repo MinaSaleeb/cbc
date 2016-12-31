@@ -2,6 +2,8 @@ package com.cbc.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class Recipe implements Serializable {
 	private float avgRating;
 
 	@Column(name="is_selected_for_u")
-	private byte isSelectedForU;
+	private boolean selectedForU;
 
 	@Column(name="number_of_rates")
 	private int numberOfRates;
@@ -38,6 +40,15 @@ public class Recipe implements Serializable {
 	private String tags;
 
 	private String title;
+	
+	private short status;
+	
+	@Column(length = 500, unique = true)
+	@NotNull
+	private String slug;
+	
+	@Column(name="number_of_views")
+	private long numberOfViews;
 	
 	@Transient
 	private float displayedRating;
@@ -83,6 +94,10 @@ public class Recipe implements Serializable {
 	//bi-directional many-to-many association to User
 	@ManyToMany(mappedBy="recipes2")
 	private List<User> users;
+	
+	@ManyToOne
+	@JoinColumn(name="cuisine")
+	private RecipeCuisine cuisine;
 
 	public Recipe() {
 	}
@@ -103,12 +118,12 @@ public class Recipe implements Serializable {
 		this.avgRating = avgRating;
 	}
 
-	public byte getIsSelectedForU() {
-		return this.isSelectedForU;
+	public boolean isSelectedForU() {
+		return this.selectedForU;
 	}
 
-	public void setIsSelectedForU(byte isSelectedForU) {
-		this.isSelectedForU = isSelectedForU;
+	public void setSelectedForU(boolean isSelectedForU) {
+		this.selectedForU = isSelectedForU;
 	}
 
 	public int getNumberOfRates() {
@@ -199,6 +214,20 @@ public class Recipe implements Serializable {
 		this.recipeIngredients = recipeIngredients;
 	}
 
+	/**
+	 * @return the cuisine
+	 */
+	public RecipeCuisine getCuisine() {
+		return cuisine;
+	}
+
+	/**
+	 * @param cuisine the cuisine to set
+	 */
+	public void setCuisine(RecipeCuisine cuisine) {
+		this.cuisine = cuisine;
+	}
+
 	public RecipeIngredient addRecipeIngredient(RecipeIngredient recipeIngredient) {
 		getRecipeIngredients().add(recipeIngredient);
 		recipeIngredient.setRecipeBean(this);
@@ -258,6 +287,48 @@ public class Recipe implements Serializable {
 	public float getDisplayedRating() 
 	{
 		return avgRating/numberOfRates;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public short getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(short status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+
+	/**
+	 * @return the numberOfViews
+	 */
+	public long getNumberOfViews() {
+		return numberOfViews;
+	}
+
+	/**
+	 * @param numberOfViews the numberOfViews to set
+	 */
+	public void setNumberOfViews(long numberOfViews) {
+		this.numberOfViews = numberOfViews;
 	}
 
 }

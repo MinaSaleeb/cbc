@@ -46,5 +46,6 @@
 		<class>com.cbc.model.WidgetContent</class>
 		<class>com.cbc.model.TabsContainer</class>
 		<class>com.cbc.model.MeasureUnit</class>
+		<class>com.cbc.model.RecipeCuisine</class>
 	</persistence-unit>
 </persistence>

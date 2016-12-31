@@ -15,7 +15,7 @@ public class RecipeStep implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	@Column(name="end_time")
 	private double endTime;
@@ -34,11 +34,11 @@ public class RecipeStep implements Serializable {
 	public RecipeStep() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

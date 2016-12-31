@@ -16,7 +16,7 @@ public class FoodItem implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	private long id;
 
 	@Column(name="from_price")
 	private double fromPrice;
@@ -29,6 +29,12 @@ public class FoodItem implements Serializable {
 	
 	@Column(name="number_of_calories")
 	private double numberOfCalories;
+	
+	@Column(name="ad_image", length = 500)
+	private String adImage;
+	
+	@Column(length = 500)
+	private String url;
 
 	//bi-directional many-to-one association to FoodSupplier
 	@ManyToOne
@@ -52,11 +58,11 @@ public class FoodItem implements Serializable {
 	public FoodItem() {
 	}
 
-	public String getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -148,6 +154,34 @@ public class FoodItem implements Serializable {
 	 */
 	public void setNumberOfCalories(double numberOfCalories) {
 		this.numberOfCalories = numberOfCalories;
+	}
+
+	/**
+	 * @return the adImage
+	 */
+	public String getAdImage() {
+		return adImage;
+	}
+
+	/**
+	 * @param adImage the adImage to set
+	 */
+	public void setAdImage(String adImage) {
+		this.adImage = adImage;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.cbc.domain.recipe.Ingredient;
+import com.cbc.domain.recipe.RecipeType;
+import com.cbc.domain.recipe.Step;
+
 /**
  * @author Mina Saleeb
  *
@@ -390,6 +394,129 @@ public class ModelToDomainMapper
 			}
 		}
 		
+		return domList;
+	}
+	
+	public static void mapRecipesCategory(com.cbc.model.RecipeCategory modRecipesCategory , com.cbc.domain.recipe.RecipeCategory domRecipesCategory)
+	{
+		domRecipesCategory.setId(modRecipesCategory.getSlug());
+		domRecipesCategory.setName(modRecipesCategory.getName());
+		domRecipesCategory.setImage(modRecipesCategory.getImage());
+		List<com.cbc.model.RecipeCategory> subCategories = modRecipesCategory.getSubCategories();
+		if(subCategories != null && !subCategories.isEmpty())
+		{
+			List<com.cbc.domain.recipe.RecipeCategory> domSubCats = new ArrayList<com.cbc.domain.recipe.RecipeCategory>();
+			for(com.cbc.model.RecipeCategory cat : subCategories)
+			{
+				domSubCats.add(new com.cbc.domain.recipe.RecipeCategory(cat));
+			}
+			domRecipesCategory.setSubCategories(domSubCats);
+		}
+	}
+	
+	public static List<com.cbc.domain.recipe.RecipeCategory> mapRecipesCategoryList(List<com.cbc.model.RecipeCategory> modRecipesCategoryList)
+	{
+		List<com.cbc.domain.recipe.RecipeCategory> domList = new ArrayList<com.cbc.domain.recipe.RecipeCategory>();
+		if(modRecipesCategoryList != null && !modRecipesCategoryList.isEmpty())
+		{
+			for(com.cbc.model.RecipeCategory n : modRecipesCategoryList)
+			{
+				//filter child categories from first level
+				if(n.getParentCategory() == null)
+				{
+					domList.add(new com.cbc.domain.recipe.RecipeCategory(n));
+				}
+			}
+		}
+		
+		
+		
+		
+		return domList;
+	}
+	
+	public static void mapRecipe(com.cbc.model.Recipe modRecipe , com.cbc.domain.recipe.Recipe domRecipe)
+	{
+		domRecipe.setId(modRecipe.getId());
+		domRecipe.setSlug(modRecipe.getSlug());
+		domRecipe.setTitle(modRecipe.getTitle());
+		domRecipe.setRating(modRecipe.getDisplayedRating());
+		//Images
+		List<String> images = new ArrayList<String>();
+		images.add(modRecipe.getPhotoPath());
+		domRecipe.setImages(images);
+		//Tags
+		List<String> tagsList = new ArrayList<String>();
+		String tags = modRecipe.getTags();
+		if(tags != null && !tags.isEmpty())
+		{
+			tagsList.addAll(Arrays.asList(tags.split("\\^")));
+		}
+		domRecipe.setTags(tagsList);
+		//Program
+		if(modRecipe.getProgramBean() != null)
+		{
+			domRecipe.setProgramName(modRecipe.getProgramBean().getTitle());
+		}
+		//Chief
+		if(modRecipe.getPresenter() != null)
+		{
+			domRecipe.setChiefName(modRecipe.getPresenter().getName());
+		}
+		//category
+		if(modRecipe.getRecipeCategory() != null)
+		{
+			domRecipe.setCategory(modRecipe.getRecipeCategory().getName());
+		}
+		//Cuisine
+		if(modRecipe.getCuisine() != null)
+		{
+			domRecipe.setCuisine(modRecipe.getCuisine().getName());
+		}
+		//User
+		if(modRecipe.getUserBean() != null)
+		{
+			domRecipe.setUserName(modRecipe.getUserBean().getFirstName()+" "+modRecipe.getUserBean().getLastName());
+		}
+		//Type
+		if(modRecipe.getRecipeType() != null)
+		{
+			domRecipe.setType(new RecipeType(modRecipe.getRecipeType().getTypeName(), modRecipe.getRecipeType().getImagePath()));
+		}
+		//Steps
+		List<Step> steps = new ArrayList<Step>();
+		List<com.cbc.model.RecipeStep> modSteps = modRecipe.getRecipeSteps();
+		if(modSteps != null  && !modSteps.isEmpty())
+		{
+			for(com.cbc.model.RecipeStep modStep : modSteps)
+			{
+				steps.add(new Step(modStep.getStepContent(), modStep.getStartTime(), modStep.getEndTime()));
+			}
+		}
+		domRecipe.setSteps(steps);
+		//Ingredients
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
+		List<com.cbc.model.RecipeIngredient> modIngredients = modRecipe.getRecipeIngredients();
+		if(modIngredients != null  && !modIngredients.isEmpty())
+		{
+			for(com.cbc.model.RecipeIngredient modIngredient : modIngredients)
+			{
+				ingredients.add(new Ingredient(modIngredient.getIngredientContent()));
+			}
+		}
+		domRecipe.setIngredients(ingredients);
+	}
+	
+	public static List<com.cbc.domain.recipe.Recipe> mapRecipesList(List<com.cbc.model.Recipe> modRecipesList)
+	{
+		List<com.cbc.domain.recipe.Recipe> domList = new ArrayList<com.cbc.domain.recipe.Recipe>();
+		if(modRecipesList != null && !modRecipesList.isEmpty())
+		{
+			for(com.cbc.model.Recipe r : modRecipesList)
+			{
+				domList.add(new com.cbc.domain.recipe.Recipe(r));
+			}
+		}
 		return domList;
 	}
 }

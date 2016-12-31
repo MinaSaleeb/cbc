@@ -1,8 +1,19 @@
 package com.cbc.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -10,7 +21,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="recipe_categories")
+@Table(name="recipe_categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"slug"})})
 public class RecipeCategory implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,15 +30,22 @@ public class RecipeCategory implements Serializable {
 	private int id;
 
 	private String name;
-
+	
+	@Column(length = 500)
+	private String image;
+	
+	@Column(length = 500)
+	@NotNull
+	private String slug;
+	
 	//bi-directional many-to-one association to RecipeCategory
 	@ManyToOne
 	@JoinColumn(name="parent_category")
-	private RecipeCategory recipeCategory;
+	private RecipeCategory parentCategory;
 
 	//bi-directional many-to-one association to RecipeCategory
-	@OneToMany(mappedBy="recipeCategory")
-	private List<RecipeCategory> recipeCategories;
+	@OneToMany(mappedBy="parentCategory")
+	private List<RecipeCategory> subCategories;
 
 	//bi-directional many-to-one association to Recipe
 	@OneToMany(mappedBy="recipeCategory")
@@ -52,32 +70,32 @@ public class RecipeCategory implements Serializable {
 		this.name = name;
 	}
 
-	public RecipeCategory getRecipeCategory() {
-		return this.recipeCategory;
+	public RecipeCategory getParentCategory() {
+		return this.parentCategory;
 	}
 
-	public void setRecipeCategory(RecipeCategory recipeCategory) {
-		this.recipeCategory = recipeCategory;
+	public void setParentCategory(RecipeCategory parentCategory) {
+		this.parentCategory = parentCategory;
 	}
 
-	public List<RecipeCategory> getRecipeCategories() {
-		return this.recipeCategories;
+	public List<RecipeCategory> getSubCategories() {
+		return this.subCategories;
 	}
 
-	public void setRecipeCategories(List<RecipeCategory> recipeCategories) {
-		this.recipeCategories = recipeCategories;
+	public void setSubCategories(List<RecipeCategory> recipeCategories) {
+		this.subCategories = recipeCategories;
 	}
 
 	public RecipeCategory addRecipeCategory(RecipeCategory recipeCategory) {
-		getRecipeCategories().add(recipeCategory);
-		recipeCategory.setRecipeCategory(this);
+		getSubCategories().add(recipeCategory);
+		recipeCategory.setParentCategory(this);
 
 		return recipeCategory;
 	}
 
 	public RecipeCategory removeRecipeCategory(RecipeCategory recipeCategory) {
-		getRecipeCategories().remove(recipeCategory);
-		recipeCategory.setRecipeCategory(null);
+		getSubCategories().remove(recipeCategory);
+		recipeCategory.setParentCategory(null);
 
 		return recipeCategory;
 	}
@@ -102,6 +120,34 @@ public class RecipeCategory implements Serializable {
 		recipe.setRecipeCategory(null);
 
 		return recipe;
+	}
+
+	/**
+	 * @return the image
+	 */
+	public String getImage() {
+		return image;
+	}
+
+	/**
+	 * @param image the image to set
+	 */
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 
 }
