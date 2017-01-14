@@ -19,6 +19,8 @@ public class RecipeIngredient implements Serializable {
 
 	@Column(name="ingredient_content")
 	private String ingredientContent;
+	
+	private String tags;
 
 	//bi-directional many-to-one association to FoodItem
 	@ManyToOne
@@ -63,6 +65,20 @@ public class RecipeIngredient implements Serializable {
 
 	public void setRecipeBean(Recipe recipeBean) {
 		this.recipeBean = recipeBean;
+	}
+
+	/**
+	 * @return the tags
+	 */
+	public String getTags() {
+		return tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 
 }

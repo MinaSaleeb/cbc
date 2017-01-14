@@ -32,6 +32,7 @@ import com.cbc.repository.ExternalPageRepository;
 import com.cbc.repository.PrayerTimeRepository;
 import com.cbc.repository.UserAnswerRepository;
 import com.cbc.repository.WidgetRepository;
+import com.cbc.util.ModelToDomainMapper;
 
 /**
  * @author Mina Saleeb
@@ -151,6 +152,19 @@ public class OthersRestController
 		 }
 		 
 		 return new ResponseEntity<com.cbc.domain.Widget>(HttpStatus.NOT_FOUND);
+		 
+	 }
+	 
+	 @RequestMapping(value = "/widgets", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.Widget>> getWidgets()
+	 {
+		 List<Widget> wl = (List<Widget>) widgetRepo.findAll();
+		 if(wl != null && !wl.isEmpty())
+		 {
+			 return new ResponseEntity<List<com.cbc.domain.Widget>>(ModelToDomainMapper.mapWidgetsList(wl), HttpStatus.OK); 
+		 }
+		 
+		 return new ResponseEntity<List<com.cbc.domain.Widget>>(HttpStatus.NO_CONTENT);
 		 
 	 }
 }

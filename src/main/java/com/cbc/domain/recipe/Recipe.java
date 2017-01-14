@@ -16,6 +16,9 @@ public class Recipe
 	private long id;
 	private String slug;
 	private String title;
+	private String description;
+	private String url;
+	private String urlType;
 	private float rating;
 	private List<String> images;
 	private List<String> tags;
@@ -72,6 +75,42 @@ public class Recipe
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	/**
+	 * @return the urlType
+	 */
+	public String getUrlType() {
+		return urlType;
+	}
+	/**
+	 * @param urlType the urlType to set
+	 */
+	public void setUrlType(String urlType) {
+		this.urlType = urlType;
 	}
 	/**
 	 * @return the rating

@@ -43,6 +43,15 @@ public class Recipe implements Serializable {
 	
 	private short status;
 	
+	@Column(length = 500)
+	private String description;
+	
+	@Column(length = 500)
+	private String url;
+	
+	@Column(name = "url_type",length = 500)
+	private String urlType;
+	
 	@Column(length = 500, unique = true)
 	@NotNull
 	private String slug;
@@ -329,6 +338,48 @@ public class Recipe implements Serializable {
 	 */
 	public void setNumberOfViews(long numberOfViews) {
 		this.numberOfViews = numberOfViews;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	/**
+	 * @return the urlType
+	 */
+	public String getUrlType() {
+		return urlType;
+	}
+
+	/**
+	 * @param urlType the urlType to set
+	 */
+	public void setUrlType(String urlType) {
+		this.urlType = urlType;
 	}
 
 }

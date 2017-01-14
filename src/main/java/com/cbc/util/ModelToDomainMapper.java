@@ -358,6 +358,8 @@ public class ModelToDomainMapper
 	{
 		domWidget.setId(modWidget.getId());
 		domWidget.setName(modWidget.getName());
+		domWidget.setType(modWidget.getType());
+		domWidget.setImage(modWidget.getImage());
 		domWidget.setWidgetContents(mapWidgetContentsList(modWidget.getWidgetContents()));
 	}
 	
@@ -440,6 +442,9 @@ public class ModelToDomainMapper
 		domRecipe.setId(modRecipe.getId());
 		domRecipe.setSlug(modRecipe.getSlug());
 		domRecipe.setTitle(modRecipe.getTitle());
+		domRecipe.setDescription(modRecipe.getDescription());
+		domRecipe.setUrl(modRecipe.getUrl());
+		domRecipe.setUrlType(modRecipe.getUrlType());
 		domRecipe.setRating(modRecipe.getDisplayedRating());
 		//Images
 		List<String> images = new ArrayList<String>();
@@ -501,7 +506,9 @@ public class ModelToDomainMapper
 		{
 			for(com.cbc.model.RecipeIngredient modIngredient : modIngredients)
 			{
-				ingredients.add(new Ingredient(modIngredient.getIngredientContent()));
+				Ingredient ingr = new Ingredient(modIngredient.getIngredientContent());
+				if(modIngredient.getFoodItem() != null) ingr.setContent(ingr.getContent()+" "+modIngredient.getFoodItem().getItemName());
+				ingredients.add(ingr);
 			}
 		}
 		domRecipe.setIngredients(ingredients);
@@ -519,4 +526,63 @@ public class ModelToDomainMapper
 		}
 		return domList;
 	}
+	
+	public static void  mapFoodItem(com.cbc.model.FoodItem modFoodItem, com.cbc.domain.recipe.FoodItem domFoodItem)
+	{
+		domFoodItem.setId(modFoodItem.getId());
+		domFoodItem.setItemName(modFoodItem.getItemName());
+		domFoodItem.setFromPrice(modFoodItem.getFromPrice());
+		domFoodItem.setToPrice(modFoodItem.getFromPrice());
+		domFoodItem.setNumberOfCalories(modFoodItem.getNumberOfCalories());
+		domFoodItem.setDescription(modFoodItem.getDescription());
+		domFoodItem.setAdImage(modFoodItem.getAdImage());
+		domFoodItem.setUrl(modFoodItem.getUrl());
+		domFoodItem.setAmount(modFoodItem.getAmount());
+		if(modFoodItem.getMeasureUnit() != null)
+		{
+			domFoodItem.setMeasureUnit(modFoodItem.getMeasureUnit().getName());
+		}
+	}
+	
+	public static void  mapFoodType(com.cbc.model.FoodType modFoodType, com.cbc.domain.recipe.FoodType domFoodType)
+	{
+		domFoodType.setId(modFoodType.getId());
+		domFoodType.setName(modFoodType.getTypeName());
+		List<com.cbc.domain.recipe.FoodItem> items = new ArrayList<com.cbc.domain.recipe.FoodItem>();
+		if(modFoodType.getFoodItems() != null && !modFoodType.getFoodItems().isEmpty())
+		{
+			for(com.cbc.model.FoodItem fi : modFoodType.getFoodItems())
+			{
+				items.add(new com.cbc.domain.recipe.FoodItem(fi));
+			}
+		}
+		domFoodType.setItems(items);
+	}
+	
+	public static List<com.cbc.domain.recipe.FoodType> mapFoodTypesList(List<com.cbc.model.FoodType> modFoodTypesList)
+	{
+		List<com.cbc.domain.recipe.FoodType> domList = new ArrayList<com.cbc.domain.recipe.FoodType>();
+		if(modFoodTypesList != null && !modFoodTypesList.isEmpty())
+		{
+			for(com.cbc.model.FoodType ft : modFoodTypesList)
+			{
+				domList.add(new com.cbc.domain.recipe.FoodType(ft));
+			}
+		}
+		return domList;
+	}
+	
+	public static List<com.cbc.domain.recipe.FoodItem> mapFoodItemsList(List<com.cbc.model.FoodItem> modFoodItemsList)
+	{
+		List<com.cbc.domain.recipe.FoodItem> domList = new ArrayList<com.cbc.domain.recipe.FoodItem>();
+		if(modFoodItemsList != null && !modFoodItemsList.isEmpty())
+		{
+			for(com.cbc.model.FoodItem fi : modFoodItemsList)
+			{
+				domList.add(new com.cbc.domain.recipe.FoodItem(fi));
+			}
+		}
+		return domList;
+	}
+	
 }

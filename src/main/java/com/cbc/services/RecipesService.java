@@ -12,9 +12,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.cbc.domain.TodayRecipeDataRow;
+import com.cbc.model.FoodItem;
+import com.cbc.model.FoodType;
 import com.cbc.model.Recipe;
 import com.cbc.model.RecipeCategory;
 import com.cbc.model.RecipeCuisine;
+import com.cbc.repository.FoodItemRepository;
+import com.cbc.repository.FoodTypeRepository;
 import com.cbc.repository.RecipeCategoryRepository;
 import com.cbc.repository.RecipeCuisineRepository;
 import com.cbc.repository.RecipeRepository;
@@ -37,6 +41,12 @@ public class RecipesService
 	
 	@Autowired
 	private RecipeCuisineRepository recipeCuisineRepo;
+	
+	@Autowired
+	private FoodItemRepository foodItemRepository;
+	
+	@Autowired
+	private FoodTypeRepository foodTypeRepository;
 	
 	/**
 	 * 
@@ -166,5 +176,25 @@ public class RecipesService
 	{
 		PageRequest page = new PageRequest(0, size);
 		return recipeRepo.getMembersRecipes(page);
+	}
+	
+	public List<FoodType> getAllFoodTypes()
+	{
+		return (List<FoodType>) foodTypeRepository.findAll();
+	}
+	
+	public List<FoodItem> getAllFoodItems()
+	{
+		return (List<FoodItem>) foodItemRepository.findAll();
+	}
+	
+	public FoodType getFoodTypeById(int id)
+	{
+		return foodTypeRepository.findOne(id);
+	}
+	
+	public FoodItem getFoodItemById(long id)
+	{
+		return foodItemRepository.findOne(id);
 	}
 }

@@ -153,4 +153,28 @@ public class RecipeRestController
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	 }
+	 
+	 	@RequestMapping(value = "/foodTypes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<com.cbc.domain.recipe.FoodType>> getFoodTypes()
+		{
+			return  new ResponseEntity<List<com.cbc.domain.recipe.FoodType>>(ModelToDomainMapper.mapFoodTypesList(recipesService.getAllFoodTypes()), HttpStatus.OK);
+		}
+	 	
+	 	@RequestMapping(value = "/foodTypes/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<com.cbc.domain.recipe.FoodType> getFoodTypeById(@PathVariable("id") int id)
+		{
+			return  new ResponseEntity<com.cbc.domain.recipe.FoodType>(new com.cbc.domain.recipe.FoodType(recipesService.getFoodTypeById(id)), HttpStatus.OK);
+		}
+	 	
+	 	@RequestMapping(value = "/foodItems", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<com.cbc.domain.recipe.FoodItem>> getFoodItems()
+		{
+			return  new ResponseEntity<List<com.cbc.domain.recipe.FoodItem>>(ModelToDomainMapper.mapFoodItemsList(recipesService.getAllFoodItems()), HttpStatus.OK);
+		}
+	 	
+	 	@RequestMapping(value = "/foodItems/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<com.cbc.domain.recipe.FoodItem> getFoodItemById(@PathVariable("id") long id)
+		{
+			return  new ResponseEntity<com.cbc.domain.recipe.FoodItem>(new com.cbc.domain.recipe.FoodItem(recipesService.getFoodItemById(id)), HttpStatus.OK);
+		}
 }

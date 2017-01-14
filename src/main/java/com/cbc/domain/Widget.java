@@ -17,6 +17,10 @@ public class Widget {
 	
 	private String name;
 	
+	private String type;
+	
+	private String image;
+	
 	private List<WidgetContent> widgetContents;
 	
 	public Widget(com.cbc.model.Widget w) 
@@ -51,6 +55,34 @@ public class Widget {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the image
+	 */
+	public String getImage() {
+		return image;
+	}
+
+	/**
+	 * @param image the image to set
+	 */
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	/**

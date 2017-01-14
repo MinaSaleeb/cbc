@@ -35,6 +35,9 @@ public class FoodItem implements Serializable {
 	
 	@Column(length = 500)
 	private String url;
+	
+	@Column(length = 800)
+	private String description;
 
 	//bi-directional many-to-one association to FoodSupplier
 	@ManyToOne
@@ -50,11 +53,14 @@ public class FoodItem implements Serializable {
 	@OneToMany(mappedBy="foodItem")
 	private List<RecipeIngredient> recipeIngredients;
 	
-	@ManyToMany
-	@JoinTable(name = "food_items_measure_units", joinColumns = { @JoinColumn(name = "food_item_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "measure_unit_id") })
-	private List<MeasureUnit> measureUnits;
-
+	@ManyToOne
+	@JoinColumn(name="measure_unit")
+	private MeasureUnit measureUnit;
+	
+	private double amount;
+	
+	
+	
 	public FoodItem() {
 	}
 
@@ -129,20 +135,6 @@ public class FoodItem implements Serializable {
 	}
 
 	/**
-	 * @return the measureUnits
-	 */
-	public List<MeasureUnit> getMeasureUnits() {
-		return measureUnits;
-	}
-
-	/**
-	 * @param measureUnits the measureUnits to set
-	 */
-	public void setMeasureUnits(List<MeasureUnit> measureUnits) {
-		this.measureUnits = measureUnits;
-	}
-
-	/**
 	 * @return the numberOfCalories
 	 */
 	public double getNumberOfCalories() {
@@ -182,6 +174,48 @@ public class FoodItem implements Serializable {
 	 */
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the measureUnit
+	 */
+	public MeasureUnit getMeasureUnit() {
+		return measureUnit;
+	}
+
+	/**
+	 * @param measureUnit the measureUnit to set
+	 */
+	public void setMeasureUnit(MeasureUnit measureUnit) {
+		this.measureUnit = measureUnit;
+	}
+
+	/**
+	 * @return the amount
+	 */
+	public double getAmount() {
+		return amount;
+	}
+
+	/**
+	 * @param amount the amount to set
+	 */
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 }

@@ -31,6 +31,9 @@ public class RecipeCuisine implements Serializable
 	
 	@Column(length = 500)
 	private String name;
+	
+	@Column(name = "thumbnail_image",length = 500)
+	private String thumbnailImage;
 
 	/**
 	 * @return the id
@@ -72,5 +75,19 @@ public class RecipeCuisine implements Serializable
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 }
