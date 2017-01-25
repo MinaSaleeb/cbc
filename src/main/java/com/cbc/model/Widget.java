@@ -31,6 +31,8 @@ public class Widget implements Serializable
 	@Column(length=500)
 	private String image;
 	
+	private String slug;
+	
 	@OneToMany(mappedBy="widgetBean")
 	private List<WidgetContent> widgetContents;
 
@@ -102,6 +104,20 @@ public class Widget implements Serializable
 	 */
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 	
 }

@@ -41,12 +41,16 @@ public class RecipeRestController
 	
 	
 	@RequestMapping(value = "/categories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<com.cbc.domain.recipe.RecipeCategory>> getRecipesCategories()
+	public ResponseEntity<List<com.cbc.domain.recipe.RecipeCategory>> getRecipesCategories(@RequestParam(required = false , value = "size") Integer size, @RequestParam(required = false , value = "numOfRecipes") Integer numOfRecipes)
 	{
-		List<RecipeCategory> categoriesList = recipesService.getAllRecipesCategories();
+		List<RecipeCategory> categoriesList = recipesService.getAllRecipesCategories(size);
 		if(categoriesList != null && !categoriesList.isEmpty())
 		{
-			return new ResponseEntity<List<com.cbc.domain.recipe.RecipeCategory>>(ModelToDomainMapper.mapRecipesCategoryList(categoriesList) , HttpStatus.OK);
+			if(numOfRecipes != null)
+			{
+				return new ResponseEntity<List<com.cbc.domain.recipe.RecipeCategory>>(ModelToDomainMapper.mapRecipesCategoryList(categoriesList, true, numOfRecipes)  , HttpStatus.OK);
+			}
+			return new ResponseEntity<List<com.cbc.domain.recipe.RecipeCategory>>(ModelToDomainMapper.mapRecipesCategoryList(categoriesList, false, null) , HttpStatus.OK);
 		}
 		
 		return  new ResponseEntity<List<com.cbc.domain.recipe.RecipeCategory>>(HttpStatus.NO_CONTENT);
@@ -83,15 +87,19 @@ public class RecipeRestController
 	}
 	
 	@RequestMapping(value = "/cuisines", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<com.cbc.model.RecipeCuisine>> getRecipesCuisines()
+	public ResponseEntity<List<com.cbc.domain.recipe.RecipeCuisine>> getRecipesCuisines(@RequestParam(required = false , value = "size") Integer size, @RequestParam(required = false , value = "numOfRecipes") Integer numOfRecipes)
 	{
-		List<RecipeCuisine> cuisinesList = recipesService.getAllRecipesCuisines();
+		List<RecipeCuisine> cuisinesList = recipesService.getAllRecipesCuisines(size);
 		if(cuisinesList != null && !cuisinesList.isEmpty())
 		{
-			return new ResponseEntity<List<com.cbc.model.RecipeCuisine>>(cuisinesList , HttpStatus.OK);
+			if(numOfRecipes != null)
+			{
+				return new ResponseEntity<List<com.cbc.domain.recipe.RecipeCuisine>>(ModelToDomainMapper.mapRecipeCuisinesList(cuisinesList, true, numOfRecipes)  , HttpStatus.OK);
+			}
+			return new ResponseEntity<List<com.cbc.domain.recipe.RecipeCuisine>>(ModelToDomainMapper.mapRecipeCuisinesList(cuisinesList, false, null)  , HttpStatus.OK);
 		}
 		
-		return  new ResponseEntity<List<com.cbc.model.RecipeCuisine>>(HttpStatus.NO_CONTENT);
+		return  new ResponseEntity<List<com.cbc.domain.recipe.RecipeCuisine>>(HttpStatus.NO_CONTENT);
 	}
 	
 	

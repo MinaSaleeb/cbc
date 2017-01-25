@@ -354,13 +354,17 @@ public class ModelToDomainMapper
 		return domList;
 	}
 	
-	public static void mapWidget(com.cbc.model.Widget modWidget , com.cbc.domain.Widget domWidget)
+	public static void mapWidget(com.cbc.model.Widget modWidget , com.cbc.domain.Widget domWidget, boolean withContents)
 	{
 		domWidget.setId(modWidget.getId());
 		domWidget.setName(modWidget.getName());
 		domWidget.setType(modWidget.getType());
 		domWidget.setImage(modWidget.getImage());
-		domWidget.setWidgetContents(mapWidgetContentsList(modWidget.getWidgetContents()));
+		domWidget.setSlug(modWidget.getSlug());
+		if(withContents)
+		{
+			domWidget.setWidgetContents(mapWidgetContentsList(modWidget.getWidgetContents()));
+		}
 	}
 	
 	public static List<com.cbc.domain.WidgetContent> mapWidgetContentsList(List<com.cbc.model.WidgetContent> modWidgetCntsList)
@@ -383,40 +387,58 @@ public class ModelToDomainMapper
 		domWidgetContent.setContentUrl(modWidgetContent.getContentUrl());;
 		domWidgetContent.setContentUrlType(modWidgetContent.getContentUrlType());
 		domWidgetContent.setHtmlContent(modWidgetContent.getHtmlContent());	
+		domWidgetContent.setTitle(modWidgetContent.getTitle());
+		domWidgetContent.setSlug(modWidgetContent.getSlug());
+		domWidgetContent.setDescription(modWidgetContent.getDescription());
+		domWidgetContent.setThumbnailImage(modWidgetContent.getThumbnailImage());
 	}
 	
-	public static List<com.cbc.domain.Widget> mapWidgetsList(List<com.cbc.model.Widget> modWidgetList)
+	public static List<com.cbc.domain.Widget> mapWidgetsList(List<com.cbc.model.Widget> modWidgetList, boolean withContents)
 	{
 		List<com.cbc.domain.Widget> domList = new ArrayList<com.cbc.domain.Widget>();
 		if(modWidgetList != null && !modWidgetList.isEmpty())
 		{
 			for(com.cbc.model.Widget w : modWidgetList)
 			{
-				domList.add(new com.cbc.domain.Widget(w));
+				domList.add(new com.cbc.domain.Widget(w, withContents));
 			}
 		}
 		
 		return domList;
 	}
 	
-	public static void mapRecipesCategory(com.cbc.model.RecipeCategory modRecipesCategory , com.cbc.domain.recipe.RecipeCategory domRecipesCategory)
+	public static void mapRecipesCategory(com.cbc.model.RecipeCategory modRecipesCategory , com.cbc.domain.recipe.RecipeCategory domRecipesCategory,boolean includeRecipes,Integer numOfIncludedRecipes)
 	{
 		domRecipesCategory.setId(modRecipesCategory.getSlug());
 		domRecipesCategory.setName(modRecipesCategory.getName());
 		domRecipesCategory.setImage(modRecipesCategory.getImage());
+		domRecipesCategory.setThumbnailImage(modRecipesCategory.getThumbnailImage());
+		domRecipesCategory.setIcon(modRecipesCategory.getIcon());
 		List<com.cbc.model.RecipeCategory> subCategories = modRecipesCategory.getSubCategories();
 		if(subCategories != null && !subCategories.isEmpty())
 		{
 			List<com.cbc.domain.recipe.RecipeCategory> domSubCats = new ArrayList<com.cbc.domain.recipe.RecipeCategory>();
 			for(com.cbc.model.RecipeCategory cat : subCategories)
 			{
-				domSubCats.add(new com.cbc.domain.recipe.RecipeCategory(cat));
+				domSubCats.add(new com.cbc.domain.recipe.RecipeCategory(cat, includeRecipes, numOfIncludedRecipes));
 			}
 			domRecipesCategory.setSubCategories(domSubCats);
 		}
+		if(includeRecipes)
+		{
+			if(modRecipesCategory.getRecipes() != null && !modRecipesCategory.getRecipes().isEmpty())
+			{
+				List<com.cbc.domain.recipe.Recipe> recipes = new ArrayList<com.cbc.domain.recipe.Recipe>();
+				for(com.cbc.model.Recipe r : numOfIncludedRecipes != null?modRecipesCategory.getRecipes().subList(0,modRecipesCategory.getRecipes().size() <= numOfIncludedRecipes ? modRecipesCategory.getRecipes().size() : numOfIncludedRecipes) : modRecipesCategory.getRecipes())
+				{
+					recipes.add(new com.cbc.domain.recipe.Recipe(r));
+				}
+				domRecipesCategory.setRecipes(recipes);
+			}
+		}
 	}
 	
-	public static List<com.cbc.domain.recipe.RecipeCategory> mapRecipesCategoryList(List<com.cbc.model.RecipeCategory> modRecipesCategoryList)
+	public static List<com.cbc.domain.recipe.RecipeCategory> mapRecipesCategoryList(List<com.cbc.model.RecipeCategory> modRecipesCategoryList,boolean includeRecipes,Integer numOfIncludedRecipes)
 	{
 		List<com.cbc.domain.recipe.RecipeCategory> domList = new ArrayList<com.cbc.domain.recipe.RecipeCategory>();
 		if(modRecipesCategoryList != null && !modRecipesCategoryList.isEmpty())
@@ -426,7 +448,7 @@ public class ModelToDomainMapper
 				//filter child categories from first level
 				if(n.getParentCategory() == null)
 				{
-					domList.add(new com.cbc.domain.recipe.RecipeCategory(n));
+					domList.add(new com.cbc.domain.recipe.RecipeCategory(n, includeRecipes, numOfIncludedRecipes));
 				}
 			}
 		}
@@ -450,6 +472,7 @@ public class ModelToDomainMapper
 		List<String> images = new ArrayList<String>();
 		images.add(modRecipe.getPhotoPath());
 		domRecipe.setImages(images);
+		domRecipe.setThumbnailImage(modRecipe.getThumbnailImage());
 		//Tags
 		List<String> tagsList = new ArrayList<String>();
 		String tags = modRecipe.getTags();
@@ -469,14 +492,14 @@ public class ModelToDomainMapper
 			domRecipe.setChiefName(modRecipe.getPresenter().getName());
 		}
 		//category
-		if(modRecipe.getRecipeCategory() != null)
+		if(modRecipe.getCategories() != null && !modRecipe.getCategories().isEmpty())
 		{
-			domRecipe.setCategory(modRecipe.getRecipeCategory().getName());
+			domRecipe.setCategory(modRecipe.getCategories().get(0).getName());
 		}
 		//Cuisine
-		if(modRecipe.getCuisine() != null)
+		if(modRecipe.getCuisines() != null && !modRecipe.getCuisines().isEmpty())
 		{
-			domRecipe.setCuisine(modRecipe.getCuisine().getName());
+			domRecipe.setCuisine(modRecipe.getCuisines().get(0).getName());
 		}
 		//User
 		if(modRecipe.getUserBean() != null)
@@ -580,6 +603,40 @@ public class ModelToDomainMapper
 			for(com.cbc.model.FoodItem fi : modFoodItemsList)
 			{
 				domList.add(new com.cbc.domain.recipe.FoodItem(fi));
+			}
+		}
+		return domList;
+	}
+	
+	public static void  mapRecipeCuisine(com.cbc.model.RecipeCuisine modRecipeCuisine, com.cbc.domain.recipe.RecipeCuisine domRecipeCuisine,boolean includeRecipes,Integer numOfIncludedRecipes)
+	{
+		domRecipeCuisine.setId(modRecipeCuisine.getId());
+		domRecipeCuisine.setName(modRecipeCuisine.getName());
+		domRecipeCuisine.setThumbnailImage(modRecipeCuisine.getThumbnailImage());
+		domRecipeCuisine.setImage(modRecipeCuisine.getImage());
+		domRecipeCuisine.setIcon(modRecipeCuisine.getIcon());
+		if(includeRecipes)
+		{
+			if(modRecipeCuisine.getRecipes() != null && !modRecipeCuisine.getRecipes().isEmpty())
+			{
+				List<com.cbc.domain.recipe.Recipe> recipes = new ArrayList<com.cbc.domain.recipe.Recipe>();
+				for(com.cbc.model.Recipe r : numOfIncludedRecipes != null?modRecipeCuisine.getRecipes().subList(0,modRecipeCuisine.getRecipes().size() <= numOfIncludedRecipes ? modRecipeCuisine.getRecipes().size() : numOfIncludedRecipes) : modRecipeCuisine.getRecipes())
+				{
+					recipes.add(new com.cbc.domain.recipe.Recipe(r));
+				}
+				domRecipeCuisine.setRecipes(recipes);
+			}
+		}
+	}
+	
+	public static List<com.cbc.domain.recipe.RecipeCuisine> mapRecipeCuisinesList(List<com.cbc.model.RecipeCuisine> modRecipeCuisinesList,boolean includeRecipes,Integer numOfIncludedRecipes)
+	{
+		List<com.cbc.domain.recipe.RecipeCuisine> domList = new ArrayList<com.cbc.domain.recipe.RecipeCuisine>();
+		if(modRecipeCuisinesList != null && !modRecipeCuisinesList.isEmpty())
+		{
+			for(com.cbc.model.RecipeCuisine c : modRecipeCuisinesList)
+			{
+				domList.add(new com.cbc.domain.recipe.RecipeCuisine(c,includeRecipes,numOfIncludedRecipes));
 			}
 		}
 		return domList;

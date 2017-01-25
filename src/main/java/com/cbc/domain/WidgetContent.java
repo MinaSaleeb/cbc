@@ -3,6 +3,8 @@
  */
 package com.cbc.domain;
 
+import javax.persistence.Column;
+
 import com.cbc.util.ModelToDomainMapper;
 
 /**
@@ -18,6 +20,14 @@ public class WidgetContent
 	private String contentUrl;
 	
 	private String contentUrlType;
+	
+	private String title;
+	
+	private String slug;
+	
+	private String description;
+	
+	private String thumbnailImage;
 	
 	public WidgetContent(com.cbc.model.WidgetContent wc) 
 	{
@@ -79,5 +89,61 @@ public class WidgetContent
 	 */
 	public void setContentUrlType(String contentUrlType) {
 		this.contentUrlType = contentUrlType;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 }

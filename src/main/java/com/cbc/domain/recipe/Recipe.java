@@ -21,6 +21,7 @@ public class Recipe
 	private String urlType;
 	private float rating;
 	private List<String> images;
+	private String thumbnailImage;
 	private List<String> tags;
 	private String programName;
 	private String chiefName;
@@ -243,5 +244,17 @@ public class Recipe
 	 */
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
+	}
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 }

@@ -24,7 +24,6 @@
 		<class>com.cbc.model.Program</class>
 		<class>com.cbc.model.ProgramsAdDiv</class>
 		<class>com.cbc.model.RecipeCategory</class>
-		<class>com.cbc.model.RecipeIngredient</class>
 		<class>com.cbc.model.RecipeStep</class>
 		<class>com.cbc.model.RecipeType</class>
 		<class>com.cbc.model.Recipe</class>
@@ -42,10 +41,12 @@
 		<class>com.cbc.model.ProgramTabContent</class>
 		<class>com.cbc.model.ExternalPage</class>
 		<class>com.cbc.model.UserAnswer</class>
-		<class>com.cbc.model.Widget</class>
-		<class>com.cbc.model.WidgetContent</class>
 		<class>com.cbc.model.TabsContainer</class>
 		<class>com.cbc.model.MeasureUnit</class>
 		<class>com.cbc.model.RecipeCuisine</class>
+		<class>com.cbc.model.SelectedItemForYou</class>
+		<class>com.cbc.model.RecipeIngredient</class>
+		<class>com.cbc.model.WidgetContent</class>
+		<class>com.cbc.model.Widget</class>
 	</persistence-unit>
 </persistence>

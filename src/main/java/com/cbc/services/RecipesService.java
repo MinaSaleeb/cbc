@@ -133,9 +133,18 @@ public class RecipesService
 		}
 	}
 	
-	public List<RecipeCategory> getAllRecipesCategories()
+	public List<RecipeCategory> getAllRecipesCategories(Integer size)
 	{
-		return (List<RecipeCategory>) recipeCategoryRepo.findAll();
+		List<RecipeCategory> cats = new ArrayList<RecipeCategory>();
+		if(size == null)
+		{
+			cats =  (List<RecipeCategory>) recipeCategoryRepo.findAll();
+		}
+		else if(size != null)
+		{
+			cats = recipeCategoryRepo.findAllWithSize(new PageRequest(0, size));
+		}
+		return cats;
 	}
 	
 	public RecipeCategory getRecipeCategoryBySlug(String slug)
@@ -143,9 +152,18 @@ public class RecipesService
 		return recipeCategoryRepo.findBySlug(slug.trim());
 	}
 	
-	public List<RecipeCuisine> getAllRecipesCuisines()
+	public List<RecipeCuisine> getAllRecipesCuisines(Integer size)
 	{
-		return (List<RecipeCuisine>) recipeCuisineRepo.findAll();
+		List<RecipeCuisine> cuisines = new ArrayList<RecipeCuisine>();
+		if(size == null)
+		{
+			cuisines =  (List<RecipeCuisine>) recipeCuisineRepo.findAll();
+		}
+		else if(size != null)
+		{
+			cuisines = recipeCuisineRepo.findAllWithSize(new PageRequest(0, size));
+		}
+		return cuisines;
 	}
 	
 	public Recipe getRecipeBySlug(String slug)

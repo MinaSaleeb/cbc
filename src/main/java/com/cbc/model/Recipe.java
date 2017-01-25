@@ -32,6 +32,9 @@ public class Recipe implements Serializable {
 
 	@Column(name="photo_path")
 	private String photoPath;
+	
+	@Column(name = "thumbnail_image",length = 500)
+	private String thumbnailImage;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="recipe_date")
@@ -77,11 +80,6 @@ public class Recipe implements Serializable {
 	@JoinColumn(name="program")
 	private Program programBean;
 
-	//bi-directional many-to-one association to RecipeCategory
-	@ManyToOne
-	@JoinColumn(name="category")
-	private RecipeCategory recipeCategory;
-
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="user")
@@ -104,10 +102,12 @@ public class Recipe implements Serializable {
 	@ManyToMany(mappedBy="recipes2")
 	private List<User> users;
 	
-	@ManyToOne
-	@JoinColumn(name="cuisine")
-	private RecipeCuisine cuisine;
-
+	@ManyToMany(mappedBy="recipes")
+	private List<RecipeCuisine> cuisines;
+	
+	@ManyToMany(mappedBy="recipes")
+	private List<RecipeCuisine> categories;
+	
 	public Recipe() {
 	}
 
@@ -199,14 +199,6 @@ public class Recipe implements Serializable {
 		this.programBean = programBean;
 	}
 
-	public RecipeCategory getRecipeCategory() {
-		return this.recipeCategory;
-	}
-
-	public void setRecipeCategory(RecipeCategory recipeCategory) {
-		this.recipeCategory = recipeCategory;
-	}
-
 	public User getUserBean() {
 		return this.userBean;
 	}
@@ -223,19 +215,6 @@ public class Recipe implements Serializable {
 		this.recipeIngredients = recipeIngredients;
 	}
 
-	/**
-	 * @return the cuisine
-	 */
-	public RecipeCuisine getCuisine() {
-		return cuisine;
-	}
-
-	/**
-	 * @param cuisine the cuisine to set
-	 */
-	public void setCuisine(RecipeCuisine cuisine) {
-		this.cuisine = cuisine;
-	}
 
 	public RecipeIngredient addRecipeIngredient(RecipeIngredient recipeIngredient) {
 		getRecipeIngredients().add(recipeIngredient);
@@ -380,6 +359,48 @@ public class Recipe implements Serializable {
 	 */
 	public void setUrlType(String urlType) {
 		this.urlType = urlType;
+	}
+
+	/**
+	 * @return the cuisines
+	 */
+	public List<RecipeCuisine> getCuisines() {
+		return cuisines;
+	}
+
+	/**
+	 * @param cuisines the cuisines to set
+	 */
+	public void setCuisines(List<RecipeCuisine> cuisines) {
+		this.cuisines = cuisines;
+	}
+
+	/**
+	 * @return the categories
+	 */
+	public List<RecipeCuisine> getCategories() {
+		return categories;
+	}
+
+	/**
+	 * @param categories the categories to set
+	 */
+	public void setCategories(List<RecipeCuisine> categories) {
+		this.categories = categories;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 
 }

@@ -382,7 +382,9 @@ public class CBCNewsService
 		String tags = cbcNew.getTags();
 		if(tags != null && !tags.isEmpty())
 		{
-			tags = tags.replace('^', '|');
+			tags = tags.trim().replace('^', '|');
+			if(tags.endsWith("|")) tags = tags.substring(0, tags.length() -1);
+			if(tags.startsWith("|")) tags = tags.substring(1, tags.length());
 		}
 		return cBCNewsRepo.getSimilarNews(tags,cbcNew.getId());
 	}

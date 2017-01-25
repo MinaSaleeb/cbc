@@ -28,7 +28,7 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long>
 	@Query(value = "SELECT * FROM recipes r WHERE r.cuisine = :cuisineId", nativeQuery = true)
 	List<Recipe> findByCuisineId(@Param("cuisineId") int cuisineId);
 	
-	List<Recipe> findByRecipeCategory(RecipeCategory recipeCategory);
+	//List<Recipe> findByRecipeCategory(RecipeCategory recipeCategory);
 	
 	@Query(value = "SELECT r FROM Recipe r ORDER BY r.numberOfViews DESC")
 	List<Recipe> getMostViewed(Pageable pageable);

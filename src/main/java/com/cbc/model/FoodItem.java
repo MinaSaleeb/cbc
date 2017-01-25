@@ -59,7 +59,11 @@ public class FoodItem implements Serializable {
 	
 	private double amount;
 	
+	@Column(name = "thumbnail_img",length = 500)
+	private String thumbnailImage;
 	
+	@Column(name = "alternative_names",length = 1000)
+	private String alternativeNames;
 	
 	public FoodItem() {
 	}
@@ -216,6 +220,34 @@ public class FoodItem implements Serializable {
 	 */
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
+	}
+
+	/**
+	 * @return the alternativeNames
+	 */
+	public String getAlternativeNames() {
+		return alternativeNames;
+	}
+
+	/**
+	 * @param alternativeNames the alternativeNames to set
+	 */
+	public void setAlternativeNames(String alternativeNames) {
+		this.alternativeNames = alternativeNames;
 	}
 
 }

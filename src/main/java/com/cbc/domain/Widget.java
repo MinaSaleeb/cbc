@@ -21,12 +21,14 @@ public class Widget {
 	
 	private String image;
 	
+	private String slug;
+	
 	private List<WidgetContent> widgetContents;
 	
-	public Widget(com.cbc.model.Widget w) 
+	public Widget(com.cbc.model.Widget w, boolean withContents) 
 	{
 		super();
-		ModelToDomainMapper.mapWidget(w, this);
+		ModelToDomainMapper.mapWidget(w, this, withContents);
 	}
 
 	/**
@@ -97,6 +99,20 @@ public class Widget {
 	 */
 	public void setWidgetContents(List<WidgetContent> widgetContents) {
 		this.widgetContents = widgetContents;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 	
 	

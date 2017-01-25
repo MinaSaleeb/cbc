@@ -5,6 +5,8 @@ package com.cbc.domain.recipe;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 import com.cbc.util.ModelToDomainMapper;
 
 /**
@@ -19,12 +21,18 @@ public class RecipeCategory
 	
 	private String image;
 	
+	private String thumbnailImage;
+	
+	private String icon;
+	
 	private List<RecipeCategory> subCategories;
 	
-	public RecipeCategory(com.cbc.model.RecipeCategory cat) 
+	private List<Recipe> recipes;
+	
+	public RecipeCategory(com.cbc.model.RecipeCategory cat,boolean includeRecipes,Integer numOfIncludedRecipes) 
 	{
 		super();
-		ModelToDomainMapper.mapRecipesCategory(cat, this);
+		ModelToDomainMapper.mapRecipesCategory(cat, this,includeRecipes,numOfIncludedRecipes);
 	}
 
 	/**
@@ -81,6 +89,48 @@ public class RecipeCategory
 	 */
 	public void setSubCategories(List<RecipeCategory> subCategories) {
 		this.subCategories = subCategories;
+	}
+
+	/**
+	 * @return the recipes
+	 */
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	/**
+	 * @param recipes the recipes to set
+	 */
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
 	} 
 	
 	

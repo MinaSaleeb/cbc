@@ -38,6 +38,16 @@ public class WidgetContent implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="widget_id")
 	private Widget widgetBean;
+	
+	private String title;
+	
+	private String slug;
+	
+	@Column(name = "discreption")
+	private String description;
+	
+	@Column(name = "thumbnail_img")
+	private String thumbnailImage;
 
 	/**
 	 * @return the id
@@ -107,6 +117,62 @@ public class WidgetContent implements Serializable {
 	 */
 	public void setWidgetBean(Widget widgetBean) {
 		this.widgetBean = widgetBean;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 
 }

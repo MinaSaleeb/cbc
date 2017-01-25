@@ -358,7 +358,7 @@ public class ProgramsRestController
 	 @RequestMapping(value = "/{id}/widgets", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public ResponseEntity<List<com.cbc.domain.Widget>> getProgramWidgets(@PathVariable("id") int programId) throws Exception
 	 {
-		 return new ResponseEntity<List<com.cbc.domain.Widget>>(ModelToDomainMapper.mapWidgetsList(programsService.findProgramWidgets(programId)), HttpStatus.OK);
+		 return new ResponseEntity<List<com.cbc.domain.Widget>>(ModelToDomainMapper.mapWidgetsList(programsService.findProgramWidgets(programId), false), HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/mostViewed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

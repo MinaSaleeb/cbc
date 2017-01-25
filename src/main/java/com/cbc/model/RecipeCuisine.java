@@ -4,12 +4,16 @@
 package com.cbc.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -34,6 +38,14 @@ public class RecipeCuisine implements Serializable
 	
 	@Column(name = "thumbnail_image",length = 500)
 	private String thumbnailImage;
+	
+	@Column(name = "thumbnail_img",length = 500)
+	private String icon;
+	
+	@ManyToMany
+	@JoinTable(name = "recipe_in_cuisine", joinColumns = { @JoinColumn(name = "Cuisines_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "recepies_id") })
+	private List<Recipe> recipes;
 
 	/**
 	 * @return the id
@@ -89,5 +101,33 @@ public class RecipeCuisine implements Serializable
 	 */
 	public void setThumbnailImage(String thumbnailImage) {
 		this.thumbnailImage = thumbnailImage;
+	}
+
+	/**
+	 * @return the recipes
+	 */
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	/**
+	 * @param recipes the recipes to set
+	 */
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 }

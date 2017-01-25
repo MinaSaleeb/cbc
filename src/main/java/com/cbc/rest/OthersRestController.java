@@ -148,7 +148,7 @@ public class OthersRestController
 		 Widget w = widgetRepo.findByName(name);
 		 if(w != null)
 		 {
-			 return new ResponseEntity<com.cbc.domain.Widget>(new com.cbc.domain.Widget(w) , HttpStatus.OK); 
+			 return new ResponseEntity<com.cbc.domain.Widget>(new com.cbc.domain.Widget(w, true) , HttpStatus.OK); 
 		 }
 		 
 		 return new ResponseEntity<com.cbc.domain.Widget>(HttpStatus.NOT_FOUND);
@@ -161,7 +161,7 @@ public class OthersRestController
 		 List<Widget> wl = (List<Widget>) widgetRepo.findAll();
 		 if(wl != null && !wl.isEmpty())
 		 {
-			 return new ResponseEntity<List<com.cbc.domain.Widget>>(ModelToDomainMapper.mapWidgetsList(wl), HttpStatus.OK); 
+			 return new ResponseEntity<List<com.cbc.domain.Widget>>(ModelToDomainMapper.mapWidgetsList(wl, false), HttpStatus.OK); 
 		 }
 		 
 		 return new ResponseEntity<List<com.cbc.domain.Widget>>(HttpStatus.NO_CONTENT);

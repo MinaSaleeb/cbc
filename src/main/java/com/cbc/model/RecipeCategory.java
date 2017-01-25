@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -38,6 +40,12 @@ public class RecipeCategory implements Serializable {
 	@NotNull
 	private String slug;
 	
+	@Column(name = "thumbnail_image",length = 500)
+	private String thumbnailImage;
+	
+	@Column(name = "thumbnail_img",length = 500)
+	private String icon;
+	
 	//bi-directional many-to-one association to RecipeCategory
 	@ManyToOne
 	@JoinColumn(name="parent_category")
@@ -47,8 +55,9 @@ public class RecipeCategory implements Serializable {
 	@OneToMany(mappedBy="parentCategory")
 	private List<RecipeCategory> subCategories;
 
-	//bi-directional many-to-one association to Recipe
-	@OneToMany(mappedBy="recipeCategory")
+	@ManyToMany
+	@JoinTable(name = "recipe_in_category", joinColumns = { @JoinColumn(name = "category_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "recepies_id") })
 	private List<Recipe> recipes;
 
 	public RecipeCategory() {
@@ -108,20 +117,6 @@ public class RecipeCategory implements Serializable {
 		this.recipes = recipes;
 	}
 
-	public Recipe addRecipe(Recipe recipe) {
-		getRecipes().add(recipe);
-		recipe.setRecipeCategory(this);
-
-		return recipe;
-	}
-
-	public Recipe removeRecipe(Recipe recipe) {
-		getRecipes().remove(recipe);
-		recipe.setRecipeCategory(null);
-
-		return recipe;
-	}
-
 	/**
 	 * @return the image
 	 */
@@ -148,6 +143,34 @@ public class RecipeCategory implements Serializable {
 	 */
 	public void setSlug(String slug) {
 		this.slug = slug;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 }
