@@ -108,6 +108,11 @@ public class ModelToDomainMapper
 		{
 			tagsList.addAll(Arrays.asList(tags.split("\\^")));
 		}
+		if(modCbcNew.getNewsCategory() != null)
+		{
+			domCbcNew.setCategoryId(String.valueOf(modCbcNew.getNewsCategory().getId()));
+			domCbcNew.setCategoryName(modCbcNew.getNewsCategory().getCategoryName());
+		}
 		domCbcNew.setTags(tagsList);
 	}
 	
@@ -361,6 +366,7 @@ public class ModelToDomainMapper
 		domWidget.setType(modWidget.getType());
 		domWidget.setImage(modWidget.getImage());
 		domWidget.setSlug(modWidget.getSlug());
+		domWidget.setUrl(modWidget.getUrl());
 		if(withContents)
 		{
 			domWidget.setWidgetContents(mapWidgetContentsList(modWidget.getWidgetContents()));
@@ -640,6 +646,14 @@ public class ModelToDomainMapper
 			}
 		}
 		return domList;
+	}
+	
+	public static void  mapSelectedItem(com.cbc.model.SelectedItemForYou modSltdItm, com.cbc.domain.SelectedItem domSltdItm)
+	{
+		domSltdItm.setItemId(modSltdItm.getItemId());
+		domSltdItm.setItemType(modSltdItm.getItemType());
+		domSltdItm.setOrder(modSltdItm.getOrder());
+		domSltdItm.setStatus(modSltdItm.getStatus());
 	}
 	
 }

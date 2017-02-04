@@ -23,6 +23,8 @@ public class Widget {
 	
 	private String slug;
 	
+	private String url;
+	
 	private List<WidgetContent> widgetContents;
 	
 	public Widget(com.cbc.model.Widget w, boolean withContents) 
@@ -113,6 +115,20 @@ public class Widget {
 	 */
 	public void setSlug(String slug) {
 		this.slug = slug;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	

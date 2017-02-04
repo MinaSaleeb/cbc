@@ -89,10 +89,23 @@ public class CBCNewsService
 		List<CbcNew> newsList = new ArrayList<CbcNew>();
 		
 		NewsCategory category = newsCategoryRepo.findOne(newsCategoryId);
-		
+		int size = page.getPageSize();		
 		if(category != null)
 		{
-			newsList = cBCNewsRepo.findByNewsCategoryOrderByPostingDateDesc(category,page);
+			int numOfChilds = category.getSubCategories() != null ? category.getSubCategories().size() : 0;
+			if(numOfChilds > 0)
+			{
+				int childPageSize = size / numOfChilds ;
+				for(NewsCategory cat : category.getSubCategories())
+				{
+					Pageable childPage = new PageRequest(0, childPageSize);
+					newsList.addAll(cBCNewsRepo.findByNewsCategoryOrderByPostingDateDesc(cat,childPage));
+				}
+			}
+			else
+			{
+				newsList = cBCNewsRepo.findByNewsCategoryOrderByPostingDateDesc(category,page);
+			}
 		}
 		else
 		{

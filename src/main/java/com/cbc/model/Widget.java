@@ -33,6 +33,9 @@ public class Widget implements Serializable
 	
 	private String slug;
 	
+	@Column(length=500)
+	private String url;
+	
 	@OneToMany(mappedBy="widgetBean")
 	private List<WidgetContent> widgetContents;
 
@@ -118,6 +121,20 @@ public class Widget implements Serializable
 	 */
 	public void setSlug(String slug) {
 		this.slug = slug;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 }

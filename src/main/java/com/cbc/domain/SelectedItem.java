@@ -1,55 +1,62 @@
 /**
  * 
  */
-package com.cbc.model;
+package com.cbc.domain;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.cbc.util.ModelToDomainMapper;
 
 /**
- * @author Mina Saleeb
+ * @author Mina
  *
  */
-@Entity
-@Table(name="selected_items")
-public class SelectedItemForYou implements Serializable
+public class SelectedItem 
 {
-	private static final long serialVersionUID = 1L;
+	private String image;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
+	private String title;
 	
-	@Column(name="item_id")
 	private String ItemId;
 	
-	@Column(name="item_type")
 	private String ItemType;
 	
-	@Column(nullable = false, columnDefinition = "SMALLINT(6) default 0")
 	private short status;
 	
-	@Column(nullable = false, columnDefinition = "SMALLINT(6) default 0")
-	private short order;
+	private int order;
 
 	/**
-	 * @return the id
+	 * 
 	 */
-	public long getId() {
-		return id;
+	public SelectedItem(com.cbc.model.SelectedItemForYou mod) {
+		super();
+		ModelToDomainMapper.mapSelectedItem(mod, this);
 	}
 
 	/**
-	 * @param id the id to set
+	 * @return the image
 	 */
-	public void setId(long id) {
-		this.id = id;
+	public String getImage() {
+		return image;
+	}
+
+	/**
+	 * @param image the image to set
+	 */
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	/**
@@ -97,14 +104,17 @@ public class SelectedItemForYou implements Serializable
 	/**
 	 * @return the order
 	 */
-	public short getOrder() {
+	public int getOrder() {
 		return order;
 	}
 
 	/**
 	 * @param order the order to set
 	 */
-	public void setOrder(short order) {
+	public void setOrder(int order) {
 		this.order = order;
 	}
+	
+	
+	
 }

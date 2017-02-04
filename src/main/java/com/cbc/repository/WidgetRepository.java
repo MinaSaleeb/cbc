@@ -14,4 +14,6 @@ import com.cbc.model.Widget;
 public interface WidgetRepository extends CrudRepository<Widget, Integer> 
 {
 	Widget findByName(String name);
+	
+	Widget findBySlug(String slug);
 }

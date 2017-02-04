@@ -24,6 +24,10 @@ public class CbcNew
 
 	private String title;
 	
+	private String categoryId;
+	
+	private String categoryName;
+	
 	private String content;
 	
 	private String videoUrl;
@@ -124,6 +128,34 @@ public class CbcNew
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * @return the categoryId
+	 */
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	/**
+	 * @param categoryId the categoryId to set
+	 */
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	/**
+	 * @return the categoryName
+	 */
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	/**
+	 * @param categoryName the categoryName to set
+	 */
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	/**

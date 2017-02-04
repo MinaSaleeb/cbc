@@ -3,8 +3,10 @@
  */
 package com.cbc.rest;
 
+import java.awt.ItemSelectable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -20,16 +22,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.domain.SelectedItem;
+import com.cbc.model.CbcNew;
 import com.cbc.model.CitizenService;
 import com.cbc.model.Currency;
 import com.cbc.model.ExternalPage;
 import com.cbc.model.PrayerTime;
+import com.cbc.model.Program;
+import com.cbc.model.Recipe;
+import com.cbc.model.SelectedItemForYou;
 import com.cbc.model.UserAnswer;
 import com.cbc.model.Widget;
+import com.cbc.repository.CBCNewsRepository;
 import com.cbc.repository.CitizenServiceRepository;
 import com.cbc.repository.CurrencyRepository;
 import com.cbc.repository.ExternalPageRepository;
 import com.cbc.repository.PrayerTimeRepository;
+import com.cbc.repository.ProgramRepository;
+import com.cbc.repository.RecipeRepository;
+import com.cbc.repository.SelectedItemForYouRepository;
 import com.cbc.repository.UserAnswerRepository;
 import com.cbc.repository.WidgetRepository;
 import com.cbc.util.ModelToDomainMapper;
@@ -64,6 +75,19 @@ public class OthersRestController
 	
 	@Autowired
 	private WidgetRepository widgetRepo;
+	
+	@Autowired
+	private SelectedItemForYouRepository SelectedItemForYouRepo;
+	
+	@Autowired
+	private RecipeRepository recipeRepo;
+	
+	@Autowired
+	private CBCNewsRepository cBCNewsRepo;
+	
+	@Autowired
+	private ProgramRepository programRepo;
+	
 	
 	/**
 	 * 
@@ -142,10 +166,23 @@ public class OthersRestController
 		return new ResponseEntity<List<Currency>>(currencies , HttpStatus.OK);
 	 }
 	 
-	 @RequestMapping(value = "/widget/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	 public ResponseEntity<com.cbc.domain.Widget> getWidgetByName(@PathVariable("name") String name)
+//	 @RequestMapping(value = "/widget/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	 public ResponseEntity<com.cbc.domain.Widget> getWidgetByName(@PathVariable("name") String name)
+//	 {
+//		 Widget w = widgetRepo.findByName(name);
+//		 if(w != null)
+//		 {
+//			 return new ResponseEntity<com.cbc.domain.Widget>(new com.cbc.domain.Widget(w, true) , HttpStatus.OK); 
+//		 }
+//		 
+//		 return new ResponseEntity<com.cbc.domain.Widget>(HttpStatus.NOT_FOUND);
+//		 
+//	 }
+//	 
+	 @RequestMapping(value = "/widget/{slug}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<com.cbc.domain.Widget> getWidgetBySlug(@PathVariable("slug") String slug)
 	 {
-		 Widget w = widgetRepo.findByName(name);
+		 Widget w = widgetRepo.findBySlug(slug);
 		 if(w != null)
 		 {
 			 return new ResponseEntity<com.cbc.domain.Widget>(new com.cbc.domain.Widget(w, true) , HttpStatus.OK); 
@@ -165,6 +202,64 @@ public class OthersRestController
 		 }
 		 
 		 return new ResponseEntity<List<com.cbc.domain.Widget>>(HttpStatus.NO_CONTENT);
+		 
+	 }
+	 
+	 @RequestMapping(value = "/selectedItemsForU", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public ResponseEntity<List<com.cbc.domain.SelectedItem>> getSelectedItemsForU()
+	 {
+		 List<SelectedItemForYou> dbSlctdItms = SelectedItemForYouRepo.findByStatusOrderByOrderAsc((short)1);
+		 
+		 if(dbSlctdItms != null && !dbSlctdItms.isEmpty())
+		 {
+			 List<SelectedItem> resultList = new ArrayList<>();
+			 
+			 for(SelectedItemForYou dbsltItm : dbSlctdItms)
+			 {
+				 SelectedItem domSlctItm = new SelectedItem(dbsltItm);
+				 String itemType = domSlctItm.getItemType() != null ? domSlctItm.getItemType() : "";
+				 if("PROGRAM".equalsIgnoreCase(itemType))
+				 {
+					 Program item = programRepo.findOne(new Integer(dbsltItm.getItemId()));
+					if(item != null)
+					{
+						domSlctItm.setImage(item.getImage2xPath());
+						domSlctItm.setTitle(item.getTitle());
+					}
+				 }
+				 else if ("WIDGET".equalsIgnoreCase(itemType)) 
+				 {
+					Widget item = widgetRepo.findOne(new Integer(dbsltItm.getItemId()));
+					if(item != null)
+					{
+						domSlctItm.setImage(item.getImage());
+						domSlctItm.setTitle(item.getName());
+					}
+				 }
+				 else if ("RECIPE".equalsIgnoreCase(itemType)) 
+				 {
+					Recipe item = recipeRepo.findOne(new Long(dbsltItm.getItemId()));
+					if(item != null)
+					{
+						domSlctItm.setImage(item.getThumbnailImage());
+						domSlctItm.setTitle(item.getTitle());
+					}
+				 }
+				 else if ("NEWS".equalsIgnoreCase(itemType)) 
+				 {
+					CbcNew item = cBCNewsRepo.findOne(new Long(dbsltItm.getItemId()));
+					if(item != null)
+					{
+						domSlctItm.setImage(item.getThumbnailImage());
+						domSlctItm.setTitle(item.getTitle());
+					}
+				 }
+				 resultList.add(domSlctItm);
+			 }
+			 return new ResponseEntity<List<com.cbc.domain.SelectedItem>>(resultList,HttpStatus.OK);
+		 }
+		
+		 return new ResponseEntity<List<com.cbc.domain.SelectedItem>>(HttpStatus.NO_CONTENT);
 		 
 	 }
 }
