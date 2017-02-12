@@ -34,7 +34,13 @@ public class Program implements Serializable {
 
 	@Column(name="recipe_rating_image_path")
 	private String recipeRatingImagePath;
-
+	
+	@Column(name="circle_image_path")
+	private String circleImagePath;
+	
+	@Column(name="half_circle_image_path")
+	private String halfCircleImagePath;
+	
 	private String title;
 	
 	@Column(name="hub_selected")
@@ -148,6 +154,34 @@ public class Program implements Serializable {
 
 	public void setRecipeRatingImagePath(String recipeRatingImagePath) {
 		this.recipeRatingImagePath = recipeRatingImagePath;
+	}
+
+	/**
+	 * @return the circleImagePath
+	 */
+	public String getCircleImagePath() {
+		return circleImagePath;
+	}
+
+	/**
+	 * @param circleImagePath the circleImagePath to set
+	 */
+	public void setCircleImagePath(String circleImagePath) {
+		this.circleImagePath = circleImagePath;
+	}
+
+	/**
+	 * @return the halfCircleImagePath
+	 */
+	public String getHalfCircleImagePath() {
+		return halfCircleImagePath;
+	}
+
+	/**
+	 * @param halfCircleImagePath the halfCircleImagePath to set
+	 */
+	public void setHalfCircleImagePath(String halfCircleImagePath) {
+		this.halfCircleImagePath = halfCircleImagePath;
 	}
 
 	public String getTitle() {

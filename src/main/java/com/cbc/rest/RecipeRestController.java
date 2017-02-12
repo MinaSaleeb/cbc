@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cbc.model.Presenter;
 import com.cbc.model.Recipe;
 import com.cbc.model.RecipeCategory;
 import com.cbc.model.RecipeCuisine;
@@ -184,5 +185,22 @@ public class RecipeRestController
 		public ResponseEntity<com.cbc.domain.recipe.FoodItem> getFoodItemById(@PathVariable("id") long id)
 		{
 			return  new ResponseEntity<com.cbc.domain.recipe.FoodItem>(new com.cbc.domain.recipe.FoodItem(recipesService.getFoodItemById(id)), HttpStatus.OK);
+		}
+	 	
+	 	
+	 	@RequestMapping(value = "/chiefs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<com.cbc.domain.recipe.Chief>> getRecipesCheifs(@RequestParam(required = false , value = "size") Integer size, @RequestParam(required = false , value = "numOfRecipes") Integer numOfRecipes)
+		{
+			List<Presenter> presentersList = recipesService.getAllRecipesChiefs(size);
+			if(presentersList != null && !presentersList.isEmpty())
+			{
+				if(numOfRecipes != null)
+				{
+					return new ResponseEntity<List<com.cbc.domain.recipe.Chief>>(ModelToDomainMapper.mapChiefsList(presentersList, true, numOfRecipes)  , HttpStatus.OK);
+				}
+				return new ResponseEntity<List<com.cbc.domain.recipe.Chief>>(ModelToDomainMapper.mapChiefsList(presentersList, false, null)  , HttpStatus.OK);
+			}
+			
+			return  new ResponseEntity<List<com.cbc.domain.recipe.Chief>>(HttpStatus.NO_CONTENT);
 		}
 }

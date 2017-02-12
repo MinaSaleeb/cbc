@@ -11,17 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.cbc.domain.SelectedItem;
 import com.cbc.domain.TodayRecipeDataRow;
 import com.cbc.model.FoodItem;
 import com.cbc.model.FoodType;
+import com.cbc.model.Presenter;
 import com.cbc.model.Recipe;
 import com.cbc.model.RecipeCategory;
 import com.cbc.model.RecipeCuisine;
+import com.cbc.model.SelectedItemForYou;
 import com.cbc.repository.FoodItemRepository;
 import com.cbc.repository.FoodTypeRepository;
+import com.cbc.repository.PresenterRepository;
 import com.cbc.repository.RecipeCategoryRepository;
 import com.cbc.repository.RecipeCuisineRepository;
 import com.cbc.repository.RecipeRepository;
+import com.cbc.repository.SelectedItemForYouRepository;
+import com.cbc.util.Constants;
+import com.cbc.util.Constants.ItemType;
 import com.cbc.util.TimeUtils;
 
 /**
@@ -47,6 +54,12 @@ public class RecipesService
 	
 	@Autowired
 	private FoodTypeRepository foodTypeRepository;
+	
+	@Autowired
+	private PresenterRepository presenterRepository;
+	
+	@Autowired
+	private SelectedItemForYouRepository SelectedItemForYouRepo;
 	
 	/**
 	 * 
@@ -75,8 +88,26 @@ public class RecipesService
 	
 	public List<Recipe> getTodayRecipes2()
 	{
-		return  recipeRepo.findByRecipeDate(TimeUtils.getTodayDate());
+		List<SelectedItemForYou> dbSlctdItms = SelectedItemForYouRepo.findByItemTypeIgnoreCaseAndUpdateDateAndStatusOrderByOrderAsc(ItemType.RECIPE.toString(), TimeUtils.getTodayDate(), (short)1);
+		 List<Recipe> resultList = new ArrayList<Recipe>();
+		 if(dbSlctdItms != null && !dbSlctdItms.isEmpty())
+		 {
+			 for(SelectedItemForYou dbsltItm : dbSlctdItms)
+			 {
+				 SelectedItem domSlctItm = new SelectedItem(dbsltItm);
+				 String itemType = domSlctItm.getItemType() != null ? domSlctItm.getItemType() : "";
+				 if ("RECIPE".equalsIgnoreCase(itemType)) 
+				 {
+					Recipe item = recipeRepo.findOne(new Long(dbsltItm.getItemId()));
+					if(item != null) resultList.add(item);
+				 }
+			 }
+		 }
+		
+		return  resultList;
 	}
+	
+	
 	
 	/**
 	 * 
@@ -214,5 +245,19 @@ public class RecipesService
 	public FoodItem getFoodItemById(long id)
 	{
 		return foodItemRepository.findOne(id);
+	}
+	
+	public List<Presenter> getAllRecipesChiefs(Integer size)
+	{
+		List<Presenter> chiefs = new ArrayList<Presenter>();
+		if(size == null)
+		{
+			chiefs =  presenterRepository.findByChannelId(Constants.SOFRA_CHANNEL_ID);
+		}
+		else if(size != null)
+		{
+			chiefs = presenterRepository.findByChannelIdWithSize(Constants.SOFRA_CHANNEL_ID, new PageRequest(0, size));
+		}
+		return chiefs;
 	}
 }

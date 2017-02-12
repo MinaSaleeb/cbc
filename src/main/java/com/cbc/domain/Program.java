@@ -22,7 +22,11 @@ public class Program
 	private String imageBgPath;
 
 	private String imageXPath;
-
+	
+	private String icon;
+	
+	private String thumbnailImage;
+	
 	private String recipeRatingImagePath;
 
 	private String title;
@@ -150,6 +154,34 @@ public class Program
 	 */
 	public void setImageXPath(String imageXPath) {
 		this.imageXPath = imageXPath;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	/**
+	 * @return the thumbnailImage
+	 */
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	/**
+	 * @param thumbnailImage the thumbnailImage to set
+	 */
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 
 	/**

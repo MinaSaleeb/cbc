@@ -62,6 +62,15 @@ public class Recipe implements Serializable {
 	@Column(name="number_of_views")
 	private long numberOfViews;
 	
+	//bi-directional many-to-one association to RecipeCategory
+	@ManyToOne
+	@JoinColumn(name="parent_recipe")
+	private Recipe parentRecipe;
+
+	//bi-directional many-to-one association to RecipeCategory
+	@OneToMany(mappedBy="parentRecipe")
+	private List<Recipe> subRecipes;
+	
 	@Transient
 	private float displayedRating;
 
@@ -401,6 +410,34 @@ public class Recipe implements Serializable {
 	 */
 	public void setThumbnailImage(String thumbnailImage) {
 		this.thumbnailImage = thumbnailImage;
+	}
+
+	/**
+	 * @return the parentRecipe
+	 */
+	public Recipe getParentRecipe() {
+		return parentRecipe;
+	}
+
+	/**
+	 * @param parentRecipe the parentRecipe to set
+	 */
+	public void setParentRecipe(Recipe parentRecipe) {
+		this.parentRecipe = parentRecipe;
+	}
+
+	/**
+	 * @return the subRecipes
+	 */
+	public List<Recipe> getSubRecipes() {
+		return subRecipes;
+	}
+
+	/**
+	 * @param subRecipes the subRecipes to set
+	 */
+	public void setSubRecipes(List<Recipe> subRecipes) {
+		this.subRecipes = subRecipes;
 	}
 
 }

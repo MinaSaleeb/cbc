@@ -5,8 +5,6 @@ package com.cbc.domain.recipe;
 
 import java.util.List;
 
-import javax.persistence.Column;
-
 import com.cbc.util.ModelToDomainMapper;
 
 /**

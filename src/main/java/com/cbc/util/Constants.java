@@ -37,7 +37,17 @@ public interface Constants
 		TV_SHOW
 	}
 	
+	public static enum ItemType
+	{
+		PROGRAM,
+		WIDGET,
+		RECIPE,
+		NEWS
+	}
+	
 	public static final String PAGE_NUMBER_PARAM_NAME = "pageNumber";
 	
 	public static final String PAGE_SIZE_PARAM_NAME = "size";
+	
+	public static final int SOFRA_CHANNEL_ID = 8;
 }

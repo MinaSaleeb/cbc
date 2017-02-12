@@ -31,6 +31,7 @@ public class Recipe
 	private RecipeType type;
 	private List<Step> steps;
 	private List<Ingredient> ingredients;
+	private List<Recipe> subRecipes;
 	
 	
 	/**
@@ -256,5 +257,17 @@ public class Recipe
 	 */
 	public void setThumbnailImage(String thumbnailImage) {
 		this.thumbnailImage = thumbnailImage;
+	}
+	/**
+	 * @return the subRecipes
+	 */
+	public List<Recipe> getSubRecipes() {
+		return subRecipes;
+	}
+	/**
+	 * @param subRecipes the subRecipes to set
+	 */
+	public void setSubRecipes(List<Recipe> subRecipes) {
+		this.subRecipes = subRecipes;
 	}
 }

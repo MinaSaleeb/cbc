@@ -24,7 +24,18 @@ public class Presenter implements Serializable {
 
 	@Column(name="photo_path")
 	private String photoPath;
-
+	
+	@Column(name="photo_path_1")
+	private String photoPath1;
+	
+	@Column(name="photo_path_2")
+	private String photoPath2;
+	
+	@Column(name="photo_path_3")
+	private String photoPath3;
+	
+	private String slug;
+	
 	//bi-directional many-to-one association to Recipe
 	@OneToMany(mappedBy="presenter")
 	private List<Recipe> recipes;
@@ -66,6 +77,62 @@ public class Presenter implements Serializable {
 
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
+	}
+
+	/**
+	 * @return the photoPath1
+	 */
+	public String getPhotoPath1() {
+		return photoPath1;
+	}
+
+	/**
+	 * @param photoPath1 the photoPath1 to set
+	 */
+	public void setPhotoPath1(String photoPath1) {
+		this.photoPath1 = photoPath1;
+	}
+
+	/**
+	 * @return the photoPath2
+	 */
+	public String getPhotoPath2() {
+		return photoPath2;
+	}
+
+	/**
+	 * @param photoPath2 the photoPath2 to set
+	 */
+	public void setPhotoPath2(String photoPath2) {
+		this.photoPath2 = photoPath2;
+	}
+
+	/**
+	 * @return the photoPath3
+	 */
+	public String getPhotoPath3() {
+		return photoPath3;
+	}
+
+	/**
+	 * @param photoPath3 the photoPath3 to set
+	 */
+	public void setPhotoPath3(String photoPath3) {
+		this.photoPath3 = photoPath3;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 
 	public List<Recipe> getRecipes() {

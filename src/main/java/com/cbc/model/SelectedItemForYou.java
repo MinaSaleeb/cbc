@@ -4,6 +4,7 @@
 package com.cbc.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @author Mina Saleeb
@@ -30,10 +33,14 @@ public class SelectedItemForYou implements Serializable
 	private String ItemId;
 	
 	@Column(name="item_type")
-	private String ItemType;
+	private String itemType;
 	
 	@Column(nullable = false, columnDefinition = "SMALLINT(6) default 0")
 	private short status;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="update_date")
+	private Date updateDate;
 	
 	@Column(nullable = false, columnDefinition = "SMALLINT(6) default 0")
 	private short order;
@@ -70,14 +77,14 @@ public class SelectedItemForYou implements Serializable
 	 * @return the itemType
 	 */
 	public String getItemType() {
-		return ItemType;
+		return itemType;
 	}
 
 	/**
 	 * @param itemType the itemType to set
 	 */
 	public void setItemType(String itemType) {
-		ItemType = itemType;
+		this.itemType = itemType;
 	}
 
 	/**
@@ -92,6 +99,20 @@ public class SelectedItemForYou implements Serializable
 	 */
 	public void setStatus(short status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the updateDate
+	 */
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	/**
+	 * @param updateDate the updateDate to set
+	 */
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	/**

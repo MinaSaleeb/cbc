@@ -52,6 +52,10 @@ public class ModelToDomainMapper
 		domPresenter.setName(modPresenter.getName());
 		domPresenter.setDescription(modPresenter.getDescription());
 		domPresenter.setPhotoPath(modPresenter.getPhotoPath());
+		domPresenter.setIcon(modPresenter.getPhotoPath1());
+		domPresenter.setThumbnailImage(modPresenter.getPhotoPath2());
+		domPresenter.setImage(modPresenter.getPhotoPath3());
+		domPresenter.setSlug(modPresenter.getSlug());
 	}
 	
 	public static void mapProgram(com.cbc.model.Program modProgram , com.cbc.domain.Program domProgram)
@@ -63,6 +67,8 @@ public class ModelToDomainMapper
 		domProgram.setImage1xPath(modProgram.getImage1xPath());
 		domProgram.setImage2xPath(modProgram.getImage2xPath());
 		domProgram.setImageBgPath(modProgram.getImageBgPath());
+		domProgram.setIcon(modProgram.getCircleImagePath());
+		domProgram.setThumbnailImage(modProgram.getHalfCircleImagePath());
 		domProgram.setRecipeRatingImagePath(modProgram.getRecipeRatingImagePath());
 		domProgram.setHideProgram(modProgram.isHideProgram());
 		domProgram.setSchedule(modProgram.getSchedule());
@@ -541,6 +547,17 @@ public class ModelToDomainMapper
 			}
 		}
 		domRecipe.setIngredients(ingredients);
+		//Sub Recipes
+		List<com.cbc.model.Recipe> subRecipes = modRecipe.getSubRecipes();
+		if(subRecipes != null && !subRecipes.isEmpty())
+		{
+			List<com.cbc.domain.recipe.Recipe> domSubRecipes = new ArrayList<com.cbc.domain.recipe.Recipe>();
+			for(com.cbc.model.Recipe r : subRecipes)
+			{
+				domSubRecipes.add(new com.cbc.domain.recipe.Recipe(r));
+			}
+			domRecipe.setSubRecipes(domSubRecipes);
+		}
 	}
 	
 	public static List<com.cbc.domain.recipe.Recipe> mapRecipesList(List<com.cbc.model.Recipe> modRecipesList)
@@ -550,7 +567,11 @@ public class ModelToDomainMapper
 		{
 			for(com.cbc.model.Recipe r : modRecipesList)
 			{
-				domList.add(new com.cbc.domain.recipe.Recipe(r));
+				//filter child Recipes from first level
+				if(r.getParentRecipe() == null)
+				{
+					domList.add(new com.cbc.domain.recipe.Recipe(r));
+				}
 			}
 		}
 		return domList;
@@ -655,5 +676,20 @@ public class ModelToDomainMapper
 		domSltdItm.setOrder(modSltdItm.getOrder());
 		domSltdItm.setStatus(modSltdItm.getStatus());
 	}
+	
+	public static List<com.cbc.domain.recipe.Chief> mapChiefsList(List<com.cbc.model.Presenter> modChiefsList,boolean includeRecipes,Integer numOfIncludedRecipes)
+	{
+		List<com.cbc.domain.recipe.Chief> domList = new ArrayList<com.cbc.domain.recipe.Chief>();
+		if(modChiefsList != null && !modChiefsList.isEmpty())
+		{
+			for(com.cbc.model.Presenter p : modChiefsList)
+			{
+				domList.add(new com.cbc.domain.recipe.Chief(p, includeRecipes, numOfIncludedRecipes));
+			}
+		}
+		
+		return domList;
+	}
+	
 	
 }

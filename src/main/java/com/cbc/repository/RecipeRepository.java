@@ -12,7 +12,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.cbc.model.Recipe;
-import com.cbc.model.RecipeCategory;
 
 /**
  * @author Mina Saleeb
