@@ -115,7 +115,7 @@ public class Recipe implements Serializable {
 	private List<RecipeCuisine> cuisines;
 	
 	@ManyToMany(mappedBy="recipes")
-	private List<RecipeCuisine> categories;
+	private List<RecipeCategory> categories;
 	
 	public Recipe() {
 	}
@@ -387,14 +387,14 @@ public class Recipe implements Serializable {
 	/**
 	 * @return the categories
 	 */
-	public List<RecipeCuisine> getCategories() {
+	public List<RecipeCategory> getCategories() {
 		return categories;
 	}
 
 	/**
 	 * @param categories the categories to set
 	 */
-	public void setCategories(List<RecipeCuisine> categories) {
+	public void setCategories(List<RecipeCategory> categories) {
 		this.categories = categories;
 	}
 

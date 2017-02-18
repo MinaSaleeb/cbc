@@ -203,4 +203,14 @@ public class RecipeRestController
 			
 			return  new ResponseEntity<List<com.cbc.domain.recipe.Chief>>(HttpStatus.NO_CONTENT);
 		}
+	 	
+	 	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+		 public ResponseEntity<List<com.cbc.domain.recipe.Recipe>> searchRecipes(@RequestParam(required = false , value = "categoryId") Integer categoryId,
+				 																 @RequestParam(required = false , value = "chiefId") Integer chiefId,
+				 																 @RequestParam(required = false , value = "cuisineId") Integer cuisineId,
+				 																 @RequestParam(required = false , value = "programId") Integer programId,
+				 																 @RequestParam(required = false , value = "title") String title)
+		 {
+			 return new ResponseEntity<List<com.cbc.domain.recipe.Recipe>>(ModelToDomainMapper.mapRecipesList(recipesService.searchRecipes(categoryId, chiefId, cuisineId, programId, title)), HttpStatus.OK);
+		 }
 }

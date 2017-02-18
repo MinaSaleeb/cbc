@@ -541,8 +541,8 @@ public class ModelToDomainMapper
 		{
 			for(com.cbc.model.RecipeIngredient modIngredient : modIngredients)
 			{
-				Ingredient ingr = new Ingredient(modIngredient.getIngredientContent());
-				if(modIngredient.getFoodItem() != null) ingr.setContent(ingr.getContent()+" "+modIngredient.getFoodItem().getItemName());
+				Ingredient ingr = new Ingredient(modIngredient);
+				//if(modIngredient.getFoodItem() != null) ingr.setContent(ingr.getContent()+" "+modIngredient.getFoodItem().getItemName());
 				ingredients.add(ingr);
 			}
 		}
@@ -691,5 +691,18 @@ public class ModelToDomainMapper
 		return domList;
 	}
 	
-	
+	public static void  mapRecipeIngredient(com.cbc.model.RecipeIngredient modRecipeIngredient, com.cbc.domain.recipe.Ingredient domRecipeIngredient)
+	{
+		domRecipeIngredient.setContent(modRecipeIngredient.getIngredientContent());
+		domRecipeIngredient.setQuantity(String.valueOf(modRecipeIngredient.getQuantity()));
+		if(modRecipeIngredient.getMeasureUnit() != null)
+		{
+			domRecipeIngredient.setMeasureUnit(modRecipeIngredient.getMeasureUnit().getName());
+		}
+		
+		if(modRecipeIngredient.getFoodItem() != null)
+		{
+			domRecipeIngredient.setFoodItem(new com.cbc.domain.recipe.FoodItem(modRecipeIngredient.getFoodItem()));
+		}
+	}
 }

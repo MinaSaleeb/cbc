@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -17,7 +18,7 @@ import com.cbc.model.Recipe;
  * @author Mina Saleeb
  *
  */
-public interface RecipeRepository extends CrudRepository<Recipe, Long> 
+public interface RecipeRepository extends CrudRepository<Recipe, Long>, QueryDslPredicateExecutor<Recipe> 
 {
 	List<Recipe> findByRecipeDate(Date recipeDate);
 	

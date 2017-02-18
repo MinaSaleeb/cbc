@@ -33,10 +33,10 @@ public class RecipeIngredient implements Serializable {
 	private Recipe recipeBean;
 	
 	@ManyToOne
-	@JoinColumn(name="measure_unit")
+	@JoinColumn(name="mesuring_unit")
 	private MeasureUnit measureUnit;
 	
-	private double amount;
+	private double quantity;
 
 	public RecipeIngredient() {
 	}
@@ -102,17 +102,16 @@ public class RecipeIngredient implements Serializable {
 	}
 
 	/**
-	 * @return the amount
+	 * @return the quantity
 	 */
-	public double getAmount() {
-		return amount;
+	public double getQuantity() {
+		return quantity;
 	}
 
 	/**
-	 * @param amount the amount to set
+	 * @param quantity the quantity to set
 	 */
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
 	}
-
 }

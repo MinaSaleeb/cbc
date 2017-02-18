@@ -10,12 +10,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cbc.domain.SelectedItem;
 import com.cbc.domain.TodayRecipeDataRow;
 import com.cbc.model.FoodItem;
 import com.cbc.model.FoodType;
 import com.cbc.model.Presenter;
+import com.cbc.model.QRecipe;
+import com.cbc.model.QRecipeCategory;
 import com.cbc.model.Recipe;
 import com.cbc.model.RecipeCategory;
 import com.cbc.model.RecipeCuisine;
@@ -30,6 +33,8 @@ import com.cbc.repository.SelectedItemForYouRepository;
 import com.cbc.util.Constants;
 import com.cbc.util.Constants.ItemType;
 import com.cbc.util.TimeUtils;
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.types.Predicate;
 
 /**
  * @author Mina Saleeb
@@ -259,5 +264,47 @@ public class RecipesService
 			chiefs = presenterRepository.findByChannelIdWithSize(Constants.SOFRA_CHANNEL_ID, new PageRequest(0, size));
 		}
 		return chiefs;
+	}
+	
+	public List<Recipe> searchRecipes(Integer categoryId, Integer chiefId, Integer cuisineId, Integer programId, String title)
+	{
+		QRecipe recipe = QRecipe.recipe;
+		
+		Predicate query = recipe.isNotNull();
+		BooleanBuilder where = new BooleanBuilder();
+		if(categoryId != null)
+		{
+			RecipeCategory category = recipeCategoryRepo.findOne(categoryId);
+			if(category != null)
+			{
+				where.and(recipe.categories.contains(category));
+			}
+		}
+		
+		if(chiefId != null)
+		{
+			where.and(recipe.presenter.id.eq(chiefId));
+		}
+		
+		if(cuisineId != null)
+		{
+			RecipeCuisine cuisine = recipeCuisineRepo.findOne(cuisineId);
+			if(cuisine != null)
+			{
+				where.and(recipe.cuisines.contains(cuisine));
+			}
+		}
+		
+		if(programId != null)
+		{
+			where.and(recipe.programBean.id.eq(programId));
+		}
+		
+		if(title != null && !title.isEmpty())
+		{
+			where.and(recipe.title.containsIgnoreCase(title).or(recipe.description.containsIgnoreCase(title)));
+		}
+		
+		return (List<Recipe>) recipeRepo.findAll(where);
 	}
 }
