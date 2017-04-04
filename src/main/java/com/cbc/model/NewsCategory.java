@@ -47,6 +47,8 @@ public class NewsCategory implements Serializable {
 	//bi-directional many-to-one association to NewsCategory
 	@OneToMany(mappedBy="parentCategory")
 	private List<NewsCategory> subCategories;
+	
+	private String slug;
 
 	public NewsCategory() {
 	}
@@ -165,6 +167,20 @@ public class NewsCategory implements Serializable {
 	 */
 	public void setSubCategories(List<NewsCategory> subCategories) {
 		this.subCategories = subCategories;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 
 }

@@ -19,6 +19,8 @@ public class NewsCategory
 	
 	private String bgImage;
 	
+	private String slug;
+	
 	private NewsCategory parentCategory;
 	
 	private List<NewsCategory> subCategories;
@@ -75,6 +77,20 @@ public class NewsCategory
 	 */
 	public void setBgImage(String bgImage) {
 		this.bgImage = bgImage;
+	}
+
+	/**
+	 * @return the slug
+	 */
+	public String getSlug() {
+		return slug;
+	}
+
+	/**
+	 * @param slug the slug to set
+	 */
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 
 	/**

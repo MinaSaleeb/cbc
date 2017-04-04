@@ -142,6 +142,7 @@ public class ModelToDomainMapper
 		domNewsCategory.setId(modNewsCategory.getId());
 		domNewsCategory.setCategoryName(modNewsCategory.getCategoryName());
 		domNewsCategory.setBgImage(modNewsCategory.getBgImage());
+		domNewsCategory.setSlug(modNewsCategory.getSlug());
 		List<com.cbc.model.NewsCategory> subCategories = modNewsCategory.getSubCategories();
 		if(subCategories != null && !subCategories.isEmpty())
 		{

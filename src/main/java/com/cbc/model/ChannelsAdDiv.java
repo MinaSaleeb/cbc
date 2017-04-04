@@ -19,6 +19,8 @@ public class ChannelsAdDiv implements Serializable {
 
 	@Column(name="ad_script")
 	private String adScript;
+	
+	private String script;
 
 	//bi-directional many-to-one association to Channel
 	@ManyToOne
@@ -47,6 +49,20 @@ public class ChannelsAdDiv implements Serializable {
 
 	public void setAdScript(String adScript) {
 		this.adScript = adScript;
+	}
+
+	/**
+	 * @return the script
+	 */
+	public String getScript() {
+		return script;
+	}
+
+	/**
+	 * @param script the script to set
+	 */
+	public void setScript(String script) {
+		this.script = script;
 	}
 
 	public Channel getChannelBean() {

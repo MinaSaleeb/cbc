@@ -4,6 +4,8 @@
 package com.cbc.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +97,8 @@ public class CBCNewsService
 			int numOfChilds = category.getSubCategories() != null ? category.getSubCategories().size() : 0;
 			if(numOfChilds > 0)
 			{
-				int childPageSize = size / numOfChilds ;
+				//int childPageSize = size / numOfChilds ;
+				int childPageSize = size;
 				for(NewsCategory cat : category.getSubCategories())
 				{
 					Pageable childPage = new PageRequest(0, childPageSize);
@@ -105,6 +108,23 @@ public class CBCNewsService
 			else
 			{
 				newsList = cBCNewsRepo.findByNewsCategoryOrderByPostingDateDesc(category,page);
+			}
+			
+			//Sort news by postingdate Desc
+			Collections.sort(newsList, new Comparator<CbcNew>(){
+				@Override
+				public int compare(CbcNew o1, CbcNew o2) {
+					if (o1.getPostingDate() == null || o2.getPostingDate() == null)
+					{
+				        return 0;
+					}
+				    return o2.getPostingDate().compareTo(o1.getPostingDate());
+				}
+			});
+			
+			if(newsList.size() > size)
+			{
+				newsList = newsList.subList(0, size);
 			}
 		}
 		else
